@@ -25,3 +25,60 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+
+# Arquivos de construção e dependências gerados
+.pub/
+ios/Pods/
+ios/.symlinks/
+android/.gradle/
+android/app/build/
+android/app/intermediates/
+android/build/
+android/gradle/
+android/gradlew
+android/gradlew.bat
+android/local.properties
+android/app/.externalNativeBuild
+android/app/build/
+android/app/outputs/
+android/app/src/main/flutter_assets/
+android/app/src/main/kotlin/com/example/app/generated/
+
+# Arquivos específicos do editor
+*.iml
+.idea/
+.vscode/
+*.code-workspace
+
+# Logs e arquivos temporários
+ios/Flutter/Flutter-Debug.ipa
+ios/Flutter/Flutter-Release.ipa
+ios/Flutter/ios_configured
+*.log
+*.log.*
+*flutter_native_splash.gradle
+*.lock
+*.pid
+*.seed
+*.exe
+*.db
+*.sqlite
+*.hprof
+*.pyc
+*.swo
+*.swp
+*.tmp
+*.lint
+.gradle/
+
+# Arquivos de usuário
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.vscode/
+.DS_Store
+*.tmp
+*.bak
+*.swp
+

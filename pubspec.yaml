@@ -1,0 +1,60 @@
+name: budgetopia
+description: A money manager application for personal use.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.6
+  another_flushbar: ^1.12.30                        #Notificações na parte inferior
+  adaptive_theme: ^3.6.0                            #Alterar o tema do aplicativo
+  animations: ^2.0.11                               #Efeitos de animações prontos
+  fl_chart: ^0.66.2                                 #Gráficos
+  flex_color_scheme:  ^7.3.1                        #Controla o tema do aplicativo
+  flutter_zoom_drawer: ^3.2.0                       #Drawer
+  font_awesome_flutter: ^10.7.0                     #Mais ícones
+  lottie: ^3.1.0                                    #Animações
+  objectbox: ^2.5.1                                 #Armazenamento de dados
+  objectbox_flutter_libs: ^2.5.1                    #Armazenamento de dados
+  path_provider: ^2.1.2
+  permission_handler: ^11.3.0
+  timelines_plus: ^1.0.2                            #Timeline de gastos
+  flutter_ddi:
+    path: ../flutter_ddi
+  intl: ^0.18.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^3.0.1
+  build_runner: ^2.3.3
+  flutter_native_splash: ^2.3.10
+  flutter_launcher_icons: "^0.13.0"
+  objectbox_generator: ^2.5.0
+
+objectbox:
+  # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
+  output_dir: "config/banco/generated"
+
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/

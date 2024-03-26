@@ -1,0 +1,36 @@
+class Double {
+  static const double ZERO = 0.0;
+  static const double UM = 1.0;
+  static const double DOIS = 2.0;
+  static const double TRES = 3.0;
+  static const double QUATRO = 4.0;
+  static const double CINCO = 5.0;
+  static const double SEIS = 6.0;
+  static const double SETE = 7.0;
+  static const double OITO = 8.0;
+  static const double NOVE = 9.0;
+  static const double DEZ = 10.0;
+  static const double DOZE = 12.0;
+  static const double TREZE = 13.0;
+  static const double QUATORZE = 14.0;
+  static const double QUINZE = 15.0;
+  static const double DEZESSEIS = 16.0;
+  static const double DEZESSETE = 17.0;
+  static const double DEZOITO = 18.0;
+  static const double DEZENOVE = 19.0;
+  static const double VINTE = 20.0;
+  static const double VINTE_UM = 21.0;
+  static const double VINTE_CINCO = 25.0;
+  static const double TRINTA = 30.0;
+  static const double TRINTA_DOIS = 32.0;
+  static const double TRINTA_CINCO = 35.0;
+  static const double QUARENTA = 40.0;
+  static const double CINQUENTA = 50.0;
+  static const double SESSENTA = 60.0;
+  static const double SETENTA = 70.0;
+  static const double OITENTA = 80.0;
+  static const double CEM = 100.0;
+  static const double CENTO_VINTE_CINCO = 125.0;
+  static const double DUZENTOS = 200.0;
+  static const double QUINHENTOS = 500.0;
+}
