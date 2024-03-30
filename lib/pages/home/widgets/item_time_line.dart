@@ -1,5 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:budgetopia/pages/home/model/movimentacao_model.dart';
+import 'package:budgetopia/common/enum/categoria_enum.dart';
+import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/pages/movimentacao/model/movimentacao_model.dart';
 import 'package:flutter/material.dart';
 
 class ItemTimeLine extends StatelessWidget {
@@ -48,7 +50,7 @@ class ItemTimeLine extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  movimentacao.categoria ?? '',
+                  CategoriaEnum.getById(movimentacao.codigoCategoria)?.nome ?? '',
                   style: TextStyle(
                     color: colorScheme.onTertiaryContainer,
                   ),
@@ -57,7 +59,7 @@ class ItemTimeLine extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  'R\$ ${movimentacao.valor.toStringAsFixed(2)}',
+                  'R\$ ${Moeda.ajustarMoeda(valor: movimentacao.valor.toDouble())}',
                   style: TextStyle(
                     color: colorScheme.tertiary,
                     fontWeight: FontWeight.bold,

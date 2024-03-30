@@ -1,5 +1,5 @@
 class OpacityState {
-  OpacityState({this.position = 0});
+  OpacityState(this.position);
 
   final double position;
 }

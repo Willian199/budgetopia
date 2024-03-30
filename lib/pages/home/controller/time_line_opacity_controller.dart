@@ -1,10 +1,13 @@
-import 'package:budgetopia/pages/home/model/opacity_state.dart';
+import 'package:budgetopia/pages/home/state/opacity_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class TimeLineOpacityController with DDIEventSender<OpacityState> {
-  double _position = 0;
-  void changeTabSelecionada(double value) {
-    _position = value;
-    fire(OpacityState(position: _position));
+  bool exibindo = false;
+
+  void changePosition(double value) {
+    if ((exibindo && value <= 10) || (!exibindo && value > 10)) {
+      exibindo = value > 10;
+      ddiEvent.fire<OpacityState>(OpacityState(value));
+    }
   }
 }

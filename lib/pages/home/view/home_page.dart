@@ -6,12 +6,13 @@ import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/pages/home/controller/home_controller.dart';
 import 'package:budgetopia/pages/home/mixins/home_mixin.dart';
-import 'package:budgetopia/pages/home/model/home_state.dart';
-import 'package:budgetopia/pages/home/model/movimentacao_model.dart';
+import 'package:budgetopia/pages/home/state/home_state.dart';
 import 'package:budgetopia/pages/home/widgets/card_separador.dart';
 import 'package:budgetopia/pages/home/widgets/card_valor.dart';
 import 'package:budgetopia/pages/home/widgets/time_line_builder.dart';
 import 'package:budgetopia/pages/home/widgets/time_line_opacity_effect.dart';
+import 'package:budgetopia/pages/movimentacao/module/movimentacao_module.dart';
+import 'package:budgetopia/pages/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
@@ -32,8 +33,17 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
     final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('Botão pressionado!');
+        onPressed: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FlutterDDIFutureWidget(
+                module: MovimentacaoModule.new,
+                child: (_) => MovimentacaoPage(),
+              ),
+            ),
+          );
+
+          instance.refresh(state?.tabSelecionada ?? {TipoRegistroEnum.todos});
         },
         child: Icon(
           Icons.add,
@@ -139,7 +149,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                       makeSegmentedButton(TipoRegistroEnum.saida, state?.tabSelecionada, tema.colorScheme),
                     ],
                     selected: state?.tabSelecionada ?? {TipoRegistroEnum.todos},
-                    onSelectionChanged: instance.changeTabSelecionada,
+                    onSelectionChanged: instance.refresh,
                     showSelectedIcon: false,
                   ),
                 ),
@@ -151,8 +161,8 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                   child: Stack(
                     children: [
                       TimeLineBuilder(
-                        movimentacoes: MovimentacaoModel.movimentacoes,
                         scrollGastosController: scrollMovimentacaoController,
+                        registrosMovimentacao: instance.registrosMovimentacao,
                       ),
                       const TimeLineOpacityeffect(),
                     ],

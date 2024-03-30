@@ -1,21 +1,22 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/double.dart';
+import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/pages/home/controller/time_line_opacity_controller.dart';
-import 'package:budgetopia/pages/home/model/movimentacao_model.dart';
 import 'package:budgetopia/pages/home/widgets/item_time_line.dart';
+import 'package:budgetopia/pages/movimentacao/model/movimentacao_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class TimeLineBuilder extends StatefulWidget {
   const TimeLineBuilder({
-    required this.movimentacoes,
     required this.scrollGastosController,
+    this.registrosMovimentacao,
     super.key,
   });
-  final List<MovimentacaoModel> movimentacoes;
 
   final ScrollController scrollGastosController;
+  final List<MovimentacaoModel>? registrosMovimentacao;
 
   @override
   State<TimeLineBuilder> createState() => _TimeLineBuilderState();
@@ -23,13 +24,20 @@ class TimeLineBuilder extends StatefulWidget {
 
 class _TimeLineBuilderState extends State<TimeLineBuilder> with DDIInject<TimeLineOpacityController> {
   @override
-  Widget build(BuildContext context) {
-    widget.scrollGastosController.addListener(() {
-      widget.scrollGastosController.addListener(() {
-        instance.changeTabSelecionada(widget.scrollGastosController.offset);
-      });
-    });
+  void initState() {
+    super.initState();
 
+    widget.scrollGastosController.addListener(() {
+      instance.changePosition(widget.scrollGastosController.offset);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    debugPrint('Building TimeLineBuilder');
+    if (widget.registrosMovimentacao == null) {
+      return const SizedBox();
+    }
     return Timeline.tileBuilder(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       controller: widget.scrollGastosController,
@@ -45,7 +53,7 @@ class _TimeLineBuilderState extends State<TimeLineBuilder> with DDIInject<TimeLi
             ),
       ),
       builder: TimelineTileBuilder.connectedFromStyle(
-        itemCount: widget.movimentacoes.length,
+        itemCount: widget.registrosMovimentacao!.length,
         firstConnectorStyle: ConnectorStyle.transparent,
         lastConnectorStyle: ConnectorStyle.dashedLine,
         connectorStyleBuilder: (BuildContext context, int index) {
@@ -55,16 +63,16 @@ class _TimeLineBuilderState extends State<TimeLineBuilder> with DDIInject<TimeLi
           return IndicatorStyle.outlined;
         },
         oppositeContentsBuilder: (BuildContext context, int index) {
-          final MovimentacaoModel movimentacao = widget.movimentacoes[index];
+          final MovimentacaoModel movimentacao = widget.registrosMovimentacao![index];
 
           return SizedBox.expand(
             child: Padding(
               padding: const EdgeInsets.only(
                 left: Double.QUINZE,
-                top: Double.DEZESSETE,
+                top: Double.VINTE,
               ),
               child: Text(
-                movimentacao.data.toIso8601String(),
+                movimentacao.data.format(),
                 style: const TextStyle(
                   fontSize: Double.QUATORZE,
                   fontWeight: FontWeight.bold,
@@ -74,7 +82,7 @@ class _TimeLineBuilderState extends State<TimeLineBuilder> with DDIInject<TimeLi
           );
         },
         contentsBuilder: (BuildContext context, int index) {
-          final MovimentacaoModel movimentacao = widget.movimentacoes[index];
+          final MovimentacaoModel movimentacao = widget.registrosMovimentacao![index];
 
           return ItemTimeLine(
             movimentacao: movimentacao,

@@ -91,7 +91,8 @@ class CustomSnackBar {
     void Function(FlushbarStatus?)? onStatusChanged,
     bool repeat = false,
   }) {
-    final ColorScheme schema = AdaptiveTheme.of(ddi<GlobalKey<NavigatorState>>().currentContext!).theme.colorScheme;
+    final context = ddi<GlobalKey<NavigatorState>>().currentContext!;
+    final ColorScheme schema = AdaptiveTheme.of(context).theme.colorScheme;
 
     late Color textColor;
     late Color backgroundColor;
@@ -128,6 +129,6 @@ class CustomSnackBar {
           style: TextStyle(color: textColor),
         ),
       ),
-    ).show(ddi<GlobalKey<NavigatorState>>().currentContext!);
+    ).show(context);
   }
 }

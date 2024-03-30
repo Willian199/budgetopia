@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
+import 'package:budgetopia/config/banco/module/object_box.dart';
+import 'package:budgetopia/config/banco/module/store_register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -31,5 +33,10 @@ class StartModule with DDIModule {
 
     registerApplication(ZoomDrawerController.new);
     registerApplication(PageController.new);
+
+    await registerSingleton<Database>(
+      () async => ObjectBox.create(),
+      interceptors: [DatabaseInterceptor.new],
+    );
   }
 }

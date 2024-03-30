@@ -124,5 +124,6 @@ linter:
     use_function_type_syntax_for_parameters: true
     void_checks: true
     library_private_types_in_public_api: false
+    annotate_redeclares: true
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
