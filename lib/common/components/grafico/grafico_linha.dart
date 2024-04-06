@@ -1,9 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/components/grafico/legenda_esquerda.dart';
+import 'package:budgetopia/common/components/grafico/legenda_inferior.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/pages/home/model/grafico_model.dart';
-import 'package:budgetopia/common/components/grafico/legenda_esquerda.dart';
-import 'package:budgetopia/common/components/grafico/legenda_inferior.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
@@ -61,12 +61,12 @@ class GraficoLinha extends StatelessWidget {
               touchTooltipData: LineTouchTooltipData(
                 fitInsideHorizontally: true,
                 showOnTopOfTheChartBoxArea: true,
-                tooltipBgColor: Colors.green,
+                getTooltipColor: (_) => Colors.green,
                 tooltipRoundedRadius: 8,
                 getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
                   return lineBarsSpot.map((LineBarSpot lineBarSpot) {
                     return LineTooltipItem(
-                      Moeda.ajustarMoeda(
+                      Moeda.format(
                         valor: lineBarSpot.y,
                         simbolo: 'R\$',
                       ),

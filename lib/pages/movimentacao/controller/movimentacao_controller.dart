@@ -21,11 +21,9 @@ class MovimentacaoController {
   final TipoMovimentacaoController _tipoMovimentacaoController;
   final Box<MovimentacaoEntity> _entity;
 
-  bool salvar({required String titulo, required double valor, required String observacao}) {
-    _dataMovimentacaoController.dataSelecionada;
-    _categoriaController.categoriaSelecionada;
-
+  bool salvar({required String titulo, required double valor, required String observacao, required int id}) {
     final MovimentacaoEntity obj = MovimentacaoEntity(
+      id: id,
       data: _dataMovimentacaoController.dataSelecionada,
       tipoMovimentacao: _tipoMovimentacaoController.tipoMovimentacaoSelecionada.id,
       codigoCategoria: _categoriaController.categoriaSelecionada.id,

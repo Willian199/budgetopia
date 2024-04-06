@@ -1,8 +1,12 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/pages/home/controller/home_controller.dart';
 import 'package:budgetopia/pages/movimentacao/model/movimentacao_model.dart';
+import 'package:budgetopia/pages/movimentacao/module/movimentacao_module.dart';
+import 'package:budgetopia/pages/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
 
 class ItemTimeLine extends StatelessWidget {
   const ItemTimeLine({required this.movimentacao, super.key});
@@ -31,7 +35,20 @@ class ItemTimeLine extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () async {
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => FlutterDDIFutureWidget(
+                  module: MovimentacaoModule.new,
+                  child: (_) => MovimentacaoPage(
+                    movimentacaoModel: movimentacao,
+                  ),
+                ),
+              ),
+            );
+            final HomeController controller = ddi.get();
+            controller.refresh({controller.tabSelecionada});
+          },
           splashColor: colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(10),
           child: Padding(
@@ -59,7 +76,7 @@ class ItemTimeLine extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  'R\$ ${Moeda.ajustarMoeda(valor: movimentacao.valor.toDouble())}',
+                  'R\$ ${Moeda.format(valor: movimentacao.valor.toDouble())}',
                   style: TextStyle(
                     color: colorScheme.tertiary,
                     fontWeight: FontWeight.bold,

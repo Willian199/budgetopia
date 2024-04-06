@@ -94,21 +94,20 @@ class CustomSnackBar {
     final context = ddi<GlobalKey<NavigatorState>>().currentContext!;
     final ColorScheme schema = AdaptiveTheme.of(context).theme.colorScheme;
 
-    late Color textColor;
+    Color? textColor;
     late Color backgroundColor;
     if (ddi.get(qualifier: Qualifier.dark_mode)) {
-      textColor = schema.primary;
-      backgroundColor = schema.onPrimary;
+      backgroundColor = schema.tertiaryContainer;
     } else {
       textColor = schema.onPrimary;
-      backgroundColor = schema.primary;
+      backgroundColor = schema.tertiary;
     }
 
     Flushbar(
       backgroundColor: backgroundColor,
       onTap: onTap,
       onStatusChanged: onStatusChanged,
-      margin: const EdgeInsets.all(Double.QUINZE),
+      margin: const EdgeInsets.all(Double.DEZ),
       borderRadius: BorderRadius.circular(20),
       icon: Padding(
         padding: const EdgeInsets.only(left: Double.CINCO),

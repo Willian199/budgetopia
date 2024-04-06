@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class Moeda {
-  static String ajustarMoeda({required double valor, String? simbolo, int? decimalDigits}) {
+  static String format({required double valor, String? simbolo, int? decimalDigits}) {
     final NumberFormat format = NumberFormat.currency(
       symbol: simbolo ?? "",
       decimalDigits: decimalDigits ?? 2,
@@ -10,7 +10,7 @@ class Moeda {
     return format.format(valor);
   }
 
-  static num moedaToString({required String valor, String? simbolo, int? decimalDigits}) {
+  static num parse({required String valor, String? simbolo, int? decimalDigits}) {
     final NumberFormat format = NumberFormat.currency(
       symbol: simbolo ?? "",
       decimalDigits: decimalDigits ?? 2,

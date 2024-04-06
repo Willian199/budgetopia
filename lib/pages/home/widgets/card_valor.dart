@@ -15,7 +15,7 @@ class CardValor extends StatelessWidget {
         children: [
           Text(titulo),
           Text(
-            'R\$ ${Moeda.ajustarMoeda(valor: valor)}',
+            'R\$ ${Moeda.format(valor: valor)}',
             style: const TextStyle(fontSize: 16),
           ),
         ],

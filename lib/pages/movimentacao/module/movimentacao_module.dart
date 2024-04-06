@@ -9,10 +9,10 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 class MovimentacaoModule with DDIModule {
   @override
   Future<void> onPostConstruct() async {
-    registerApplication(() => DataMovimentacaoController());
+    registerSingleton(() => DataMovimentacaoController());
     await registerSingleton(() => CategoriaController());
     await registerSingleton(() => TipoMovimentacaoController());
-    registerApplication(() => MovimentacaoController(
+    registerSingleton(() => MovimentacaoController(
           categoriaController: ddi(),
           tipoMovimentacaoController: ddi(),
           dataMovimentacaoController: ddi(),

@@ -27,29 +27,34 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInject<HomeController>, HomeMixin {
   @override
+  void initState() {
+    super.initState();
+    instance.refresh(state?.tabSelecionada ?? {TipoRegistroEnum.todos});
+  }
+
+  @override
   Widget build(BuildContext context) {
     debugPrint('Building HomePage');
     final ThemeData tema = AdaptiveTheme.of(context).theme;
     final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          color: tema.colorScheme.onPrimary,
+        ),
         onPressed: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => FlutterDDIFutureWidget(
                 module: MovimentacaoModule.new,
-                child: (_) => MovimentacaoPage(),
+                child: (_) => const MovimentacaoPage(),
               ),
             ),
           );
 
           instance.refresh(state?.tabSelecionada ?? {TipoRegistroEnum.todos});
         },
-        child: Icon(
-          Icons.add,
-          color: tema.colorScheme.onPrimary,
-        ),
-        backgroundColor: tema.colorScheme.primary,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
@@ -127,13 +132,13 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                       Radius.circular(10),
                     ),
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      CardValor(titulo: Strings.SALDO, valor: 30000.00),
-                      CardSeparador(),
-                      CardValor(titulo: Strings.ENTRADA, valor: 150000.00),
-                      CardSeparador(),
-                      CardValor(titulo: Strings.SAIDA, valor: 120000.00),
+                      CardValor(titulo: Strings.SALDO, valor: state?.valorSaldo ?? 0),
+                      const CardSeparador(),
+                      CardValor(titulo: Strings.ENTRADA, valor: state?.valorEntrada ?? 0),
+                      const CardSeparador(),
+                      CardValor(titulo: Strings.SAIDA, valor: state?.valorSaida ?? 0),
                     ],
                   ),
                 ),
@@ -162,7 +167,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                     children: [
                       TimeLineBuilder(
                         scrollGastosController: scrollMovimentacaoController,
-                        registrosMovimentacao: instance.registrosMovimentacao,
+                        registrosMovimentacao: instance.registrosAbaMovimentacao,
                       ),
                       const TimeLineOpacityeffect(),
                     ],

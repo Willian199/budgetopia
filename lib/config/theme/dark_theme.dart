@@ -27,14 +27,16 @@ class DarkTheme {
       alignedDropdown: true,
       useInputDecoratorThemeInDialogs: true,
       appBarCenterTitle: !Platform.isIOS,
-      buttonMinSize: const Size(Double.CEM, Double.QUARENTA),
+      buttonMinSize: const Size(Double.CEM, Double.CINQUENTA),
       inputDecoratorBorderType: FlexInputBorderType.outline,
       inputDecoratorRadius: Double.VINTE,
       inputDecoratorSchemeColor: SchemeColor.primary,
       inputDecoratorBorderWidth: Double.UM,
-      inputDecoratorFillColor: const Color(0xFF003545).withOpacity(0.9),
+      inputDecoratorFillColor: const Color(0xFF002215),
       thinBorderWidth: Double.DOIS,
       appBarScrolledUnderElevation: Double.ZERO,
+      elevatedButtonSchemeColor: SchemeColor.onPrimary,
+      elevatedButtonSecondarySchemeColor: SchemeColor.secondary,
     ),
     keyColors: const FlexKeyColors(
       useSecondary: true,
@@ -85,6 +87,7 @@ class DarkTheme {
           animationDuration: const Duration(seconds: 2),
         ),
       ),
+      floatingActionButtonTheme: _default.floatingActionButtonTheme.copyWith(backgroundColor: _default.colorScheme.secondary),
     );
   }
 }

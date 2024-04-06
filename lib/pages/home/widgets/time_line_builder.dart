@@ -41,6 +41,7 @@ class _TimeLineBuilderState extends State<TimeLineBuilder> with DDIInject<TimeLi
     return Timeline.tileBuilder(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       controller: widget.scrollGastosController,
+      semanticChildCount: widget.registrosMovimentacao!.length,
       theme: TimelineThemeData(
         nodePosition: 0.3,
         color: AdaptiveTheme.of(context).theme.colorScheme.secondary,

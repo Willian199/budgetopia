@@ -1,3 +1,4 @@
+import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/pages/movimentacao/controller/data_movimentacao_controller.dart';
 import 'package:budgetopia/pages/movimentacao/state/data_selecionar_state.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSe
       child: AbsorbPointer(
         child: TextFormField(
           controller: TextEditingController(
-            text: '${instance.dataSelecionada.toLocal()}'.split(' ')[0],
+            text: instance.dataSelecionada.format(),
           ),
           focusNode: widget.focusNode,
           decoration: const InputDecoration(
