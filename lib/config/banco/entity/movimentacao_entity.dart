@@ -10,6 +10,7 @@ class MovimentacaoEntity {
     this.id = 0,
     this.valor = 0,
     this.observacao = '',
+    this.status = false,
   });
   @Id()
   int id;
@@ -25,4 +26,6 @@ class MovimentacaoEntity {
   int tipoMovimentacao;
 
   String observacao;
+
+  bool status;
 }

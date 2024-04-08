@@ -22,11 +22,11 @@ class _SelecionarCategoriaState extends EventListenerState<SelecionarCategoria, 
           value: category,
           child: Row(
             children: [
-              /*Image.asset(
-                          category['image']!,
-                          width: 24,
-                          height: 24,
-                        ),*/
+              Image.asset(
+                'assets/icons_categoria/${category.icone}',
+                width: 24,
+                height: 24,
+              ),
               const SizedBox(width: 8),
               Text(category.nome),
             ],
@@ -36,7 +36,8 @@ class _SelecionarCategoriaState extends EventListenerState<SelecionarCategoria, 
       onChanged: instance.selecionarCategoria,
       focusNode: widget.focusNode,
       decoration: const InputDecoration(
-        labelText: 'Categoria',
+        label: Text('Categoria'),
+        contentPadding: EdgeInsets.symmetric(vertical: 20),
         border: OutlineInputBorder(),
       ),
     );

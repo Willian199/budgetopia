@@ -3,6 +3,7 @@ import 'package:budgetopia/pages/movimentacao/controller/data_movimentacao_contr
 import 'package:budgetopia/pages/movimentacao/state/data_selecionar_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DataMovimentacao extends StatefulWidget {
   const DataMovimentacao({required this.focusNode, super.key});
@@ -26,6 +27,18 @@ class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSe
           focusNode: widget.focusNode,
           decoration: const InputDecoration(
             labelText: 'Data',
+            prefixIcon: SizedBox(
+              width: 40,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 6),
+                  child: FaIcon(
+                    FontAwesomeIcons.calendarCheck,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
             border: OutlineInputBorder(),
           ),
         ),

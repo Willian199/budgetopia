@@ -19,13 +19,24 @@ class _TipoMovimentacaoState extends EventListenerState<TipoMovimentacao, TipoMo
       items: instance.listarTiposMovimentacao.map((TipoMovimentacaoEnum item) {
         return DropdownMenuItem(
           value: item,
-          child: Text(item.nome),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/icons_categoria/${item.icone}',
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(width: 8),
+              Text(item.nome),
+            ],
+          ),
         );
       }).toList(),
       onChanged: instance.selecionarTipoMovimentacao,
       focusNode: widget.focusNode,
       decoration: const InputDecoration(
         labelText: 'Tipo de Transação',
+        contentPadding: EdgeInsets.symmetric(vertical: 20),
         border: OutlineInputBorder(),
       ),
     );

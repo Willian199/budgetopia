@@ -8,8 +8,8 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 class HomeModule with DDIModule {
   @override
   FutureOr<void> onPostConstruct() {
-    registerSingleton(() => TimeLineOpacityController());
-    registerSingleton(() => ListaMovimentacaoController(database: ddi()));
-    registerApplication(() => HomeController(listaMovimentacaoController: ddi(), timeLineOpacityController: ddi()));
+    registerSingleton(TimeLineOpacityController.new);
+    registerSingleton(ListaMovimentacaoController.new);
+    registerApplication(HomeController.new);
   }
 }

@@ -34,7 +34,7 @@
     },
     {
       "id": "2:5638960901270906135",
-      "lastPropertyId": "9:767701875936475357",
+      "lastPropertyId": "11:7734183961005732622",
       "name": "MovimentacaoEntity",
       "properties": [
         {
@@ -72,6 +72,11 @@
           "id": "9:767701875936475357",
           "name": "observacao",
           "type": 9
+        },
+        {
+          "id": "11:7734183961005732622",
+          "name": "status",
+          "type": 1
         }
       ],
       "relations": []
@@ -87,7 +92,8 @@
   "retiredIndexUids": [],
   "retiredPropertyUids": [
     4908253159636796636,
-    2266018337434374750
+    2266018337434374750,
+    4548955686815168812
   ],
   "retiredRelationUids": [],
   "version": 1

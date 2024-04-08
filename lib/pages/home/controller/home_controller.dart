@@ -9,11 +9,9 @@ import 'package:budgetopia/pages/movimentacao/model/movimentacao_model.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController with DDIEventSender<HomeState>, PostConstruct {
-  HomeController({
-    required ListaMovimentacaoController listaMovimentacaoController,
-    required TimeLineOpacityController timeLineOpacityController,
-  })  : _listaMovimentacaoController = listaMovimentacaoController,
-        _timeLineOpacityController = timeLineOpacityController;
+  HomeController()
+      : _listaMovimentacaoController = ddi(),
+        _timeLineOpacityController = ddi();
 
   final ListaMovimentacaoController _listaMovimentacaoController;
   final TimeLineOpacityController _timeLineOpacityController;

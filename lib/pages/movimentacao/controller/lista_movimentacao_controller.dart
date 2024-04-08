@@ -3,9 +3,10 @@ import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
 import 'package:budgetopia/config/banco/generated/objectbox.g.dart';
 import 'package:budgetopia/config/banco/module/store_register.dart';
 import 'package:budgetopia/pages/movimentacao/model/movimentacao_model.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
 
 class ListaMovimentacaoController {
-  ListaMovimentacaoController({required Database database}) : _entity = database.box<MovimentacaoEntity>();
+  ListaMovimentacaoController() : _entity = ddi<Database>().box<MovimentacaoEntity>();
 
   final Box<MovimentacaoEntity> _entity;
 

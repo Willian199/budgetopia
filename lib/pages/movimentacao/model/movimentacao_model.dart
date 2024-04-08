@@ -3,13 +3,15 @@ import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
 class MovimentacaoModel {
   factory MovimentacaoModel.fromMovimentacaoEntity(MovimentacaoEntity entity) {
     return MovimentacaoModel(
-        titulo: entity.titulo,
-        valor: entity.valor,
-        data: entity.data,
-        codigoCategoria: entity.codigoCategoria,
-        id: entity.id,
-        tipoMovimentacao: entity.tipoMovimentacao,
-        observacao: entity.observacao);
+      titulo: entity.titulo,
+      valor: entity.valor,
+      data: entity.data,
+      codigoCategoria: entity.codigoCategoria,
+      id: entity.id,
+      tipoMovimentacao: entity.tipoMovimentacao,
+      observacao: entity.observacao,
+      status: entity.status,
+    );
   }
 
   MovimentacaoModel({
@@ -20,6 +22,7 @@ class MovimentacaoModel {
     required this.data,
     required this.codigoCategoria,
     this.observacao,
+    this.status = false,
   });
 
   final String titulo;
@@ -29,4 +32,5 @@ class MovimentacaoModel {
   final int id;
   final int tipoMovimentacao;
   final String? observacao;
+  final bool status;
 }

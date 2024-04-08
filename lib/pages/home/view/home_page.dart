@@ -110,71 +110,73 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
             tema.colorScheme.onSecondary,
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Container(
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: tema.colorScheme.onPrimary,
-                    boxShadow: [
-                      BoxShadow(
-                        color: tema.colorScheme.primary.withOpacity(0.2),
-                        spreadRadius: 6,
-                        blurRadius: 5,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Container(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: tema.colorScheme.onPrimary,
+                      boxShadow: [
+                        BoxShadow(
+                          color: tema.colorScheme.primary.withOpacity(0.2),
+                          spreadRadius: 6,
+                          blurRadius: 5,
+                        ),
+                      ],
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
                       ),
-                    ],
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
+                    ),
+                    child: Row(
+                      children: [
+                        CardValor(titulo: Strings.SALDO, valor: state?.valorSaldo ?? 0),
+                        const CardSeparador(),
+                        CardValor(titulo: Strings.ENTRADA, valor: state?.valorEntrada ?? 0),
+                        const CardSeparador(),
+                        CardValor(titulo: Strings.SAIDA, valor: state?.valorSaida ?? 0),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      CardValor(titulo: Strings.SALDO, valor: state?.valorSaldo ?? 0),
-                      const CardSeparador(),
-                      CardValor(titulo: Strings.ENTRADA, valor: state?.valorEntrada ?? 0),
-                      const CardSeparador(),
-                      CardValor(titulo: Strings.SAIDA, valor: state?.valorSaida ?? 0),
-                    ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: Double.VINTE),
+                  child: SizedBox(
+                    width: double.maxFinite,
+                    child: SegmentedButton<TipoRegistroEnum>(
+                      segments: <ButtonSegment<TipoRegistroEnum>>[
+                        makeSegmentedButton(TipoRegistroEnum.todos, state?.tabSelecionada, tema.colorScheme),
+                        makeSegmentedButton(TipoRegistroEnum.entrada, state?.tabSelecionada, tema.colorScheme),
+                        makeSegmentedButton(TipoRegistroEnum.saida, state?.tabSelecionada, tema.colorScheme),
+                      ],
+                      selected: state?.tabSelecionada ?? {TipoRegistroEnum.todos},
+                      onSelectionChanged: instance.refresh,
+                      showSelectedIcon: false,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: Double.VINTE),
-                child: SizedBox(
-                  width: double.maxFinite,
-                  child: SegmentedButton<TipoRegistroEnum>(
-                    segments: <ButtonSegment<TipoRegistroEnum>>[
-                      makeSegmentedButton(TipoRegistroEnum.todos, state?.tabSelecionada, tema.colorScheme),
-                      makeSegmentedButton(TipoRegistroEnum.entrada, state?.tabSelecionada, tema.colorScheme),
-                      makeSegmentedButton(TipoRegistroEnum.saida, state?.tabSelecionada, tema.colorScheme),
-                    ],
-                    selected: state?.tabSelecionada ?? {TipoRegistroEnum.todos},
-                    onSelectionChanged: instance.refresh,
-                    showSelectedIcon: false,
+                Padding(
+                  padding: const EdgeInsets.only(top: Double.VINTE),
+                  child: SizedBox(
+                    height: MediaQuery.orientationOf(context) == Orientation.landscape ? 250 : size.height - 290,
+                    child: Stack(
+                      children: [
+                        TimeLineBuilder(
+                          scrollGastosController: scrollMovimentacaoController,
+                          registrosMovimentacao: instance.registrosAbaMovimentacao,
+                        ),
+                        const TimeLineOpacityeffect(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: Double.VINTE),
-                child: SizedBox(
-                  height: MediaQuery.orientationOf(context) == Orientation.landscape ? 250 : size.height - 280,
-                  child: Stack(
-                    children: [
-                      TimeLineBuilder(
-                        scrollGastosController: scrollMovimentacaoController,
-                        registrosMovimentacao: instance.registrosAbaMovimentacao,
-                      ),
-                      const TimeLineOpacityeffect(),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
