@@ -44,7 +44,7 @@ dev_dependencies:
   flutter_lints: ^3.0.2
   build_runner: ^2.4.9
   flutter_native_splash: ^2.3.10
-  flutter_launcher_icons: "^0.13.0"
+  #flutter_launcher_icons: "^0.13.1"
   objectbox_generator: ^2.5.0
 
 dependency_overrides:
@@ -53,6 +53,22 @@ dependency_overrides:
 objectbox:
   # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
   output_dir: "config/banco/generated"
+
+
+flutter_native_splash:
+  image: "assets/app/splash.png"
+  color: "#0B1F2F"
+  color_dark: "#0B1F2F"
+  android: true
+  ios: true
+  web: false
+  android_gravity: "center_vertical"
+  android_screen_orientation: "portrait"
+  icon_background_color: "#0B1F2F"
+
+  android_12:
+    color: "#0B1F2F"
+    image: "assets/app/splash.png"
 
 flutter:
 
@@ -63,4 +79,5 @@ flutter:
 
   assets:
     - assets/
+    - assets/app/
     - assets/icons_categoria/
