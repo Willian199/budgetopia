@@ -1,7 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
-import 'package:budgetopia/common/components/input_formatters/currency_input_formatter.dart';
+import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
@@ -83,9 +83,9 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
 
                 final bool status = salvar.salvar(
                   id: widget.movimentacaoModel?.id ?? 0,
-                  titulo: titleController.text,
+                  titulo: titleController.text.trim(),
                   valor: Moeda.parse(valor: valueController.text, simbolo: 'R\$').toDouble(),
-                  observacao: noteController.text,
+                  observacao: noteController.text.trim(),
                 );
 
                 if (!status) {
@@ -179,7 +179,7 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
                 ),
                 textInputAction: TextInputAction.next,
                 inputFormatters: [
-                  CurrencyInputFormatter(),
+                  DecimalInputFormatter(allowNegative: false),
                 ],
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(noteFocusNode);

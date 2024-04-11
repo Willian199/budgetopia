@@ -9,12 +9,13 @@ import 'package:budgetopia/pages/home/mixins/home_mixin.dart';
 import 'package:budgetopia/pages/home/state/home_state.dart';
 import 'package:budgetopia/pages/home/widgets/card_separador.dart';
 import 'package:budgetopia/pages/home/widgets/card_valor.dart';
-import 'package:budgetopia/pages/home/widgets/time_line_builder.dart';
+import 'package:budgetopia/pages/home/widgets/movimentacao_list_builder.dart';
 import 'package:budgetopia/pages/home/widgets/time_line_opacity_effect.dart';
 import 'package:budgetopia/pages/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/pages/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -30,6 +31,10 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
   void initState() {
     super.initState();
     instance.refresh(state?.tabSelecionada ?? {TipoRegistroEnum.todos});
+
+    Future.delayed(Duration.zero, () {
+      FlutterNativeSplash.remove();
+    });
   }
 
   @override
@@ -166,7 +171,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                     height: MediaQuery.orientationOf(context) == Orientation.landscape ? 250 : size.height - 290,
                     child: Stack(
                       children: [
-                        TimeLineBuilder(
+                        MovimentacaoListBuilder(
                           scrollGastosController: scrollMovimentacaoController,
                           registrosMovimentacao: instance.registrosAbaMovimentacao,
                         ),
