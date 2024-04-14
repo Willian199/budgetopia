@@ -1,4 +1,3 @@
-
 import 'package:animations/animations.dart';
 import 'package:budgetopia/common/constantes/integer.dart';
 import 'package:budgetopia/pages/drawer/widget/drawer_tile.dart';
@@ -73,8 +72,8 @@ class _DrawerItemPageState extends State<DrawerItemPage> with SingleTickerProvid
                   Integer.ZERO,
                 ),
                 DrawerTile(
-                  Icons.search_sharp,
-                  "Serviços",
+                  Icons.show_chart,
+                  "Detalhes",
                   Integer.UM,
                 ),
                 DrawerTile(

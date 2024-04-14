@@ -4,7 +4,7 @@ import 'package:budgetopia/common/constantes/double.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
-class DarkTheme {
+final class DarkTheme {
   static final ThemeData _default = FlexThemeData.dark(
     appBarBackground: const Color(0xFF003824),
     colors: const FlexSchemeColor(

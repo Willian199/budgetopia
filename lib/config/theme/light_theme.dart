@@ -4,7 +4,7 @@ import 'package:budgetopia/common/constantes/double.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
-class LightTheme {
+final class LightTheme {
   static final ThemeData _default = FlexThemeData.light(
     appBarBackground: const Color(0xFFB5F2B0),
     //scaffoldBackground: const Color(0xff008dbb),

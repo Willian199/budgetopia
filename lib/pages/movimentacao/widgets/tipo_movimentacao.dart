@@ -36,7 +36,11 @@ class _TipoMovimentacaoState extends EventListenerState<TipoMovimentacao, TipoMo
       focusNode: widget.focusNode,
       decoration: const InputDecoration(
         labelText: 'Tipo de Transação',
-        contentPadding: EdgeInsets.symmetric(vertical: 20),
+        contentPadding: EdgeInsets.only(
+          top: 20,
+          bottom: 20,
+          right: 20,
+        ),
         border: OutlineInputBorder(),
       ),
     );

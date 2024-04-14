@@ -4,6 +4,7 @@ import 'package:budgetopia/common/components/generics/degrade.dart';
 import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/pages/movimentacao/controller/categoria_controller.dart';
 import 'package:budgetopia/pages/movimentacao/controller/data_movimentacao_controller.dart';
@@ -79,6 +80,8 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
             ),
             onPressed: () {
               if (formKey.currentState?.validate() ?? false) {
+                context.closeKeyboard();
+
                 final MovimentacaoController salvar = ddi.get<MovimentacaoController>();
 
                 final bool status = salvar.salvar(

@@ -71,7 +71,7 @@ class _DrawerItemState extends State<DrawerItem> with SingleTickerProviderStateM
                 ],
               ),
               child: Lottie.asset(
-                "assets/toggle_day_night.json",
+                "assets/lottie/toggle_day_night.json",
                 fit: BoxFit.fill,
                 frameRate: FrameRate.max,
                 controller: _backgroundController,

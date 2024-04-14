@@ -69,7 +69,7 @@ class DecimalInputFormatter extends TextInputFormatter {
     final String formattedValue = _numberFormat.format(valueInCents / 100);
 
     // Calculate the new cursor position
-    int cursorPosition = newValue.selection.baseOffset - (newValue.text.length - formattedValue.length);
+    int cursorPosition = newValue.selection.baseOffset - (newValue.text.length - formattedValue.length).clamp(0, formattedValue.length);
 
     // Ensure the new cursor position is within bounds
     if (containsSymbol && !negate && cursorPosition <= _numberFormat.positivePrefix.length) {

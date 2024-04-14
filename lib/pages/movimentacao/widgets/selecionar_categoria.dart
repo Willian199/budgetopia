@@ -37,7 +37,11 @@ class _SelecionarCategoriaState extends EventListenerState<SelecionarCategoria, 
       focusNode: widget.focusNode,
       decoration: const InputDecoration(
         label: Text('Categoria'),
-        contentPadding: EdgeInsets.symmetric(vertical: 20),
+        contentPadding: EdgeInsets.only(
+          top: 20,
+          bottom: 20,
+          right: 20,
+        ),
         border: OutlineInputBorder(),
       ),
     );

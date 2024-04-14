@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
-class StartModule with DDIModule {
+final class StartModule with DDIModule {
+  const StartModule();
   @override
   Future<void> onPostConstruct() async {
     registerObject<GlobalKey<NavigatorState>>(GlobalKey<NavigatorState>());

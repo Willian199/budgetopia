@@ -13,4 +13,7 @@ class Strings {
 
   static const String ERRO = 'ERRO';
   static const String CARREGANDO = 'Carregando...';
+
+  static const String DETALHAMENTO = 'Detalhamento';
+  static const String PERFIL = 'Perfil';
 }

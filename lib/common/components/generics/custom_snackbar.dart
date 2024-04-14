@@ -38,7 +38,7 @@ class CustomSnackBar {
       icon: Padding(
         padding: const EdgeInsets.only(left: Double.CINCO),
         child: Lottie.asset(
-          "assets/password_valid.json",
+          "assets/lottie/ok.json",
           fit: BoxFit.scaleDown,
           frameRate: FrameRate.max,
           height: 80,
@@ -66,7 +66,7 @@ class CustomSnackBar {
       onTap: onTap,
       onStatusChanged: onStatusChanged,
       mensagem: mensagem,
-      asset: 'password_valid',
+      asset: 'ok',
     );
   }
 
@@ -112,7 +112,7 @@ class CustomSnackBar {
       icon: Padding(
         padding: const EdgeInsets.only(left: Double.CINCO),
         child: Lottie.asset(
-          "assets/$asset.json",
+          "assets/lottie/$asset.json",
           fit: BoxFit.scaleDown,
           frameRate: FrameRate.max,
           height: 80,

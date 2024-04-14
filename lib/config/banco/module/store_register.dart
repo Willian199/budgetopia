@@ -11,12 +11,12 @@ extension type Database(Store store) implements Store {
 
 class DatabaseInterceptor extends DDIInterceptor<Database> {
   @override
-  void aroundDestroy(Store instance) {
-    instance.close();
+  void aroundDestroy(Store? instance) {
+    instance?.close();
   }
 
   @override
-  void aroundDispose(Store instance) {
-    instance.close();
+  void aroundDispose(Store? instance) {
+    instance?.close();
   }
 }

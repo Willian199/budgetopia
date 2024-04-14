@@ -11,6 +11,7 @@ import 'package:budgetopia/pages/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/pages/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ItemListTile extends StatefulWidget {
   const ItemListTile({required this.item, required this.isLast, super.key});
@@ -166,35 +167,54 @@ class _ItemListTileState extends State<ItemListTile> {
                   borderRadius: BorderRadius.circular(10),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text(
-                          widget.item.titulo,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              widget.item.titulo,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              CategoriaEnum.getById(widget.item.codigoCategoria)?.nome ?? '',
+                              style: TextStyle(
+                                color: context.colorScheme.onTertiaryContainer,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              'R\$ ${Moeda.format(valor: widget.item.valor.toDouble())}',
+                              style: TextStyle(
+                                color: context.colorScheme.tertiary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Visibility(
+                          visible: widget.item.status,
+                          child: FaIcon(
+                            FontAwesomeIcons.circleCheck,
+                            size: 18,
+                            color: context.colorScheme.secondary,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          CategoriaEnum.getById(widget.item.codigoCategoria)?.nome ?? '',
-                          style: TextStyle(
-                            color: context.colorScheme.onTertiaryContainer,
+                          replacement: FaIcon(
+                            FontAwesomeIcons.circleExclamation,
+                            size: 18,
+                            color: context.colorScheme.secondary,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          'R\$ ${Moeda.format(valor: widget.item.valor.toDouble())}',
-                          style: TextStyle(
-                            color: context.colorScheme.tertiary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   ),
