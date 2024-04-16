@@ -5,13 +5,14 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 class DataMovimentacaoController with DDIEventSender<DataSelecionarState> {
   DateTime get dataSelecionada => super.state?.data ?? DateTime.now();
 
-  void selecionarDataMovimentacao(BuildContext context) async {
+  Future<void> selecionarDataMovimentacao() async {
     final DateTime start = DateTime(2024);
     final DateTime? picked = await showDatePicker(
-      context: context,
+      context: ddi<GlobalKey<NavigatorState>>().currentContext!,
       initialDate: dataSelecionada,
       firstDate: start,
       lastDate: DateTime(2040),
+      keyboardType: TextInputType.datetime,
     );
 
     if (picked != null && picked != dataSelecionada) {

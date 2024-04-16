@@ -1,22 +1,22 @@
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
-import 'package:budgetopia/pages/movimentacao/controller/data_movimentacao_controller.dart';
-import 'package:budgetopia/pages/movimentacao/state/data_selecionar_state.dart';
+import 'package:budgetopia/pages/perfil/controller/data_nascimento_controller.dart';
+import 'package:budgetopia/pages/perfil/state/data_nascimento_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class DataMovimentacao extends StatefulWidget {
-  const DataMovimentacao({required this.focusNode, required this.nextFocus, super.key});
+class DataNascimentoField extends StatefulWidget {
+  const DataNascimentoField({required this.focusNode, required this.nextFocus, super.key});
 
   final FocusNode focusNode;
   final FocusNode nextFocus;
 
   @override
-  State<DataMovimentacao> createState() => _DataMovimentacaoState();
+  State<DataNascimentoField> createState() => _DataNascimentoFieldState();
 }
 
-class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSelecionarState> with DDIInject<DataMovimentacaoController> {
+class _DataNascimentoFieldState extends EventListenerState<DataNascimentoField, DataNascimentoState> with DDIInject<DataNascimentoController> {
   @override
   void initState() {
     super.initState();
@@ -32,7 +32,7 @@ class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSe
   void openDataFocus() async {
     if (widget.focusNode.hasFocus) {
       context.closeKeyboard();
-      await instance.selecionarDataMovimentacao();
+      await instance.selecionarDataNascimento();
       widget.nextFocus.requestFocus();
     }
   }
@@ -41,18 +41,19 @@ class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSe
   Widget build(BuildContext context) {
     return TextFormField(
       controller: TextEditingController(
-        text: instance.dataSelecionada.format(),
+        text: instance.dataNascimento.format(),
       ),
       focusNode: widget.focusNode,
+      readOnly: true,
       onTap: () async {
         context.closeKeyboard();
-        await instance.selecionarDataMovimentacao();
+        await instance.selecionarDataNascimento();
         widget.nextFocus.requestFocus();
       },
       onEditingComplete: widget.nextFocus.requestFocus,
       textInputAction: TextInputAction.next,
       decoration: const InputDecoration(
-        labelText: 'Data',
+        labelText: 'Data de Nascimento',
         prefixIcon: SizedBox(
           width: 40,
           child: Center(

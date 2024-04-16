@@ -23,7 +23,7 @@ class _SelecionarCategoriaState extends EventListenerState<SelecionarCategoria, 
           child: Row(
             children: [
               Image.asset(
-                'assets/icons_categoria/${category.icone}',
+                'assets/icons/${category.icone}',
                 width: 24,
                 height: 24,
               ),

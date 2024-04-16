@@ -22,7 +22,7 @@ class _TipoMovimentacaoState extends EventListenerState<TipoMovimentacao, TipoMo
           child: Row(
             children: [
               Image.asset(
-                'assets/icons_categoria/${item.icone}',
+                'assets/icons/${item.icone}',
                 width: 24,
                 height: 24,
               ),

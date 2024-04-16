@@ -158,12 +158,23 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
               const SizedBox(height: 15.0),
               TipoMovimentacao(focusNode: transactionTypeFocusNode),
               const SizedBox(height: 15.0),
-              DataMovimentacao(focusNode: dateFocusNode),
+              DataMovimentacao(
+                focusNode: dateFocusNode,
+                nextFocus: valueFocusNode,
+              ),
               const SizedBox(height: 15.0),
               TextFormField(
                 controller: valueController,
                 focusNode: valueFocusNode,
                 keyboardType: TextInputType.number,
+                onTap: () {
+                  if (!valueFocusNode.hasPrimaryFocus) {
+                    valueController.selection = TextSelection(
+                      baseOffset: 0,
+                      extentOffset: valueController.value.text.length,
+                    );
+                  }
+                },
                 decoration: const InputDecoration(
                   labelText: 'Valor',
                   prefixIcon: SizedBox(

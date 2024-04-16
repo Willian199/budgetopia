@@ -19,16 +19,26 @@ class DecimalInputFormatter extends TextInputFormatter {
   final bool allowSymbolAtStart;
   final NumberFormat _numberFormat;
 
+  final _regExp = RegExp(r'(,)+');
+
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    if (oldValue.text.contains(",") && !newValue.text.contains(",")) {
+    if (newValue.text.isEmpty) {
+      return TextEditingValue.empty;
+    }
+
+    if (decimalPlaces > 0 &&
+        oldValue.text.contains(",") &&
+        !newValue.text.contains(",") &&
+        oldValue.text.length > 1 &&
+        newValue.text.replaceAll(_numberFormat.positivePrefix, '').length > 1) {
       return TextEditingValue(
         text: oldValue.text,
         selection: TextSelection.collapsed(offset: oldValue.selection.baseOffset - 1),
       );
     }
 
-    String value = newValue.text.replaceAll(RegExp(r'(,)+'), ',');
+    String value = newValue.text.replaceAll(_regExp, ',');
 
     // If it starts with the specified symbol and symbols are allowed at the start, allow it
     final bool containsSymbol = _startsWithSymbol(value);
@@ -51,9 +61,16 @@ class DecimalInputFormatter extends TextInputFormatter {
     value = value.replaceAll(',', '.');
 
     // If there is a decimal point, limit the decimal places
+    int addPosition = 0;
     if (decimalPlaces > 0) {
       final List<String> parts = value.split('.');
       if (parts.length > 1) {
+        addPosition = parts[1].length > decimalPlaces
+            ? 1
+            : parts[1].length < decimalPlaces
+                ? parts[1].length - decimalPlaces
+                : 0;
+
         final String decimalPart = parts[1].padRight(decimalPlaces, '0').substring(0, decimalPlaces);
         value = '${parts[0]}.$decimalPart';
       }
@@ -68,8 +85,20 @@ class DecimalInputFormatter extends TextInputFormatter {
     // Format the value back to currency string
     final String formattedValue = _numberFormat.format(valueInCents / 100);
 
+    if (newValue.text.contains(',,')) {
+      addPosition += 1;
+    } else if ((decimalPlaces > 0 && newValue.text.replaceAll(_numberFormat.positivePrefix, '').length == 1) ||
+        newValue.text.replaceAll(RegExp(r'[\d.]'), '').contains(RegExp(r'(,,)+'))) {
+      return TextEditingValue(
+        text: formattedValue,
+        selection: TextSelection.collapsed(offset: formattedValue.indexOf(',')),
+      );
+    }
+
     // Calculate the new cursor position
-    int cursorPosition = newValue.selection.baseOffset - (newValue.text.length - formattedValue.length).clamp(0, formattedValue.length);
+    int cursorPosition = (newValue.selection.baseOffset - (newValue.text.length - formattedValue.length)).clamp(0, formattedValue.length);
+
+    cursorPosition += addPosition;
 
     // Ensure the new cursor position is within bounds
     if (containsSymbol && !negate && cursorPosition <= _numberFormat.positivePrefix.length) {
@@ -93,7 +122,7 @@ class DecimalInputFormatter extends TextInputFormatter {
   }
 
   bool _startsWithSymbol(String value) {
-    return value.contains(symbol);
+    return value.replaceAll(RegExp(r'[\d,]'), '').contains(symbol);
   }
 
   bool _startsWithNegativeSign(String value) {

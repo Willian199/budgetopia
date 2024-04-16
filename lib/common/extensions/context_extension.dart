@@ -6,11 +6,5 @@ extension AdaptiveThemeExtensions on BuildContext {
 
   ColorScheme get colorScheme => theme.colorScheme;
 
-  void closeKeyboard() {
-    final FocusScopeNode currentFocus = FocusScope.of(this);
-
-    if (!currentFocus.hasPrimaryFocus) {
-      currentFocus.unfocus();
-    }
-  }
+  void closeKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
 }

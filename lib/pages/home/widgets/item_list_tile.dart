@@ -123,7 +123,7 @@ class _ItemListTileState extends State<ItemListTile> {
                     ),
                     child: CircleAvatar(
                       backgroundColor: Colors.transparent,
-                      backgroundImage: AssetImage('assets/icons_categoria/${TipoMovimentacaoEnum.getById(widget.item.tipoMovimentacao)!.icone}'),
+                      backgroundImage: AssetImage('assets/icons/${TipoMovimentacaoEnum.getById(widget.item.tipoMovimentacao)!.icone}'),
                     ),
                   ),
                 ),

@@ -78,4 +78,4 @@ flutter:
   assets:
     - assets/lottie/
     - assets/app/
-    - assets/icons_categoria/
+    - assets/icons/

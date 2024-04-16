@@ -16,6 +16,7 @@ import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import '../../../config/banco/entity/movimentacao_entity.dart';
+import '../../../config/banco/entity/perfil_entity.dart';
 import '../../../config/banco/entity/user_preferences_entity.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -98,6 +99,40 @@ final _entities = <obx_int.ModelEntity>[
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(3, 8734934441128175638),
+      name: 'PerfilEntity',
+      lastPropertyId: const obx_int.IdUid(6, 7175241245634489750),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 4781995478562075148),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 5466082542344047026),
+            name: 'nome',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 5889038804277956549),
+            name: 'valor',
+            type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 2595449339865912782),
+            name: 'dataNascimento',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 7175241245634489750),
+            name: 'pathImagem',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -136,7 +171,7 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(2, 5638960901270906135),
+      lastEntityId: const obx_int.IdUid(3, 8734934441128175638),
       lastIndexId: const obx_int.IdUid(0, 0),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
@@ -145,7 +180,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
       retiredPropertyUids: const [
         4908253159636796636,
         2266018337434374750,
-        4548955686815168812
+        4548955686815168812,
+        2257943860782797009
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -244,6 +280,50 @@ obx_int.ModelDefinition getObjectBoxModel() {
               status: statusParam);
 
           return object;
+        }),
+    PerfilEntity: obx_int.EntityDefinition<PerfilEntity>(
+        model: _entities[2],
+        toOneRelations: (PerfilEntity object) => [],
+        toManyRelations: (PerfilEntity object) => {},
+        getId: (PerfilEntity object) => object.id,
+        setId: (PerfilEntity object, int id) {
+          object.id = id;
+        },
+        objectToFB: (PerfilEntity object, fb.Builder fbb) {
+          final nomeOffset = fbb.writeString(object.nome);
+          final pathImagemOffset = object.pathImagem == null
+              ? null
+              : fbb.writeString(object.pathImagem!);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, nomeOffset);
+          fbb.addFloat64(2, object.valor);
+          fbb.addInt64(4, object.dataNascimento.millisecondsSinceEpoch);
+          fbb.addOffset(5, pathImagemOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          final nomeParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final dataNascimentoParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0));
+          final valorParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          final pathImagemParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 14);
+          final object = PerfilEntity(
+              id: idParam,
+              nome: nomeParam,
+              dataNascimento: dataNascimentoParam,
+              valor: valorParam,
+              pathImagem: pathImagemParam);
+
+          return object;
         })
   };
 
@@ -302,4 +382,27 @@ class MovimentacaoEntity_ {
   /// see [MovimentacaoEntity.status]
   static final status =
       obx.QueryBooleanProperty<MovimentacaoEntity>(_entities[1].properties[7]);
+}
+
+/// [PerfilEntity] entity fields to define ObjectBox queries.
+class PerfilEntity_ {
+  /// see [PerfilEntity.id]
+  static final id =
+      obx.QueryIntegerProperty<PerfilEntity>(_entities[2].properties[0]);
+
+  /// see [PerfilEntity.nome]
+  static final nome =
+      obx.QueryStringProperty<PerfilEntity>(_entities[2].properties[1]);
+
+  /// see [PerfilEntity.valor]
+  static final valor =
+      obx.QueryDoubleProperty<PerfilEntity>(_entities[2].properties[2]);
+
+  /// see [PerfilEntity.dataNascimento]
+  static final dataNascimento =
+      obx.QueryDateProperty<PerfilEntity>(_entities[2].properties[3]);
+
+  /// see [PerfilEntity.pathImagem]
+  static final pathImagem =
+      obx.QueryStringProperty<PerfilEntity>(_entities[2].properties[4]);
 }

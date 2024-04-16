@@ -16,4 +16,6 @@ class Strings {
 
   static const String DETALHAMENTO = 'Detalhamento';
   static const String PERFIL = 'Perfil';
+
+  static const String SELECIONAR_IMAGEM = 'Selecionar Imagem';
 }

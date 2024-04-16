@@ -80,9 +80,43 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "3:8734934441128175638",
+      "lastPropertyId": "6:7175241245634489750",
+      "name": "PerfilEntity",
+      "properties": [
+        {
+          "id": "1:4781995478562075148",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5466082542344047026",
+          "name": "nome",
+          "type": 9
+        },
+        {
+          "id": "3:5889038804277956549",
+          "name": "valor",
+          "type": 8
+        },
+        {
+          "id": "5:2595449339865912782",
+          "name": "dataNascimento",
+          "type": 10
+        },
+        {
+          "id": "6:7175241245634489750",
+          "name": "pathImagem",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "2:5638960901270906135",
+  "lastEntityId": "3:8734934441128175638",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
@@ -93,7 +127,8 @@
   "retiredPropertyUids": [
     4908253159636796636,
     2266018337434374750,
-    4548955686815168812
+    4548955686815168812,
+    2257943860782797009
   ],
   "retiredRelationUids": [],
   "version": 1

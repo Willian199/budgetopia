@@ -1,12 +1,19 @@
-import 'dart:io';
-
+import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
 import 'package:budgetopia/common/components/generics/default_back_button.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
+import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
+import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/pages/perfil/controller/data_nascimento_controller.dart';
+import 'package:budgetopia/pages/perfil/controller/salvar_perfil_controller.dart';
+import 'package:budgetopia/pages/perfil/controller/user_image_controller.dart';
+import 'package:budgetopia/pages/perfil/mixin/perfil_page_mixin.dart';
+import 'package:budgetopia/pages/perfil/widget/data_nascimento_field.dart';
+import 'package:budgetopia/pages/perfil/widget/user_imagem_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PerfilPage extends StatefulWidget {
   const PerfilPage({super.key});
@@ -15,58 +22,20 @@ class PerfilPage extends StatefulWidget {
   State<PerfilPage> createState() => _PerfilPageState();
 }
 
-class _PerfilPageState extends State<PerfilPage> {
-  CroppedFile? _imageFile;
-  final ImagePicker _picker = ImagePicker();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _dobController = TextEditingController();
-  final TextEditingController _occupationController = TextEditingController();
-  final TextEditingController _monthlyGoalController = TextEditingController();
-
+class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<SalvarPerfilController> {
   @override
-  void dispose() {
-    _nameController.dispose();
-    _dobController.dispose();
-    _occupationController.dispose();
-    _monthlyGoalController.dispose();
-    super.dispose();
-  }
+  void initState() {
+    super.initState();
 
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      _cropImage(File(pickedFile.path));
-    }
-  }
-
-  Future<void> _cropImage(File imageFile) async {
-    final CroppedFile? cropped = await ImageCropper().cropImage(
-      sourcePath: imageFile.path,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      uiSettings: [
-        AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        )
-      ],
-    );
-
-    if (cropped != null) {
-      setState(() {
-        _imageFile = cropped;
+    if (instance.registroSalvo case final item?) {
+      nomeController.text = item.nome;
+      valorObjetivoController.text = Moeda.format(valor: item.valor, simbolo: 'R\$');
+      Future.delayed(Duration.zero, () {
+        ddi.get<DataNascimentoController>().alterarDataNascimento(item.dataNascimento);
+        ddi.get<UserImageController>().definirPath(item.pathImagem);
       });
+    } else {
+      valorObjetivoController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);
     }
   }
 
@@ -77,6 +46,33 @@ class _PerfilPageState extends State<PerfilPage> {
       appBar: AppBar(
         title: const Text(Strings.PERFIL),
         leading: const DefaultBackButton(),
+        actions: [
+          IconButton(
+            icon: FaIcon(
+              FontAwesomeIcons.floppyDisk,
+              color: tema.colorScheme.primary,
+            ),
+            onPressed: () {
+              if (formKey.currentState?.validate() ?? false) {
+                FocusManager.instance.primaryFocus?.unfocus();
+
+                final bool status = instance.salvar(
+                  nome: nomeController.text.trim(),
+                  valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: 'R\$').toDouble(),
+                );
+
+                if (!status) {
+                  CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
+                  return;
+                }
+
+                CustomSnackBar.sucesso(mensagem: 'Dados de Perfil salvos com sucesso!');
+              } else {
+                CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
+              }
+            },
+          ),
+        ],
       ),
       body: Container(
         height: double.maxFinite,
@@ -89,82 +85,93 @@ class _PerfilPageState extends State<PerfilPage> {
         ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext bc) {
-                      return SafeArea(
-                        child: Wrap(
-                          children: [
-                            ListTile(
-                              leading: const Icon(Icons.photo_library),
-                              title: const Text('Photo Library'),
-                              onTap: () {
-                                _pickImage(ImageSource.gallery);
-                                Navigator.of(context).pop();
-                              },
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.always,
+            child: Column(
+              children: [
+                const UserImagemAvatar(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: TextFormField(
+                    controller: nomeController,
+                    focusNode: nomeFocusNode,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Nome',
+                      prefixIcon: SizedBox(
+                        width: 40,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 6),
+                            child: FaIcon(
+                              FontAwesomeIcons.noteSticky,
+                              size: 20,
                             ),
-                            ListTile(
-                              leading: const Icon(Icons.photo_camera),
-                              title: const Text('Camera'),
-                              onTap: () {
-                                _pickImage(ImageSource.camera);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
+                          ),
                         ),
-                      );
+                      ),
+                      border: OutlineInputBorder(),
+                    ),
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(dataNascimentoFocusNode);
                     },
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.grey[200],
-                  backgroundImage:
-                      _imageFile != null ? FileImage(File(_imageFile!.path)) as ImageProvider : const AssetImage('assets/default_avatar.jpg'),
-                  // backgroundImage: const AssetImage('assets/default_avatar.jpg'),
+                    validator: (value) {
+                      if (value?.isEmpty ?? false) {
+                        return 'Por favor, informe o seu nome';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
+                const SizedBox(height: 20.0),
+                DataNascimentoField(
+                  focusNode: dataNascimentoFocusNode,
+                  nextFocus: valorObjetivoFocusNode,
                 ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _dobController,
-                decoration: const InputDecoration(
-                  labelText: 'Date of Birth',
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: valorObjetivoController,
+                  focusNode: valorObjetivoFocusNode,
+                  keyboardType: TextInputType.number,
+                  onTap: () {
+                    if (!valorObjetivoFocusNode.hasPrimaryFocus) {
+                      valorObjetivoController.selection = TextSelection(
+                        baseOffset: 0,
+                        extentOffset: valorObjetivoController.value.text.length,
+                      );
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Objetivo Saldo Mensal',
+                    prefixIcon: SizedBox(
+                      width: 40,
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 6),
+                          child: FaIcon(
+                            FontAwesomeIcons.moneyBill1Wave,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                  textInputAction: TextInputAction.next,
+                  inputFormatters: [
+                    DecimalInputFormatter(allowNegative: false),
+                  ],
+                  validator: (value) {
+                    if (value?.isEmpty ?? false) {
+                      return 'Por favor, insira um valor';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _occupationController,
-                decoration: const InputDecoration(
-                  labelText: 'Occupation',
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _monthlyGoalController,
-                decoration: const InputDecoration(
-                  labelText: 'Monthly Spending Goal',
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle form submission
-                },
-                child: const Text('Save'),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

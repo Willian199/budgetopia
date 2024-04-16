@@ -23,14 +23,15 @@ class MovimentacaoController {
 
   bool salvar({required String titulo, required double valor, required String observacao, required int id}) {
     final MovimentacaoEntity obj = MovimentacaoEntity(
-        id: id,
-        data: _dataMovimentacaoController.dataSelecionada,
-        tipoMovimentacao: _tipoMovimentacaoController.tipoMovimentacaoSelecionada.id,
-        codigoCategoria: _categoriaController.categoriaSelecionada.id,
-        titulo: titulo,
-        valor: valor,
-        observacao: observacao,
-        status: _statusPagamentoController.status);
+      id: id,
+      data: _dataMovimentacaoController.dataSelecionada,
+      tipoMovimentacao: _tipoMovimentacaoController.tipoMovimentacaoSelecionada.id,
+      codigoCategoria: _categoriaController.categoriaSelecionada.id,
+      titulo: titulo,
+      valor: valor,
+      observacao: observacao,
+      status: _statusPagamentoController.status,
+    );
 
     _entity.put(obj);
 

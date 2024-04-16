@@ -8,6 +8,6 @@ class UserPreferencesEntity {
   int id;
   String descricao;
   String valor;
-  @Property(type: PropertyType.date) // Store as int in milliseconds
+  @Property(type: PropertyType.date)
   DateTime dataAlteracao;
 }
