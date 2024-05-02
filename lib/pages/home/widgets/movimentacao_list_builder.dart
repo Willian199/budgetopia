@@ -1,7 +1,7 @@
 import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/pages/home/controller/time_line_opacity_controller.dart';
 import 'package:budgetopia/pages/home/widgets/item_list_tile.dart';
-import 'package:budgetopia/pages/movimentacao/model/movimentacao_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 

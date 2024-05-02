@@ -1,7 +1,5 @@
-import 'dart:io';
-
-import 'package:budgetopia/pages/perfil/controller/user_image_controller.dart';
-import 'package:budgetopia/pages/perfil/state/user_image_state.dart';
+import 'package:budgetopia/common/components/user_imagem/controller/user_image_controller.dart';
+import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +11,7 @@ class UserImagemAvatar extends StatefulWidget {
   State<UserImagemAvatar> createState() => _UserImagemAvatarState();
 }
 
-class _UserImagemAvatarState extends EventListenerState<UserImagemAvatar, UserImageState> with DDIInject<UserImageController> {
+class _UserImagemAvatarState extends State<UserImagemAvatar> with DDIInject<UserImageController> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -46,11 +44,7 @@ class _UserImagemAvatarState extends EventListenerState<UserImagemAvatar, UserIm
           },
         );
       },
-      child: CircleAvatar(
-        radius: 50,
-        backgroundColor: Colors.grey[200],
-        backgroundImage: state?.image != null ? FileImage(File(state!.image)) as ImageProvider : const AssetImage('assets/icons/user.png'),
-      ),
+      child: const UserImage(),
     );
   }
 }

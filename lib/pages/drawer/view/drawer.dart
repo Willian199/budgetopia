@@ -2,7 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
-import 'package:budgetopia/pages/controller_page.dart';
+import 'package:budgetopia/pages/drawer/view/controller_page.dart';
 import 'package:budgetopia/pages/drawer/widget/drawer_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';

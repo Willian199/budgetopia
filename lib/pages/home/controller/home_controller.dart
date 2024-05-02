@@ -2,18 +2,18 @@ import 'dart:async';
 
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
+import 'package:budgetopia/config/banco/repository/movimentacao/movimentacao_repository.dart';
+import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/pages/home/controller/time_line_opacity_controller.dart';
 import 'package:budgetopia/pages/home/state/home_state.dart';
-import 'package:budgetopia/pages/movimentacao/controller/lista_movimentacao_controller.dart';
-import 'package:budgetopia/pages/movimentacao/model/movimentacao_model.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController with DDIEventSender<HomeState>, PostConstruct {
   HomeController()
-      : _listaMovimentacaoController = ddi(),
+      : _movimentacaoRepository = ddi(),
         _timeLineOpacityController = ddi();
 
-  final ListaMovimentacaoController _listaMovimentacaoController;
+  final MovimentacaoRepository _movimentacaoRepository;
   final TimeLineOpacityController _timeLineOpacityController;
 
   List<MovimentacaoModel> _todasMovimentacoes = [];
@@ -35,7 +35,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct {
 
   @override
   FutureOr<void> onPostConstruct() {
-    _listaMovimentacaoController.filter().listen((List<MovimentacaoModel> event) {
+    _movimentacaoRepository.filter().listen((List<MovimentacaoModel> event) {
       _todasMovimentacoes = event;
 
       _filtrarMovimentacaoes();

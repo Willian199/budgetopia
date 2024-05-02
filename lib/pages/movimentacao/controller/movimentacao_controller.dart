@@ -1,6 +1,5 @@
 import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
-import 'package:budgetopia/config/banco/generated/objectbox.g.dart';
-import 'package:budgetopia/config/banco/module/store_register.dart';
+import 'package:budgetopia/config/banco/repository/movimentacao/movimentacao_repository.dart';
 import 'package:budgetopia/pages/movimentacao/controller/categoria_controller.dart';
 import 'package:budgetopia/pages/movimentacao/controller/data_movimentacao_controller.dart';
 import 'package:budgetopia/pages/movimentacao/controller/status_pagamento_controller.dart';
@@ -13,12 +12,12 @@ class MovimentacaoController {
         _categoriaController = ddi(),
         _tipoMovimentacaoController = ddi(),
         _statusPagamentoController = ddi(),
-        _entity = ddi<Database>().box<MovimentacaoEntity>();
+        _movimentacaoRepository = ddi();
 
   final DataMovimentacaoController _dataMovimentacaoController;
   final CategoriaController _categoriaController;
   final TipoMovimentacaoController _tipoMovimentacaoController;
-  final Box<MovimentacaoEntity> _entity;
+  final MovimentacaoRepository _movimentacaoRepository;
   final StatusPagamentoController _statusPagamentoController;
 
   bool salvar({required String titulo, required double valor, required String observacao, required int id}) {
@@ -33,12 +32,8 @@ class MovimentacaoController {
       status: _statusPagamentoController.status,
     );
 
-    _entity.put(obj);
-
-    return true;
+    return _movimentacaoRepository.salvar(obj) > 0;
   }
 
-  bool remover(int id) {
-    return _entity.remove(id);
-  }
+  bool remover(int id) => _movimentacaoRepository.remover(id);
 }

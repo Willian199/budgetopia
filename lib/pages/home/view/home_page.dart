@@ -1,16 +1,16 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/generics/default_back_button.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
+import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/pages/home/controller/home_controller.dart';
 import 'package:budgetopia/pages/home/mixins/home_mixin.dart';
 import 'package:budgetopia/pages/home/state/home_state.dart';
-import 'package:budgetopia/pages/home/widgets/card_separador.dart';
-import 'package:budgetopia/pages/home/widgets/card_valor.dart';
 import 'package:budgetopia/pages/home/widgets/movimentacao_list_builder.dart';
 import 'package:budgetopia/pages/home/widgets/time_line_opacity_effect.dart';
+import 'package:budgetopia/pages/home/widgets/valor_segmented_button.dart';
 import 'package:budgetopia/pages/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/pages/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +40,9 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
   @override
   Widget build(BuildContext context) {
     debugPrint('Building HomePage');
+
+    final currentTab = state?.tabSelecionada ?? {TipoRegistroEnum.todos};
+
     final ThemeData tema = AdaptiveTheme.of(context).theme;
     final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
@@ -68,15 +71,16 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
         actions: <Widget>[
           Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
+              const Padding(
+                padding: EdgeInsets.only(
                   top: Double.CINCO,
                   right: Double.DEZ,
                   left: Double.QUINZE,
                 ),
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundImage: NetworkImage(imageUrl),
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: UserImage(),
                 ),
               ),
               if (notificationCount > 0)
@@ -122,44 +126,37 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Container(
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: tema.colorScheme.onPrimary,
-                      boxShadow: [
-                        BoxShadow(
-                          color: tema.colorScheme.primary.withOpacity(0.2),
-                          spreadRadius: 6,
-                          blurRadius: 5,
-                        ),
-                      ],
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        CardValor(titulo: Strings.SALDO, valor: state?.valorSaldo ?? 0),
-                        const CardSeparador(),
-                        CardValor(titulo: Strings.ENTRADA, valor: state?.valorEntrada ?? 0),
-                        const CardSeparador(),
-                        CardValor(titulo: Strings.SAIDA, valor: state?.valorSaida ?? 0),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.only(top: Double.VINTE),
                   child: SizedBox(
                     width: double.maxFinite,
                     child: SegmentedButton<TipoRegistroEnum>(
                       segments: <ButtonSegment<TipoRegistroEnum>>[
-                        makeSegmentedButton(TipoRegistroEnum.todos, state?.tabSelecionada, tema.colorScheme),
-                        makeSegmentedButton(TipoRegistroEnum.entrada, state?.tabSelecionada, tema.colorScheme),
-                        makeSegmentedButton(TipoRegistroEnum.saida, state?.tabSelecionada, tema.colorScheme),
+                        ButtonSegment<TipoRegistroEnum>(
+                          value: TipoRegistroEnum.todos,
+                          label: ValorSegmentedButton(
+                            titulo: Strings.SALDO,
+                            valor: state?.valorSaldo ?? 0,
+                            selecionada: TipoRegistroEnum.todos == currentTab.first,
+                          ),
+                        ),
+                        ButtonSegment<TipoRegistroEnum>(
+                          value: TipoRegistroEnum.entrada,
+                          label: ValorSegmentedButton(
+                            titulo: Strings.ENTRADA,
+                            valor: state?.valorEntrada ?? 0,
+                            selecionada: TipoRegistroEnum.entrada == currentTab.first,
+                          ),
+                        ),
+                        ButtonSegment<TipoRegistroEnum>(
+                          value: TipoRegistroEnum.saida,
+                          label: ValorSegmentedButton(
+                            titulo: Strings.SAIDA,
+                            valor: state?.valorSaida ?? 0,
+                            selecionada: TipoRegistroEnum.saida == currentTab.first,
+                          ),
+                        ),
                       ],
-                      selected: state?.tabSelecionada ?? {TipoRegistroEnum.todos},
+                      selected: currentTab,
                       onSelectionChanged: instance.refresh,
                       showSelectedIcon: false,
                     ),
@@ -168,7 +165,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                 Padding(
                   padding: const EdgeInsets.only(top: Double.VINTE),
                   child: SizedBox(
-                    height: MediaQuery.orientationOf(context) == Orientation.landscape ? 250 : size.height - 290,
+                    height: MediaQuery.orientationOf(context) == Orientation.landscape ? 150 : size.height - 190,
                     child: Stack(
                       children: [
                         MovimentacaoListBuilder(

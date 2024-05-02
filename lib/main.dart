@@ -13,7 +13,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
 
-  //ddi.setDebugMode(false);
+  ddi.setDebugMode(false);
 
   // Necesário fazer o reigstro do StartModule antes de chamar o runApp.
   // Para evitar perder a rota ao salvar alguma alteração de código durante o desenvolvimento.

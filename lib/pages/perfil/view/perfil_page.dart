@@ -7,7 +7,6 @@ import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/pages/perfil/controller/data_nascimento_controller.dart';
 import 'package:budgetopia/pages/perfil/controller/salvar_perfil_controller.dart';
-import 'package:budgetopia/pages/perfil/controller/user_image_controller.dart';
 import 'package:budgetopia/pages/perfil/mixin/perfil_page_mixin.dart';
 import 'package:budgetopia/pages/perfil/widget/data_nascimento_field.dart';
 import 'package:budgetopia/pages/perfil/widget/user_imagem_avatar.dart';
@@ -32,7 +31,6 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
       valorObjetivoController.text = Moeda.format(valor: item.valor, simbolo: 'R\$');
       Future.delayed(Duration.zero, () {
         ddi.get<DataNascimentoController>().alterarDataNascimento(item.dataNascimento);
-        ddi.get<UserImageController>().definirPath(item.pathImagem);
       });
     } else {
       valorObjetivoController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);

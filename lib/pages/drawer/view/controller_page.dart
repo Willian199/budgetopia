@@ -1,4 +1,5 @@
 import 'package:budgetopia/pages/detalhamento/view/detalhamento_page.dart';
+import 'package:budgetopia/pages/drawer/module/controler_page_module.dart';
 import 'package:budgetopia/pages/home/module/home_module.dart';
 import 'package:budgetopia/pages/home/view/home_page.dart';
 import 'package:budgetopia/pages/perfil/module/perfil_module.dart';
@@ -14,27 +15,28 @@ class ControllerPage extends StatefulWidget {
   _ControllerPageState createState() => _ControllerPageState();
 }
 
-class _ControllerPageState extends State<ControllerPage> {
-  final PageController pageController = ddi();
-
+class _ControllerPageState extends State<ControllerPage> with DDIInject<PageController> {
   @override
   Widget build(BuildContext context) {
     debugPrint("Rebuilding ControllerPage");
-    return PageView(
-      physics: const NeverScrollableScrollPhysics(),
-      controller: pageController,
-      children: <Widget>[
-        const FlutterDDIWidget(
-          module: HomeModule.new,
-          child: HomePage(),
-        ),
-        const DetalhamentoPage(),
-        const FlutterDDIWidget(
-          module: PerfilModule.new,
-          child: PerfilPage(),
-        ),
-        const SobrePage(),
-      ],
+    return FlutterDDIWidget(
+      module: ControlerPageModule.new,
+      child: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: instance,
+        children: <Widget>[
+          const FlutterDDIWidget(
+            module: HomeModule.new,
+            child: HomePage(),
+          ),
+          const DetalhamentoPage(),
+          const FlutterDDIWidget(
+            module: PerfilModule.new,
+            child: PerfilPage(),
+          ),
+          const SobrePage(),
+        ],
+      ),
     );
   }
 }
