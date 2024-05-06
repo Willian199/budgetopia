@@ -12,17 +12,29 @@ class MovimentacaoRepositoryImpl implements MovimentacaoRepository {
   final Box<MovimentacaoEntity> _entity;
 
   @override
-  Stream<List<MovimentacaoModel>> filter() {
+  Stream<Map<String, List<MovimentacaoModel>>> filter() {
     final DateTime now = DateTime.now();
     final Stream<Query<MovimentacaoEntity>> query = _entity
-        .query(MovimentacaoEntity_.data.greaterOrEqualDate(now.firstDayOfMonth).and(MovimentacaoEntity_.data.lessOrEqualDate(now.lastDayOfMonth)))
-        .order(MovimentacaoEntity_.data, flags: Order.descending)
+        .query(MovimentacaoEntity_.data.greaterOrEqualDate(now.minusSixMonth.firstDayOfMonth))
+        .order(MovimentacaoEntity_.data)
         .order(MovimentacaoEntity_.titulo)
         .watch(triggerImmediately: true);
 
     return query.map((query) {
       final Iterable<MovimentacaoEntity> itens = query.find();
-      return itens.map(MovimentacaoModel.fromMovimentacaoEntity).toList();
+      // Criar um mapa para agrupar os itens por nome do mês
+      final Map<String, List<MovimentacaoModel>> groupedData = {};
+      for (var item in itens) {
+        // Extrair o nome do mês da data
+        final String monthName = item.data.getFormattedMonth();
+        // Verificar se já existe uma lista para esse mês, senão criar uma nova
+        if (groupedData.containsKey(monthName)) {
+          groupedData[monthName]!.add(MovimentacaoModel.fromMovimentacaoEntity(item));
+        } else {
+          groupedData[monthName] = [MovimentacaoModel.fromMovimentacaoEntity(item)];
+        }
+      }
+      return groupedData;
     });
   }
 

@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class TipoMovimentacao extends StatefulWidget {
-  const TipoMovimentacao({required this.focusNode, super.key});
+  const TipoMovimentacao({required this.focusNode, required this.nextFocusNode, super.key});
   final FocusNode focusNode;
+  final FocusNode nextFocusNode;
 
   @override
   State<TipoMovimentacao> createState() => _TipoMovimentacaoState();
@@ -32,7 +33,10 @@ class _TipoMovimentacaoState extends EventListenerState<TipoMovimentacao, TipoMo
           ),
         );
       }).toList(),
-      onChanged: instance.selecionarTipoMovimentacao,
+      onChanged: (value) {
+        instance.selecionarTipoMovimentacao(value);
+        widget.nextFocusNode.requestFocus();
+      },
       focusNode: widget.focusNode,
       decoration: const InputDecoration(
         labelText: 'Tipo de Transação',

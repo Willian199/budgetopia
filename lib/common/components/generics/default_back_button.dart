@@ -10,10 +10,8 @@ class DefaultBackButton extends StatefulWidget {
   State<DefaultBackButton> createState() => DefaultBackButtonState();
 }
 
-class DefaultBackButtonState extends State<DefaultBackButton> with TickerProviderStateMixin {
+class DefaultBackButtonState extends State<DefaultBackButton> with TickerProviderStateMixin, DDIInject<ZoomDrawerController> {
   late AnimationController _animationController;
-
-  final ZoomDrawerController zoomDrawerController = ddi();
 
   @override
   void initState() {
@@ -35,12 +33,12 @@ class DefaultBackButtonState extends State<DefaultBackButton> with TickerProvide
   Widget build(BuildContext context) {
     final ThemeData tema = AdaptiveTheme.of(context).theme;
 
-    if (zoomDrawerController.isOpen!()) {
+    if (instance.isOpen!()) {
       _animationController.forward();
     }
 
     return ValueListenableBuilder<DrawerState>(
-      valueListenable: zoomDrawerController.stateNotifier!,
+      valueListenable: instance.stateNotifier!,
       builder: (BuildContext context, DrawerState state, Widget? child) {
         switch (state) {
           case DrawerState.open:
@@ -65,7 +63,7 @@ class DefaultBackButtonState extends State<DefaultBackButton> with TickerProvide
           style: ElevatedButton.styleFrom(elevation: 0, backgroundColor: Colors.transparent),
           onPressed: () {
             FocusManager.instance.primaryFocus?.unfocus();
-            zoomDrawerController.toggle?.call();
+            instance.toggle?.call();
           },
           icon: AnimatedIcon(
             color: tema.colorScheme.onTertiaryContainer,

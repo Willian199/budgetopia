@@ -13,6 +13,18 @@ extension DateTimeExtensions on DateTime {
     return this == lastDayOfMonth;
   }
 
+  DateTime get minusSixMonth => subtractMonths(6);
+
+  DateTime subtractMonths(int months) {
+    int year = this.year;
+    int month = this.month - months;
+    while (month < 1) {
+      month += 12;
+      year--;
+    }
+    return DateTime(year, month, day, hour, minute, second, millisecond, microsecond);
+  }
+
   String format({String formatString = 'dd/MM/yyyy'}) {
     final formatter = DateFormat(formatString);
     return formatter.format(this);

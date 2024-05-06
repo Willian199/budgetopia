@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class SelecionarCategoria extends StatefulWidget {
-  const SelecionarCategoria({required this.focusNode, super.key});
+  const SelecionarCategoria({required this.focusNode, required this.nextFocusNode, super.key});
 
   final FocusNode focusNode;
+  final FocusNode nextFocusNode;
 
   @override
   State<SelecionarCategoria> createState() => _SelecionarCategoriaState();
@@ -33,7 +34,10 @@ class _SelecionarCategoriaState extends EventListenerState<SelecionarCategoria, 
           ),
         );
       }).toList(),
-      onChanged: instance.selecionarCategoria,
+      onChanged: (value) {
+        instance.selecionarCategoria(value);
+        widget.nextFocusNode.requestFocus();
+      },
       focusNode: widget.focusNode,
       decoration: const InputDecoration(
         label: Text('Categoria'),

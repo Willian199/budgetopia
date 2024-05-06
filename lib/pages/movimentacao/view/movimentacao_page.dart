@@ -143,7 +143,7 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
                   ),
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(categoryFocusNode);
+                    FocusScope.of(context).requestFocus(categoriaFocusNode);
                   },
                   validator: (value) {
                     if (value?.isEmpty ?? false) {
@@ -154,56 +154,72 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
                 ),
               ),
               const SizedBox(height: 15.0),
-              SelecionarCategoria(focusNode: categoryFocusNode),
+              SelecionarCategoria(
+                focusNode: categoriaFocusNode,
+                nextFocusNode: tipoMovimentacaoFocusNode,
+              ),
               const SizedBox(height: 15.0),
-              TipoMovimentacao(focusNode: transactionTypeFocusNode),
+              TipoMovimentacao(
+                focusNode: tipoMovimentacaoFocusNode,
+                nextFocusNode: dateFocusNode,
+              ),
               const SizedBox(height: 15.0),
               DataMovimentacao(
                 focusNode: dateFocusNode,
                 nextFocus: valueFocusNode,
               ),
               const SizedBox(height: 15.0),
-              TextFormField(
-                controller: valueController,
-                focusNode: valueFocusNode,
-                keyboardType: TextInputType.number,
-                onTap: () {
-                  if (!valueFocusNode.hasPrimaryFocus) {
+              FocusScope(
+                onFocusChange: (bool focused) {
+                  if (focused) {
                     valueController.selection = TextSelection(
                       baseOffset: 0,
                       extentOffset: valueController.value.text.length,
                     );
                   }
                 },
-                decoration: const InputDecoration(
-                  labelText: 'Valor',
-                  prefixIcon: SizedBox(
-                    width: 40,
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 6),
-                        child: FaIcon(
-                          FontAwesomeIcons.moneyBill1Wave,
-                          size: 20,
+                child: TextFormField(
+                  controller: valueController,
+                  focusNode: valueFocusNode,
+                  keyboardType: TextInputType.number,
+                  onTap: () {
+                    if (!valueFocusNode.hasPrimaryFocus) {
+                      valueController.selection = TextSelection(
+                        baseOffset: 0,
+                        extentOffset: valueController.value.text.length,
+                      );
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Valor',
+                    prefixIcon: SizedBox(
+                      width: 40,
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 6),
+                          child: FaIcon(
+                            FontAwesomeIcons.moneyBill1Wave,
+                            size: 20,
+                          ),
                         ),
                       ),
                     ),
+                    border: OutlineInputBorder(),
                   ),
-                  border: OutlineInputBorder(),
+                  textInputAction: TextInputAction.next,
+                  inputFormatters: [
+                    DecimalInputFormatter(allowNegative: false),
+                  ],
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(noteFocusNode);
+                  },
+                  validator: (value) {
+                    if (value?.isEmpty ?? false) {
+                      return 'Por favor, insira um valor';
+                    }
+                    return null;
+                  },
                 ),
-                textInputAction: TextInputAction.next,
-                inputFormatters: [
-                  DecimalInputFormatter(allowNegative: false),
-                ],
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(noteFocusNode);
-                },
-                validator: (value) {
-                  if (value?.isEmpty ?? false) {
-                    return 'Por favor, insira um valor';
-                  }
-                  return null;
-                },
               ),
               const StatusPagamento(),
               TextFormField(

@@ -51,6 +51,7 @@ class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSe
       },
       onEditingComplete: widget.nextFocus.requestFocus,
       textInputAction: TextInputAction.next,
+      readOnly: true,
       decoration: const InputDecoration(
         labelText: 'Data',
         prefixIcon: SizedBox(

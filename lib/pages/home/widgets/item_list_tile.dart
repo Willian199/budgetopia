@@ -26,7 +26,7 @@ class ItemListTile extends StatefulWidget {
 class _ItemListTileState extends State<ItemListTile> {
   @override
   Widget build(BuildContext context) {
-    final bool darMode = context.get(Qualifier.dark_mode);
+    final bool darkMode = context.get(Qualifier.dark_mode);
     return SizedBox(
       height: 110,
       child: Row(
@@ -109,7 +109,7 @@ class _ItemListTileState extends State<ItemListTile> {
                     height: 40,
                     padding: const EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: darMode ? Colors.transparent : context.colorScheme.tertiary.withOpacity(0.8),
+                      color: darkMode ? Colors.transparent : context.colorScheme.tertiary.withOpacity(0.8),
                       border: Border.all(width: 4, color: context.colorScheme.tertiaryContainer),
                       borderRadius: BorderRadius.circular(60),
                       boxShadow: [

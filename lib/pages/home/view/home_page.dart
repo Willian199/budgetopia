@@ -8,6 +8,7 @@ import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/pages/home/controller/home_controller.dart';
 import 'package:budgetopia/pages/home/mixins/home_mixin.dart';
 import 'package:budgetopia/pages/home/state/home_state.dart';
+import 'package:budgetopia/pages/home/widgets/horizontal_selecao_mes.dart';
 import 'package:budgetopia/pages/home/widgets/movimentacao_list_builder.dart';
 import 'package:budgetopia/pages/home/widgets/time_line_opacity_effect.dart';
 import 'package:budgetopia/pages/home/widgets/valor_segmented_button.dart';
@@ -119,65 +120,68 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
             tema.colorScheme.onSecondary,
           ],
         ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: Double.VINTE),
-                  child: SizedBox(
-                    width: double.maxFinite,
-                    child: SegmentedButton<TipoRegistroEnum>(
-                      segments: <ButtonSegment<TipoRegistroEnum>>[
-                        ButtonSegment<TipoRegistroEnum>(
-                          value: TipoRegistroEnum.todos,
-                          label: ValorSegmentedButton(
-                            titulo: Strings.SALDO,
-                            valor: state?.valorSaldo ?? 0,
-                            selecionada: TipoRegistroEnum.todos == currentTab.first,
+        child: SafeArea(
+          top: false,
+          bottom: false,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  HorizontalSelecaoMes(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: Double.DEZ),
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      child: SegmentedButton<TipoRegistroEnum>(
+                        segments: <ButtonSegment<TipoRegistroEnum>>[
+                          ButtonSegment<TipoRegistroEnum>(
+                            value: TipoRegistroEnum.todos,
+                            label: ValorSegmentedButton(
+                              titulo: Strings.SALDO,
+                              valor: state?.valorSaldo ?? 0,
+                              selecionada: TipoRegistroEnum.todos == currentTab.first,
+                            ),
                           ),
-                        ),
-                        ButtonSegment<TipoRegistroEnum>(
-                          value: TipoRegistroEnum.entrada,
-                          label: ValorSegmentedButton(
-                            titulo: Strings.ENTRADA,
-                            valor: state?.valorEntrada ?? 0,
-                            selecionada: TipoRegistroEnum.entrada == currentTab.first,
+                          ButtonSegment<TipoRegistroEnum>(
+                            value: TipoRegistroEnum.entrada,
+                            label: ValorSegmentedButton(
+                              titulo: Strings.ENTRADA,
+                              valor: state?.valorEntrada ?? 0,
+                              selecionada: TipoRegistroEnum.entrada == currentTab.first,
+                            ),
                           ),
-                        ),
-                        ButtonSegment<TipoRegistroEnum>(
-                          value: TipoRegistroEnum.saida,
-                          label: ValorSegmentedButton(
-                            titulo: Strings.SAIDA,
-                            valor: state?.valorSaida ?? 0,
-                            selecionada: TipoRegistroEnum.saida == currentTab.first,
+                          ButtonSegment<TipoRegistroEnum>(
+                            value: TipoRegistroEnum.saida,
+                            label: ValorSegmentedButton(
+                              titulo: Strings.SAIDA,
+                              valor: state?.valorSaida ?? 0,
+                              selecionada: TipoRegistroEnum.saida == currentTab.first,
+                            ),
                           ),
-                        ),
-                      ],
-                      selected: currentTab,
-                      onSelectionChanged: instance.refresh,
-                      showSelectedIcon: false,
+                        ],
+                        selected: currentTab,
+                        onSelectionChanged: instance.refresh,
+                        showSelectedIcon: false,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: Double.VINTE),
-                  child: SizedBox(
-                    height: MediaQuery.orientationOf(context) == Orientation.landscape ? 150 : size.height - 190,
-                    child: Stack(
-                      children: [
-                        MovimentacaoListBuilder(
-                          scrollGastosController: scrollMovimentacaoController,
-                          registrosMovimentacao: instance.registrosAbaMovimentacao,
-                        ),
-                        const TimeLineOpacityeffect(),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: Double.VINTE),
+                    child: SizedBox(
+                      height: size.height - 210,
+                      child: Stack(
+                        children: [
+                          MovimentacaoListBuilder(),
+                          const TimeLineOpacityeffect(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

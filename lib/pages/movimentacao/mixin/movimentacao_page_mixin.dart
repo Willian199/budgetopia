@@ -9,8 +9,8 @@ mixin MovimentacaoPageMixin on State<MovimentacaoPage> {
   final noteController = TextEditingController();
 
   final titleFocusNode = FocusNode();
-  final categoryFocusNode = FocusNode();
-  final transactionTypeFocusNode = FocusNode();
+  final categoriaFocusNode = FocusNode();
+  final tipoMovimentacaoFocusNode = FocusNode();
   final dateFocusNode = FocusNode();
   final valueFocusNode = FocusNode();
   final noteFocusNode = FocusNode();
@@ -21,8 +21,8 @@ mixin MovimentacaoPageMixin on State<MovimentacaoPage> {
     valueController.dispose();
     noteController.dispose();
     titleFocusNode.dispose();
-    categoryFocusNode.dispose();
-    transactionTypeFocusNode.dispose();
+    categoriaFocusNode.dispose();
+    tipoMovimentacaoFocusNode.dispose();
     dateFocusNode.dispose();
     valueFocusNode.dispose();
     noteFocusNode.dispose();

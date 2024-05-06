@@ -54,6 +54,7 @@ class _DrawerItemPageState extends State<DrawerItemPage> with SingleTickerProvid
               break;
             default:
           }
+          FocusManager.instance.primaryFocus?.unfocus();
           return AnimatedBuilder(
             animation: _controller,
             builder: (BuildContext context, Widget? child) {

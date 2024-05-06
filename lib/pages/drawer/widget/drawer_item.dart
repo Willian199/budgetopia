@@ -21,7 +21,7 @@ class _DrawerItemState extends State<DrawerItem> with SingleTickerProviderStateM
 
     _backgroundController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
     );
 
     if (ddi.get(qualifier: Qualifier.dark_mode)) {

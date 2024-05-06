@@ -1,5 +1,5 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/double.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -18,7 +18,7 @@ class DrawerTile extends StatefulWidget {
 class _DrawerTileState extends State<DrawerTile> with DDIInject<PageController> {
   @override
   Widget build(BuildContext context) {
-    final ColorScheme scheme = AdaptiveTheme.of(context).theme.colorScheme;
+    final ColorScheme scheme = context.colorScheme;
 
     return Material(
       color: Colors.transparent,

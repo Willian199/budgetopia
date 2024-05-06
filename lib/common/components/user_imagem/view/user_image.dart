@@ -18,7 +18,8 @@ class _UserImageState extends EventListenerState<UserImage, UserImageState> with
     return CircleAvatar(
       radius: 50,
       backgroundColor: Colors.grey[200],
-      backgroundImage: state?.path != null ? FileImage(File(state!.path!)) as ImageProvider : const AssetImage('assets/icons/user.png'),
+      backgroundImage:
+          instance.pathImagem != null ? FileImage(File(instance.pathImagem!)) as ImageProvider : const AssetImage('assets/icons/user.png'),
     );
   }
 }

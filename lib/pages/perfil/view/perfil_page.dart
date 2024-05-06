@@ -37,6 +37,26 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
     }
   }
 
+  void validarSalvar() {
+    if (formKey.currentState?.validate() ?? false) {
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      final bool status = instance.salvar(
+        nome: nomeController.text.trim(),
+        valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: 'R\$').toDouble(),
+      );
+
+      if (!status) {
+        CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
+        return;
+      }
+
+      CustomSnackBar.sucesso(mensagem: 'Dados de Perfil salvos com sucesso!');
+    } else {
+      CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData tema = context.theme;
@@ -50,25 +70,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
               FontAwesomeIcons.floppyDisk,
               color: tema.colorScheme.primary,
             ),
-            onPressed: () {
-              if (formKey.currentState?.validate() ?? false) {
-                FocusManager.instance.primaryFocus?.unfocus();
-
-                final bool status = instance.salvar(
-                  nome: nomeController.text.trim(),
-                  valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: 'R\$').toDouble(),
-                );
-
-                if (!status) {
-                  CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
-                  return;
-                }
-
-                CustomSnackBar.sucesso(mensagem: 'Dados de Perfil salvos com sucesso!');
-              } else {
-                CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
-              }
-            },
+            onPressed: validarSalvar,
           ),
         ],
       ),
@@ -129,44 +131,55 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                   nextFocus: valorObjetivoFocusNode,
                 ),
                 const SizedBox(height: 20.0),
-                TextFormField(
-                  controller: valorObjetivoController,
-                  focusNode: valorObjetivoFocusNode,
-                  keyboardType: TextInputType.number,
-                  onTap: () {
-                    if (!valorObjetivoFocusNode.hasPrimaryFocus) {
+                FocusScope(
+                  onFocusChange: (bool value) {
+                    if (value) {
                       valorObjetivoController.selection = TextSelection(
                         baseOffset: 0,
                         extentOffset: valorObjetivoController.value.text.length,
                       );
                     }
                   },
-                  decoration: const InputDecoration(
-                    labelText: 'Objetivo Saldo Mensal',
-                    prefixIcon: SizedBox(
-                      width: 40,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 6),
-                          child: FaIcon(
-                            FontAwesomeIcons.moneyBill1Wave,
-                            size: 20,
+                  child: TextFormField(
+                    controller: valorObjetivoController,
+                    focusNode: valorObjetivoFocusNode,
+                    keyboardType: TextInputType.number,
+                    onFieldSubmitted: (_) => validarSalvar(),
+                    onTap: () {
+                      if (!valorObjetivoFocusNode.hasPrimaryFocus) {
+                        valorObjetivoController.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: valorObjetivoController.value.text.length,
+                        );
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Objetivo Saldo Mensal',
+                      prefixIcon: SizedBox(
+                        width: 40,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 6),
+                            child: FaIcon(
+                              FontAwesomeIcons.moneyBill1Wave,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ),
+                      border: OutlineInputBorder(),
                     ),
-                    border: OutlineInputBorder(),
+                    textInputAction: TextInputAction.done,
+                    inputFormatters: [
+                      DecimalInputFormatter(allowNegative: false),
+                    ],
+                    validator: (value) {
+                      if (value?.isEmpty ?? false) {
+                        return 'Por favor, insira um valor';
+                      }
+                      return null;
+                    },
                   ),
-                  textInputAction: TextInputAction.next,
-                  inputFormatters: [
-                    DecimalInputFormatter(allowNegative: false),
-                  ],
-                  validator: (value) {
-                    if (value?.isEmpty ?? false) {
-                      return 'Por favor, insira um valor';
-                    }
-                    return null;
-                  },
                 ),
               ],
             ),

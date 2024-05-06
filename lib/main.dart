@@ -35,7 +35,6 @@ class StartApp extends StatelessWidget {
         return MaterialApp(
           title: Strings.APP_NAME,
           navigatorKey: ddi<GlobalKey<NavigatorState>>(),
-          color: Colors.transparent,
           debugShowCheckedModeBanner: false,
           theme: theme,
           darkTheme: darkTheme,
