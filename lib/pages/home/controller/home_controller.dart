@@ -1,22 +1,25 @@
 import 'dart:async';
 
+import 'package:budgetopia/common/components/selecao_horizontal/controller/selecao_horizontal_controller.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/config/banco/repository/movimentacao/movimentacao_repository.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/pages/home/controller/time_line_opacity_controller.dart';
+import 'package:budgetopia/pages/home/module/home_module.dart';
 import 'package:budgetopia/pages/home/state/home_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController with DDIEventSender<HomeState>, PostConstruct {
   HomeController()
       : _movimentacaoRepository = ddi(),
-        _timeLineOpacityController = ddi();
+        _timeLineOpacityController = ddi(),
+        _selecaoHorizontalController = ddi.getComponent(module: HomeModule);
 
   final MovimentacaoRepository _movimentacaoRepository;
   final TimeLineOpacityController _timeLineOpacityController;
+  final SelecaoHorizontalController _selecaoHorizontalController;
 
   Map<String, List<MovimentacaoModel>> _todasMovimentacoes = {};
 
@@ -28,16 +31,6 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct {
 
   TipoRegistroEnum _tabSelecionada = TipoRegistroEnum.todos;
   TipoRegistroEnum get tabSelecionada => _tabSelecionada;
-
-  List<String> _mesesDisponiveis = [];
-
-  List<String> get mesesDisponiveis => _mesesDisponiveis;
-
-  int _posicaoSelecionada = 0;
-
-  int get posicaoSelecionada => _posicaoSelecionada;
-
-  PageController pageController = PageController();
 
   @override
   HomeState get state =>
@@ -57,27 +50,28 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct {
       double entrada = 0;
       double saida = 0;
 
+      int posicaoSelecionada = 0;
+      List<String> mesesDisponiveis = [];
+
       if (event.isNotEmpty) {
-        //Teoricamente somente será vazio quando for o primeiro evento disparado
+        //Somente será vazio quando for o primeiro evento disparado
         if (_movimentacoesMesSelecionado.isEmpty) {
-          _mesesDisponiveis = event.keys.toList();
+          mesesDisponiveis = event.keys.toList();
 
-          final int newPos = _mesesDisponiveis.indexOf(DateTime.now().getFormattedMonth());
+          final int newPos = mesesDisponiveis.indexOf(DateTime.now().getFormattedMonth());
 
-          _posicaoSelecionada = newPos < 0 ? _mesesDisponiveis.length - 1 : newPos;
+          posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
         } else {
-          final String mesSelecionado = _mesesDisponiveis[_posicaoSelecionada];
+          final String mesSelecionado = _selecaoHorizontalController.itens[_selecaoHorizontalController.posicao];
 
-          _mesesDisponiveis = event.keys.toList();
+          mesesDisponiveis = event.keys.toList();
 
-          final int newPos = _mesesDisponiveis.indexOf(mesSelecionado);
+          final int newPos = mesesDisponiveis.indexOf(mesSelecionado);
 
-          _posicaoSelecionada = newPos < 0 ? _mesesDisponiveis.length - 1 : newPos;
-
-          pageController.animateToPage(posicaoSelecionada, duration: Durations.medium1, curve: Curves.easeInOut);
+          posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
         }
 
-        _movimentacoesMesSelecionado = _todasMovimentacoes.entries.toList()[_posicaoSelecionada].value;
+        _movimentacoesMesSelecionado = _todasMovimentacoes.entries.elementAt(posicaoSelecionada).value;
 
         _filtrarMovimentacaoes();
 
@@ -90,10 +84,12 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct {
         }
       } else {
         _movimentacoesMesSelecionado = [];
-        _mesesDisponiveis = [];
-        _posicaoSelecionada = 0;
+        mesesDisponiveis = [];
+        posicaoSelecionada = 0;
       }
       _timeLineOpacityController.changePosition(0);
+
+      _selecaoHorizontalController.setDados(posicaoSelecionada, mesesDisponiveis);
 
       fire(
         HomeState(
@@ -113,8 +109,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct {
   }
 
   void alterouSelecao(int pos) {
-    _posicaoSelecionada = pos;
-    _movimentacoesMesSelecionado = _todasMovimentacoes.entries.toList()[_posicaoSelecionada].value;
+    _movimentacoesMesSelecionado = _todasMovimentacoes.entries.toList()[pos].value;
 
     _filtrarMovimentacaoes();
 

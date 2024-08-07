@@ -15,10 +15,6 @@ void main() async {
 
   ddi.setDebugMode(false);
 
-  // Necesário fazer o reigstro do StartModule antes de chamar o runApp.
-  // Para evitar perder a rota ao salvar alguma alteração de código durante o desenvolvimento.
-  await ddi.registerObject(const StartModule());
-
   runApp(const StartApp());
 }
 
@@ -27,28 +23,31 @@ class StartApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveTheme(
-      light: LightTheme.getTheme(),
-      dark: DarkTheme.getTheme(),
-      initial: ddi.get<AdaptiveThemeMode>(qualifier: Qualifier.adaptive_theme_mode),
-      builder: (theme, darkTheme) {
-        return MaterialApp(
-          title: Strings.APP_NAME,
-          navigatorKey: ddi<GlobalKey<NavigatorState>>(),
-          debugShowCheckedModeBanner: false,
-          theme: theme,
-          darkTheme: darkTheme,
-          home: const DrawerPage(),
-          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const <Locale>[
-            Locale('pt'),
-          ],
-        );
-      },
+    return FlutterDDIFutureWidget(
+      module: StartModule.new,
+      child: (context) => AdaptiveTheme(
+        light: LightTheme.getTheme(),
+        dark: DarkTheme.getTheme(),
+        initial: ddi.get<AdaptiveThemeMode>(qualifier: Qualifier.adaptive_theme_mode),
+        builder: (theme, darkTheme) {
+          return MaterialApp(
+            title: Strings.APP_NAME,
+            navigatorKey: ddi<GlobalKey<NavigatorState>>(),
+            debugShowCheckedModeBanner: false,
+            theme: theme,
+            darkTheme: darkTheme,
+            home: const DrawerPage(),
+            localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const <Locale>[
+              Locale('pt'),
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -57,16 +57,16 @@ final class DarkTheme {
     // fontFamily: GoogleFonts.notoSans().fontFamily,
   );
 
-  static Color _getColorSegmentedButton(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{MaterialState.selected};
+  static Color _getColorSegmentedButton(Set<WidgetState> states) {
+    const Set<WidgetState> interactiveStates = <WidgetState>{WidgetState.selected};
     if (states.any(interactiveStates.contains)) {
       return _default.colorScheme.secondary;
     }
     return _default.colorScheme.onPrimary;
   }
 
-  static Color _getColorSegmentedButtonIcon(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{MaterialState.selected};
+  static Color _getColorSegmentedButtonIcon(Set<WidgetState> states) {
+    const Set<WidgetState> interactiveStates = <WidgetState>{WidgetState.selected};
     if (states.any(interactiveStates.contains)) {
       return _default.colorScheme.onPrimary;
     }
@@ -82,8 +82,8 @@ final class DarkTheme {
       ),
       segmentedButtonTheme: _default.segmentedButtonTheme.copyWith(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith(_getColorSegmentedButton),
-          iconColor: MaterialStateProperty.resolveWith(_getColorSegmentedButtonIcon),
+          backgroundColor: WidgetStateProperty.resolveWith(_getColorSegmentedButton),
+          iconColor: WidgetStateProperty.resolveWith(_getColorSegmentedButtonIcon),
           animationDuration: const Duration(seconds: 2),
         ),
       ),

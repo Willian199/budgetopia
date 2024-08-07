@@ -10,8 +10,10 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 class ControlerPageModule with DDIModule {
   @override
   FutureOr<void> onPostConstruct() {
-    registerApplication<MovimentacaoRepository>(MovimentacaoRepositoryImpl.new);
-    registerApplication<PerfilRepository>(PerfilRepositoryImpl.new);
-    registerApplication(UserImageController.new);
+    Future.wait([
+      registerApplication<MovimentacaoRepository>(MovimentacaoRepositoryImpl.new),
+      registerApplication<PerfilRepository>(PerfilRepositoryImpl.new),
+      registerApplication(UserImageController.new),
+    ]);
   }
 }

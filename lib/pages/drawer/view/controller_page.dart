@@ -1,3 +1,4 @@
+import 'package:budgetopia/pages/detalhamento/module/detalhamento_module.dart';
 import 'package:budgetopia/pages/detalhamento/view/detalhamento_page.dart';
 import 'package:budgetopia/pages/drawer/module/controler_page_module.dart';
 import 'package:budgetopia/pages/home/module/home_module.dart';
@@ -25,11 +26,14 @@ class _ControllerPageState extends State<ControllerPage> with DDIInject<PageCont
         physics: const NeverScrollableScrollPhysics(),
         controller: instance,
         children: <Widget>[
-          const FlutterDDIWidget(
+          FlutterDDIFutureWidget(
             module: HomeModule.new,
-            child: HomePage(),
+            child: (_) => const HomePage(),
           ),
-          const DetalhamentoPage(),
+          FlutterDDIFutureWidget(
+            module: DetalhamentoModule.new,
+            child: (_) => const DetalhamentoPage(),
+          ),
           const FlutterDDIWidget(
             module: PerfilModule.new,
             child: PerfilPage(),

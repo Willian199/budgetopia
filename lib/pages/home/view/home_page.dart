@@ -1,14 +1,15 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/generics/default_back_button.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
+import 'package:budgetopia/common/components/selecao_horizontal/view/selecao_horizontal.dart';
 import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/pages/home/controller/home_controller.dart';
 import 'package:budgetopia/pages/home/mixins/home_mixin.dart';
+import 'package:budgetopia/pages/home/module/home_module.dart';
 import 'package:budgetopia/pages/home/state/home_state.dart';
-import 'package:budgetopia/pages/home/widgets/horizontal_selecao_mes.dart';
 import 'package:budgetopia/pages/home/widgets/movimentacao_list_builder.dart';
 import 'package:budgetopia/pages/home/widgets/time_line_opacity_effect.dart';
 import 'package:budgetopia/pages/home/widgets/valor_segmented_button.dart';
@@ -130,7 +131,9 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  HorizontalSelecaoMes(),
+                  HorizontalSelecaoMes<HomeModule>(
+                    onPageChanged: instance.alterouSelecao,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: Double.DEZ),
                     child: SizedBox(

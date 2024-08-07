@@ -7,7 +7,9 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 final class PerfilModule with DDIModule {
   @override
   FutureOr<void> onPostConstruct() {
-    registerApplication(DataNascimentoController.new);
-    registerApplication(SalvarPerfilController.new);
+    Future.wait([
+      registerApplication(DataNascimentoController.new),
+      registerApplication(SalvarPerfilController.new),
+    ]);
   }
 }
