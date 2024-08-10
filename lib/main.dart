@@ -13,8 +13,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
 
-  ddi.setDebugMode(false);
-
   runApp(const StartApp());
 }
 
