@@ -21,7 +21,6 @@ final class ImageCrop {
     final CroppedFile? cropped = await ImageCropper().cropImage(
       sourcePath: imageFile.path,
       compressQuality: 100,
-      cropStyle: CropStyle.circle,
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: Strings.SELECIONAR_IMAGEM,
@@ -34,8 +33,10 @@ final class ImageCrop {
           activeControlsWidgetColor: colorScheme.primary,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false,
+          cropStyle: CropStyle.circle,
         ),
         IOSUiSettings(
+          cropStyle: CropStyle.circle,
           minimumAspectRatio: 1.0,
         )
       ],

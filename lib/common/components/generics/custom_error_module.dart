@@ -28,7 +28,7 @@ final class CustomErrorModule extends ErrorModuleInterface {
                 frameRate: FrameRate.max,
                 height: 150,
                 width: 150,
-                repeat: false,
+                repeat: true,
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
@@ -36,7 +36,10 @@ final class CustomErrorModule extends ErrorModuleInterface {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Text(snapshot.error.toString()),
+                child: Text(
+                  snapshot.error.toString(),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),

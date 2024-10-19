@@ -7,7 +7,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.2 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -20,37 +20,35 @@ dependencies:
   adaptive_theme: ^3.6.0                            #Alterar o tema do aplicativo
   animations: ^2.0.11                               #Efeitos de animações prontos
   animated_list_plus: ^0.5.2
-  fl_chart: ^0.68.0                                 #Gráficos
+  fl_chart: ^0.69.0                                 #Gráficos
   flex_color_scheme:  ^7.3.1                        #Controla o tema do aplicativo
   flutter_native_splash: ^2.3.10
   flutter_zoom_drawer: ^3.2.0                       #Drawer
   font_awesome_flutter: ^10.7.0                     #Mais ícones
   intl: ^0.19.0
-  image_picker: ^1.1.1
-  image_cropper: ^5.0.1
-  lottie: ^3.1.1                                    #Animações
-  objectbox: ^2.5.1                                 #Armazenamento de dados
-  objectbox_flutter_libs: ^2.5.1                    #Armazenamento de dados
-  path_provider: ^2.1.3
+  image_picker: ^1.1.2
+  image_cropper: ^8.0.2
+  lottie: ^3.1.3                                    #Animações
+  objectbox: ^4.0.3                                 #Armazenamento de dados
+  objectbox_flutter_libs: ^4.0.3                    #Armazenamento de dados
+  path_provider: ^2.1.4
   path: ^1.9.0
   permission_handler: ^11.3.1
-  flutter_ddi: ^0.3.0 
+  flutter_ddi: 
+    path: ../flutter_ddi
   rflutter_alert: ^2.0.7
-  meta: ^1.12.0
+  meta: ^1.15.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 
-  flutter_lints: ^4.0.0
-  build_runner: ^2.4.9
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.13
 
   #flutter_launcher_icons: "^0.13.1"
-  objectbox_generator: ^2.5.0
-
-dependency_overrides:
-    intl: 0.19.0
+  objectbox_generator: ^4.0.3
 
 objectbox:
   # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
