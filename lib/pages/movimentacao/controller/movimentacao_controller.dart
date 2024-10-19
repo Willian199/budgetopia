@@ -7,18 +7,13 @@ import 'package:budgetopia/pages/movimentacao/controller/tipo_movimentacao_contr
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class MovimentacaoController {
-  MovimentacaoController()
-      : _dataMovimentacaoController = ddi(),
-        _categoriaController = ddi(),
-        _tipoMovimentacaoController = ddi(),
-        _statusPagamentoController = ddi(),
-        _movimentacaoRepository = ddi();
+  MovimentacaoController();
 
-  final DataMovimentacaoController _dataMovimentacaoController;
-  final CategoriaController _categoriaController;
-  final TipoMovimentacaoController _tipoMovimentacaoController;
-  final MovimentacaoRepository _movimentacaoRepository;
-  final StatusPagamentoController _statusPagamentoController;
+  late final DataMovimentacaoController _dataMovimentacaoController = ddi();
+  late final CategoriaController _categoriaController = ddi();
+  late final TipoMovimentacaoController _tipoMovimentacaoController = ddi();
+  late final MovimentacaoRepository _movimentacaoRepository = ddi();
+  late final StatusPagamentoController _statusPagamentoController = ddi();
 
   bool salvar({required String titulo, required double valor, required String observacao, required int id}) {
     final MovimentacaoEntity obj = MovimentacaoEntity(

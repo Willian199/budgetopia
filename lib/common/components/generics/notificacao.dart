@@ -15,7 +15,7 @@ class Notificacao {
   static GlobalKey<NavigatorState>? _navigatorKey;
 
   static void close() {
-    _navigatorKey ??= ddi<GlobalKey<NavigatorState>>();
+    _navigatorKey ??= ddi.get<GlobalKey<NavigatorState>>();
     if (_isOpen) {
       Navigator.pop(_navigatorKey!.currentContext!);
     }
@@ -23,7 +23,7 @@ class Notificacao {
   }
 
   static AlertStyle _alertStyle() {
-    _navigatorKey ??= ddi<GlobalKey<NavigatorState>>();
+    _navigatorKey ??= ddi.get<GlobalKey<NavigatorState>>();
     final ThemeData tema = Theme.of(_navigatorKey!.currentContext!);
     final bool darkMode = tema.brightness == Brightness.dark;
 

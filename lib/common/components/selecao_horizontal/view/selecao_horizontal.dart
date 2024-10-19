@@ -32,8 +32,6 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule> extends State<Horizo
         }
       },
     );
-
-    ddiEvent.subscribe<SelecaoHorizontalState>(listen);
   }
 
   @override

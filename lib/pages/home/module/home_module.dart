@@ -7,11 +7,13 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeModule with DDIModule {
   @override
-  FutureOr<void> onPostConstruct() {
+  void onPostConstruct() {
     Future.wait([
       registerComponent(SelecaoHorizontalController.new),
       registerSingleton(TimeLineOpacityController.new),
-      registerApplication(HomeController.new),
+      register(
+        factory: ScopeFactory.application(builder: HomeController.new.builder),
+      ),
     ]);
   }
 }

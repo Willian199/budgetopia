@@ -8,7 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserImageController with DDIEventSender<UserImageState>, PostConstruct {
-  UserImageController() : _perfilRepository = ddi();
+  UserImageController(this._perfilRepository);
 
   final PerfilRepository _perfilRepository;
 

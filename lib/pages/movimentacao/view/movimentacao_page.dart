@@ -114,125 +114,129 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
             tema.colorScheme.onSecondary,
           ],
         ),
-        child: Form(
-          key: formKey,
-          autovalidateMode: AutovalidateMode.always,
-          child: ListView(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: TextFormField(
-                  controller: titleController,
-                  focusNode: titleFocusNode,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Título',
-                    prefixIcon: SizedBox(
-                      width: 40,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 6),
-                          child: FaIcon(
-                            FontAwesomeIcons.noteSticky,
-                            size: 20,
+        child: SafeArea(
+          top: false,
+          bottom: false,
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.always,
+            child: ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: TextFormField(
+                    controller: titleController,
+                    focusNode: titleFocusNode,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Título',
+                      prefixIcon: SizedBox(
+                        width: 40,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 6),
+                            child: FaIcon(
+                              FontAwesomeIcons.noteSticky,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ),
+                      border: OutlineInputBorder(),
                     ),
-                    border: OutlineInputBorder(),
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(categoriaFocusNode);
+                    },
+                    validator: (value) {
+                      if (value?.isEmpty ?? false) {
+                        return 'Por favor, insira um título';
+                      }
+                      return null;
+                    },
                   ),
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(categoriaFocusNode);
-                  },
-                  validator: (value) {
-                    if (value?.isEmpty ?? false) {
-                      return 'Por favor, insira um título';
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              const SizedBox(height: 15.0),
-              SelecionarCategoria(
-                focusNode: categoriaFocusNode,
-                nextFocusNode: tipoMovimentacaoFocusNode,
-              ),
-              const SizedBox(height: 15.0),
-              TipoMovimentacao(
-                focusNode: tipoMovimentacaoFocusNode,
-                nextFocusNode: dateFocusNode,
-              ),
-              const SizedBox(height: 15.0),
-              DataMovimentacao(
-                focusNode: dateFocusNode,
-                nextFocus: valueFocusNode,
-              ),
-              const SizedBox(height: 15.0),
-              FocusScope(
-                onFocusChange: (bool focused) {
-                  if (focused) {
-                    valueController.selection = TextSelection(
-                      baseOffset: 0,
-                      extentOffset: valueController.value.text.length,
-                    );
-                  }
-                },
-                child: TextFormField(
-                  controller: valueController,
-                  focusNode: valueFocusNode,
-                  keyboardType: TextInputType.number,
-                  onTap: () {
-                    if (!valueFocusNode.hasPrimaryFocus) {
+                const SizedBox(height: 15.0),
+                SelecionarCategoria(
+                  focusNode: categoriaFocusNode,
+                  nextFocusNode: tipoMovimentacaoFocusNode,
+                ),
+                const SizedBox(height: 15.0),
+                TipoMovimentacao(
+                  focusNode: tipoMovimentacaoFocusNode,
+                  nextFocusNode: dateFocusNode,
+                ),
+                const SizedBox(height: 15.0),
+                DataMovimentacao(
+                  focusNode: dateFocusNode,
+                  nextFocus: valueFocusNode,
+                ),
+                const SizedBox(height: 15.0),
+                FocusScope(
+                  onFocusChange: (bool focused) {
+                    if (focused) {
                       valueController.selection = TextSelection(
                         baseOffset: 0,
                         extentOffset: valueController.value.text.length,
                       );
                     }
                   },
-                  decoration: const InputDecoration(
-                    labelText: 'Valor',
-                    prefixIcon: SizedBox(
-                      width: 40,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 6),
-                          child: FaIcon(
-                            FontAwesomeIcons.moneyBill1Wave,
-                            size: 20,
+                  child: TextFormField(
+                    controller: valueController,
+                    focusNode: valueFocusNode,
+                    keyboardType: TextInputType.number,
+                    onTap: () {
+                      if (!valueFocusNode.hasPrimaryFocus) {
+                        valueController.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: valueController.value.text.length,
+                        );
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Valor',
+                      prefixIcon: SizedBox(
+                        width: 40,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 6),
+                            child: FaIcon(
+                              FontAwesomeIcons.moneyBill1Wave,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ),
+                      border: OutlineInputBorder(),
                     ),
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: [
+                      DecimalInputFormatter(allowNegative: false),
+                    ],
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(noteFocusNode);
+                    },
+                    validator: (value) {
+                      if (value?.isEmpty ?? false) {
+                        return 'Por favor, insira um valor';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const StatusPagamento(),
+                TextFormField(
+                  controller: noteController,
+                  focusNode: noteFocusNode,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Observações',
                     border: OutlineInputBorder(),
                   ),
-                  textInputAction: TextInputAction.next,
-                  inputFormatters: [
-                    DecimalInputFormatter(allowNegative: false),
-                  ],
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(noteFocusNode);
-                  },
-                  validator: (value) {
-                    if (value?.isEmpty ?? false) {
-                      return 'Por favor, insira um valor';
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              const StatusPagamento(),
-              TextFormField(
-                controller: noteController,
-                focusNode: noteFocusNode,
-                maxLines: 3,
-                decoration: const InputDecoration(
-                  labelText: 'Observações',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-            ],
+                const SizedBox(height: 20.0),
+              ],
+            ),
           ),
         ),
       ),

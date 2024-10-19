@@ -7,10 +7,7 @@ import 'package:budgetopia/pages/perfil/controller/data_nascimento_controller.da
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class SalvarPerfilController with PostConstruct {
-  SalvarPerfilController()
-      : _dataNascimentoController = ddi(),
-        _userImageController = ddi(),
-        _perfilRepository = ddi();
+  SalvarPerfilController(this._dataNascimentoController, this._userImageController, this._perfilRepository);
 
   PerfilEntity? _registroSalvo;
   PerfilEntity? get registroSalvo => _registroSalvo;

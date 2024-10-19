@@ -7,9 +7,9 @@ import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class MovimentacaoRepositoryImpl implements MovimentacaoRepository {
-  MovimentacaoRepositoryImpl() : _entity = ddi<Database>().box<MovimentacaoEntity>();
+  MovimentacaoRepositoryImpl();
 
-  final Box<MovimentacaoEntity> _entity;
+  late final Box<MovimentacaoEntity> _entity = ddi.get<Database>().box<MovimentacaoEntity>();
 
   @override
   Stream<Map<String, List<MovimentacaoModel>>> filter() {

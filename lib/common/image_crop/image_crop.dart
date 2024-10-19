@@ -13,10 +13,10 @@ final class ImageCrop {
   static final ImagePicker _picker = ImagePicker();
 
   static Future<CroppedFile?> _cropImage(File imageFile) async {
-    final key = ddi<GlobalKey<NavigatorState>>();
-    final ColorScheme colorScheme = key.currentContext!.colorScheme;
+    late final key = ddi.get<GlobalKey<NavigatorState>>();
+    late final ColorScheme colorScheme = key.currentContext!.colorScheme;
 
-    final bool darkMode = ddi.get(qualifier: Qualifier.dark_mode);
+    late final bool darkMode = ddi.get(qualifier: Qualifier.dark_mode);
 
     final CroppedFile? cropped = await ImageCropper().cropImage(
       sourcePath: imageFile.path,

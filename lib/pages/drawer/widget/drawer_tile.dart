@@ -20,13 +20,15 @@ class _DrawerTileState extends State<DrawerTile> with DDIInject<PageController> 
   Widget build(BuildContext context) {
     final ColorScheme scheme = context.colorScheme;
 
+    final itemColor = instance.page?.round() == widget.page ? scheme.primary : scheme.onSecondaryFixedVariant;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         splashColor: Colors.transparent,
         onTap: () {
-          ddi<ZoomDrawerController>().close?.call();
+          ddi.get<ZoomDrawerController>().close?.call();
 
           instance.jumpToPage(widget.page);
         },
@@ -38,7 +40,7 @@ class _DrawerTileState extends State<DrawerTile> with DDIInject<PageController> 
               Icon(
                 widget.icon,
                 size: Double.QUARENTA,
-                color: instance.page?.round() == widget.page ? scheme.primary : scheme.onInverseSurface,
+                color: itemColor,
               ),
               const SizedBox(
                 width: Double.TRINTA_DOIS,
@@ -47,7 +49,7 @@ class _DrawerTileState extends State<DrawerTile> with DDIInject<PageController> 
                 widget.text,
                 style: TextStyle(
                   fontSize: Double.VINTE,
-                  color: instance.page?.round() == widget.page ? scheme.primary : scheme.onInverseSurface,
+                  color: itemColor,
                 ),
               )
             ],

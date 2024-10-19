@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class DetalhamentoController with DDIEventSender<DetalhamentoState>, PostConstruct {
-  DetalhamentoController() : _selecaoHorizontalController = ddi.getComponent(module: DetalhamentoModule);
+  DetalhamentoController();
 
-  final SelecaoHorizontalController _selecaoHorizontalController;
+  late final SelecaoHorizontalController _selecaoHorizontalController = ddi.getComponent(module: DetalhamentoModule);
 
   @override
   FutureOr<void> onPostConstruct() {

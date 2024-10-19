@@ -9,11 +9,13 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 
 class MovimentacaoModule with DDIModule {
   @override
-  Future<void> onPostConstruct() async {
-    registerSingleton(DataMovimentacaoController.new);
-    await registerSingleton(CategoriaController.new);
-    await registerSingleton(TipoMovimentacaoController.new);
-    await registerSingleton(StatusPagamentoController.new);
-    registerSingleton(MovimentacaoController.new);
+  void onPostConstruct() {
+    Future.wait([
+      registerApplication(DataMovimentacaoController.new),
+      registerApplication(MovimentacaoController.new),
+      registerApplication(CategoriaController.new),
+      registerApplication(TipoMovimentacaoController.new),
+      registerApplication(StatusPagamentoController.new),
+    ]);
   }
 }

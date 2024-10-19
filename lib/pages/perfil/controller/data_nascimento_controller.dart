@@ -8,7 +8,7 @@ class DataNascimentoController with DDIEventSender<DataNascimentoState> {
   Future<void> selecionarDataNascimento() async {
     final DateTime start = DateTime(1950);
     final DateTime? picked = await showDatePicker(
-      context: ddi<GlobalKey<NavigatorState>>().currentContext!,
+      context: ddi.get<GlobalKey<NavigatorState>>().currentContext!,
       initialDate: dataNascimento,
       firstDate: start,
       lastDate: DateTime.now(),

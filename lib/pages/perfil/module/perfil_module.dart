@@ -9,7 +9,9 @@ final class PerfilModule with DDIModule {
   FutureOr<void> onPostConstruct() {
     Future.wait([
       registerApplication(DataNascimentoController.new),
-      registerApplication(SalvarPerfilController.new),
+      register(
+        factory: ScopeFactory.application(builder: SalvarPerfilController.new.builder),
+      ),
     ]);
   }
 }

@@ -11,7 +11,7 @@ class CustomSnackBar {
     String titulo = 'Sucesso!!!',
     String mensagem = 'Ação executada com sucesso',
   }) {
-    final ColorScheme schema = AdaptiveTheme.of(ddi<GlobalKey<NavigatorState>>().currentContext!).theme.colorScheme;
+    final ColorScheme schema = AdaptiveTheme.of(ddi.get<GlobalKey<NavigatorState>>().currentContext!).theme.colorScheme;
 
     late Color textColor;
     late Color backgroundColor;
@@ -54,7 +54,7 @@ class CustomSnackBar {
           style: TextStyle(color: textColor),
         ),
       ),
-    ).show(ddi<GlobalKey<NavigatorState>>().currentContext!);
+    ).show(ddi.get<GlobalKey<NavigatorState>>().currentContext!);
   }
 
   static void sucesso({
@@ -91,7 +91,7 @@ class CustomSnackBar {
     void Function(FlushbarStatus?)? onStatusChanged,
     bool repeat = false,
   }) {
-    final context = ddi<GlobalKey<NavigatorState>>().currentContext!;
+    final context = ddi.get<GlobalKey<NavigatorState>>().currentContext!;
     final ColorScheme schema = AdaptiveTheme.of(context).theme.colorScheme;
 
     Color? textColor;

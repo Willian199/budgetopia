@@ -38,7 +38,7 @@ class _DrawerItemPageState extends State<DrawerItemPage> with SingleTickerProvid
     debugPrint('Building DrawerItemPage');
     return SizedBox(
       child: ValueListenableBuilder<DrawerState>(
-        valueListenable: ddi<ZoomDrawerController>().stateNotifier!,
+        valueListenable: ddi.get<ZoomDrawerController>().stateNotifier!,
         builder: (BuildContext context, DrawerState state, Widget? child) {
           switch (state) {
             case DrawerState.closed:
@@ -91,9 +91,6 @@ class _DrawerItemPageState extends State<DrawerItemPage> with SingleTickerProvid
             ),
           );
         },
-        child: Container(
-          color: Colors.black,
-        ),
       ),
     );
   }

@@ -40,25 +40,21 @@ class DrawerPage extends StatelessWidget {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      child: Stack(
-        children: <Widget>[
-          ZoomDrawer(
-            controller: ddi(),
-            mainScreenTapClose: true,
-            duration: const Duration(milliseconds: 200),
-            reverseDuration: const Duration(milliseconds: 100),
-            mainScreen: const ControllerPage(),
-            menuScreen: const Padding(
-              padding: EdgeInsets.only(left: Double.DEZ),
-              child: DrawerItem(),
-            ),
-            borderRadius: 30.0,
-            showShadow: true,
-            //style: DrawerStyle.style1,
-            drawerShadowsBackgroundColor: shadow,
-            slideWidth: MediaQuery.sizeOf(context).width * 0.65,
-          ),
-        ],
+      child: ZoomDrawer(
+        controller: ddi(),
+        mainScreenTapClose: true,
+        duration: const Duration(milliseconds: 200),
+        reverseDuration: const Duration(milliseconds: 100),
+        mainScreen: const ControllerPage(),
+        menuScreen: const Padding(
+          padding: EdgeInsets.only(left: Double.DEZ),
+          child: DrawerItem(),
+        ),
+        borderRadius: 30.0,
+        showShadow: true,
+        //style: DrawerStyle.style1,
+        drawerShadowsBackgroundColor: shadow,
+        slideWidth: MediaQuery.sizeOf(context).width * 0.65,
       ),
     );
   }

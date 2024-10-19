@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/config/modules/start_module.dart';
@@ -13,6 +14,11 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
 
+  FlutterError.onError = (details) {
+    debugPrint(details.exception.toString());
+    CustomSnackBar.informacacao(mensagem: details.exception.toString());
+  };
+
   runApp(const StartApp());
 }
 
@@ -21,7 +27,7 @@ class StartApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterDDIFutureWidget(
+    return FlutterDDIBuilder(
       module: StartModule.new,
       child: (context) => AdaptiveTheme(
         light: LightTheme.getTheme(),
@@ -30,7 +36,7 @@ class StartApp extends StatelessWidget {
         builder: (theme, darkTheme) {
           return MaterialApp(
             title: Strings.APP_NAME,
-            navigatorKey: ddi<GlobalKey<NavigatorState>>(),
+            navigatorKey: ddi.get<GlobalKey<NavigatorState>>(),
             debugShowCheckedModeBanner: false,
             theme: theme,
             darkTheme: darkTheme,

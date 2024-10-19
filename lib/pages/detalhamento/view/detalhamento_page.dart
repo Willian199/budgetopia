@@ -34,17 +34,21 @@ class _DetalhamentoPageState extends State<DetalhamentoPage> with DDIInject<Deta
             tema.colorScheme.onSecondary,
           ],
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const HorizontalSelecaoMes<DetalhamentoModule>(
-                  //onPageChanged: (p0) {},
-                  ),
-              SizedBox(
-                height: 500,
-                child: GraficoLinha(),
-              ),
-            ],
+        child: SafeArea(
+          top: false,
+          bottom: false,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const HorizontalSelecaoMes<DetalhamentoModule>(
+                    //onPageChanged: (p0) {},
+                    ),
+                SizedBox(
+                  height: 500,
+                  child: GraficoLinha(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

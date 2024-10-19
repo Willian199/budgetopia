@@ -38,13 +38,19 @@ class _DrawerItemState extends State<DrawerItem> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = AdaptiveTheme.of(context).theme.colorScheme;
+    final isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
 
     return Stack(
       children: [
-        const DrawerItemPage(),
-        Positioned(
-          top: 100,
-          left: 15,
+        Padding(
+          padding: EdgeInsets.only(left: isPortrait ? 0 : 20),
+          child: const DrawerItemPage(),
+        ),
+        AnimatedPositioned(
+          top: isPortrait ? 100 : null,
+          left: isPortrait ? 15 : 40,
+          bottom: isPortrait ? null : 10,
+          duration: const Duration(milliseconds: 200),
           child: GestureDetector(
             onTap: () {
               if (_backgroundController.isCompleted) {

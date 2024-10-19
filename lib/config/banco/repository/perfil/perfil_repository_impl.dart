@@ -5,9 +5,9 @@ import 'package:budgetopia/config/banco/repository/perfil/perfil_repository.dart
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class PerfilRepositoryImpl implements PerfilRepository {
-  PerfilRepositoryImpl() : _entity = ddi<Database>().box<PerfilEntity>();
+  PerfilRepositoryImpl();
 
-  final Box<PerfilEntity> _entity;
+  late final Box<PerfilEntity> _entity = ddi.get<Database>().box<PerfilEntity>();
 
   @override
   bool remover(int id) => _entity.remove(id);

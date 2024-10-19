@@ -152,7 +152,7 @@ class _ItemListTileState extends State<ItemListTile> {
                   onTap: () async {
                     await Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => FlutterDDIFutureWidget(
+                        builder: (context) => FlutterDDIBuilder(
                           module: MovimentacaoModule.new,
                           child: (_) => MovimentacaoPage(
                             movimentacaoModel: widget.item,

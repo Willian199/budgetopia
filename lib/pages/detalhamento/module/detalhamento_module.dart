@@ -6,7 +6,7 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 
 final class DetalhamentoModule with DDIModule {
   @override
-  FutureOr<void> onPostConstruct() {
+  void onPostConstruct() {
     Future.wait([
       registerComponent(SelecaoHorizontalController.new),
       registerApplication(DetalhamentoController.new),

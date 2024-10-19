@@ -56,7 +56,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
         onPressed: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => FlutterDDIFutureWidget(
+              builder: (context) => FlutterDDIBuilder(
                 module: MovimentacaoModule.new,
                 child: (_) => const MovimentacaoPage(),
               ),

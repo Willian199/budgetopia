@@ -12,14 +12,11 @@ import 'package:budgetopia/pages/home/state/home_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController with DDIEventSender<HomeState>, PostConstruct {
-  HomeController()
-      : _movimentacaoRepository = ddi(),
-        _timeLineOpacityController = ddi(),
-        _selecaoHorizontalController = ddi.getComponent(module: HomeModule);
+  HomeController(this._movimentacaoRepository, this._timeLineOpacityController);
 
   final MovimentacaoRepository _movimentacaoRepository;
   final TimeLineOpacityController _timeLineOpacityController;
-  final SelecaoHorizontalController _selecaoHorizontalController;
+  late final SelecaoHorizontalController _selecaoHorizontalController = ddi.getComponent(module: HomeModule);
 
   Map<String, List<MovimentacaoModel>> _todasMovimentacoes = {};
 

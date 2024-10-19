@@ -8,7 +8,7 @@ class DataMovimentacaoController with DDIEventSender<DataSelecionarState> {
   Future<void> selecionarDataMovimentacao() async {
     final DateTime start = DateTime(2024);
     final DateTime? picked = await showDatePicker(
-      context: ddi<GlobalKey<NavigatorState>>().currentContext!,
+      context: ddi.get<GlobalKey<NavigatorState>>().currentContext!,
       initialDate: dataSelecionada,
       firstDate: start,
       lastDate: DateTime(2040),

@@ -20,23 +20,23 @@ class _ControllerPageState extends State<ControllerPage> with DDIInject<PageCont
   @override
   Widget build(BuildContext context) {
     debugPrint("Rebuilding ControllerPage");
-    return FlutterDDIWidget(
+    return FlutterDDIBuilder(
       module: ControlerPageModule.new,
-      child: PageView(
+      child: (_) => PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: instance,
         children: <Widget>[
-          FlutterDDIFutureWidget(
+          FlutterDDIBuilder(
             module: HomeModule.new,
             child: (_) => const HomePage(),
           ),
-          FlutterDDIFutureWidget(
+          FlutterDDIBuilder(
             module: DetalhamentoModule.new,
             child: (_) => const DetalhamentoPage(),
           ),
-          const FlutterDDIWidget(
+          FlutterDDIBuilder(
             module: PerfilModule.new,
-            child: PerfilPage(),
+            child: (_) => const PerfilPage(),
           ),
           const SobrePage(),
         ],
