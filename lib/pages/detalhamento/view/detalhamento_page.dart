@@ -60,7 +60,7 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
               Container(
                 constraints: BoxConstraints(
                   minWidth: size.width,
-                  minHeight: 705,
+                  minHeight: 685,
                 ),
                 height: size.height - 100,
                 child: Stack(
