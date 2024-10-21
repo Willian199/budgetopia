@@ -47,131 +47,134 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
       return const SizedBox.shrink();
     }
 
-    final List<GraficoModel> itensGrafico = eval(instance.state.saldo);
-    final List<FlSpot> allSpots = itensGrafico.map((GraficoModel item) => FlSpot(item.index, item.valor)).toList();
+    final List<GraficoModel> itensGraficoSaldo = eval(instance.state.saldo);
+    final List<FlSpot> spotsSaldo = itensGraficoSaldo.map((GraficoModel item) => FlSpot(item.index, item.valor)).toList();
 
-    if (allSpots.isEmpty) {
+    if (spotsSaldo.isEmpty) {
       return const SizedBox.shrink();
     }
 
     return Padding(
-      padding: const EdgeInsets.only(left: 10, top: 40),
-      child: LineChart(
-        LineChartData(
-          minY: minY < 0 ? minY : 0,
-          minX: 1.2,
-          baselineY: minY,
-          backgroundColor: Colors.transparent,
-          gridData: const FlGridData(show: false),
-          borderData: FlBorderData(show: false),
-          lineTouchData: LineTouchData(
-            getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
-              final int tamanho = allSpots.length;
+      padding: const EdgeInsets.only(left: 10, top: 60),
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        child: LineChart(
+          LineChartData(
+            minY: minY < 0 ? minY : 0,
+            minX: 1.2,
+            baselineY: minY,
+            backgroundColor: Colors.transparent,
+            gridData: const FlGridData(show: false),
+            borderData: FlBorderData(show: false),
+            lineTouchData: LineTouchData(
+              getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
+                final int tamanho = spotsSaldo.length;
 
-              return spotIndexes.map((int index) {
-                return TouchedSpotIndicatorData(
-                  //Cor da linha vertical
-                  const FlLine(
-                    color: Colors.transparent,
-                    strokeWidth: 0,
-                  ),
-                  //Bolinha ao selecionar o item no gráfico
-                  FlDotData(
-                    show: (index > 1) && (index < (tamanho - 1)),
-                    getDotPainter: (FlSpot spot, double percent, LineChartBarData barData, int index) {
-                      return FlDotCirclePainter(
-                        radius: 8,
-                        color: colorScheme.primary,
-                        strokeWidth: 3,
-                        strokeColor: colorScheme.onPrimary,
-                      );
-                    },
-                  ),
-                );
-              }).toList();
-            },
-            //Campo do valor ao clicar no gráfico
-            touchTooltipData: LineTouchTooltipData(
-              getTooltipColor: (_) => colorScheme.primary,
-              tooltipRoundedRadius: 8,
-              getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
-                return lineBarsSpot.map((LineBarSpot lineBarSpot) {
-                  if (lineBarSpot.x > 1 && lineBarSpot.x != itensGrafico.last.index) {
-                    return LineTooltipItem(
-                      Moeda.format(
-                        valor: lineBarSpot.y,
-                        simbolo: 'R\$',
-                      ),
-                      const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  }
+                return spotIndexes.map((int index) {
+                  return TouchedSpotIndicatorData(
+                    //Cor da linha vertical
+                    const FlLine(
+                      color: Colors.transparent,
+                      strokeWidth: 0,
+                    ),
+                    //Bolinha ao selecionar o item no gráfico
+                    FlDotData(
+                      show: (index > 1) && (index < (tamanho - 1)),
+                      getDotPainter: (FlSpot spot, double percent, LineChartBarData barData, int index) {
+                        return FlDotCirclePainter(
+                          radius: 8,
+                          color: colorScheme.primary,
+                          strokeWidth: 3,
+                          strokeColor: colorScheme.onPrimary,
+                        );
+                      },
+                    ),
+                  );
                 }).toList();
               },
-            ),
-          ),
-          lineBarsData: <LineChartBarData>[
-            LineChartBarData(
-              spots: allSpots,
-              isCurved: true,
-              barWidth: 4,
-              preventCurveOverShooting: true,
-              shadow: const Shadow(
-                blurRadius: 5,
+              //Campo do valor ao clicar no gráfico
+              touchTooltipData: LineTouchTooltipData(
+                getTooltipColor: (_) => colorScheme.primary,
+                tooltipRoundedRadius: 8,
+                getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
+                  return lineBarsSpot.map((LineBarSpot lineBarSpot) {
+                    if (lineBarSpot.x > 1 && lineBarSpot.x != itensGraficoSaldo.last.index) {
+                      return LineTooltipItem(
+                        Moeda.format(
+                          valor: lineBarSpot.y,
+                          simbolo: 'R\$',
+                        ),
+                        const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }
+                  }).toList();
+                },
               ),
-              belowBarData: BarAreaData(
-                show: true,
+            ),
+            lineBarsData: <LineChartBarData>[
+              LineChartBarData(
+                spots: spotsSaldo,
+                isCurved: true,
+                barWidth: 4,
+                preventCurveOverShooting: true,
+                shadow: const Shadow(
+                  blurRadius: 5,
+                ),
+                belowBarData: BarAreaData(
+                  show: true,
+                  color: corBack,
+                ),
+                dotData: FlDotData(
+                  getDotPainter: (
+                    FlSpot spot,
+                    double xPercentage,
+                    LineChartBarData bar,
+                    int index,
+                  ) {
+                    return FlDotCirclePainter(
+                      color: colorScheme.tertiaryContainer,
+                    );
+                  },
+                  checkToShowDot: (FlSpot spot, LineChartBarData barData) {
+                    return spot.x > 1 && spot.x != itensGraficoSaldo.last.index;
+                  },
+                ),
                 color: corBack,
               ),
-              dotData: FlDotData(
-                getDotPainter: (
-                  FlSpot spot,
-                  double xPercentage,
-                  LineChartBarData bar,
-                  int index,
-                ) {
-                  return FlDotCirclePainter(
-                    color: colorScheme.tertiaryContainer,
-                  );
-                },
-                checkToShowDot: (FlSpot spot, LineChartBarData barData) {
-                  return spot.x > 1 && spot.x != itensGrafico.last.index;
-                },
+            ],
+            titlesData: FlTitlesData(
+              leftTitles: AxisTitles(
+                drawBelowEverything: false,
+                sideTitles: SideTitles(
+                    showTitles: true,
+                    minIncluded: false,
+                    reservedSize: 60,
+                    getTitlesWidget: (double value, TitleMeta meta) {
+                      return LegendaEsquerda(
+                        value: value,
+                        meta: meta,
+                      );
+                    }),
               ),
-              color: corBack,
-            ),
-          ],
-          titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
-              drawBelowEverything: false,
-              sideTitles: SideTitles(
+              rightTitles: const AxisTitles(),
+              topTitles: const AxisTitles(),
+              bottomTitles: AxisTitles(
+                drawBelowEverything: false,
+                sideTitles: SideTitles(
                   showTitles: true,
-                  maxIncluded: false,
-                  minIncluded: false,
-                  reservedSize: 60,
+                  interval: itensGraficoSaldo.length > 12 ? 2 : 1,
+                  reservedSize: 30,
                   getTitlesWidget: (double value, TitleMeta meta) {
-                    return LegendaEsquerda(
-                      value: value,
+                    return LegendaInferior(
                       meta: meta,
+                      item: itensGraficoSaldo.where((GraficoModel element) => element.index == value.truncate()).first,
                     );
-                  }),
-            ),
-            rightTitles: const AxisTitles(),
-            topTitles: const AxisTitles(),
-            bottomTitles: AxisTitles(
-              drawBelowEverything: false,
-              sideTitles: SideTitles(
-                showTitles: true,
-                interval: itensGrafico.length > 12 ? 2 : 1,
-                reservedSize: 30,
-                getTitlesWidget: (double value, TitleMeta meta) {
-                  return LegendaInferior(
-                    meta: meta,
-                    item: itensGrafico.where((GraficoModel element) => element.index == value.truncate()).first,
-                  );
-                },
+                  },
+                ),
               ),
             ),
           ),

@@ -37,122 +37,118 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
             tema.colorScheme.onSecondary,
           ],
         ),
-        child: SafeArea(
-          top: false,
-          bottom: false,
-          child: SingleChildScrollView(
-            child: Container(
-              constraints: BoxConstraints(
-                minWidth: size.width,
-                minHeight: 705,
-              ),
-              height: size.height - 100,
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 369,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: corBack,
+        child: SingleChildScrollView(
+          child: Container(
+            constraints: BoxConstraints(
+              minWidth: size.width,
+              minHeight: 705,
+            ),
+            height: size.height - 100,
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 369,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: corBack,
+                    ),
+                    height: 70,
+                    width: size.width,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  child: SizedBox(
+                    height: 400,
+                    width: size.width,
+                    child: const GraficoLinha(),
+                  ),
+                ),
+                Positioned(
+                  top: 410,
+                  child: Container(
+                    height: 270,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
                       ),
-                      height: 70,
-                      width: size.width,
+                      color: tema.colorScheme.onSecondary,
                     ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    child: SizedBox(
-                      height: 400,
-                      width: size.width,
-                      child: const GraficoLinha(),
-                    ),
-                  ),
-                  Positioned(
-                    top: 410,
-                    child: Container(
-                      height: 270,
-                      width: size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
+                    child: Column(
+                      children: [
+                        Card(
+                          elevation: 4,
+                          margin: const EdgeInsets.all(16),
+                          color: tema.colorScheme.primaryContainer,
+                          child: Container(
+                            width: size.width * .8,
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Total de entradas:',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  'R\$ ${Moeda.format(valor: state?.totalEntrada ?? 0)}',
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        color: tema.colorScheme.onSecondary,
-                      ),
-                      child: Column(
-                        children: [
-                          Card(
-                            elevation: 4,
-                            margin: const EdgeInsets.all(16),
-                            color: tema.colorScheme.primaryContainer,
-                            child: Container(
-                              width: size.width * .8,
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Total de entradas:',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    'R\$ ${Moeda.format(valor: state?.totalEntrada ?? 0)}',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                ],
-                              ),
+                        Card(
+                          elevation: 4,
+                          margin: const EdgeInsets.all(16),
+                          color: tema.colorScheme.primaryContainer,
+                          child: Container(
+                            width: size.width * .8,
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Total de saídas: ',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  'R\$ ${Moeda.format(valor: state?.totalSaida ?? 0)}',
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ],
                             ),
                           ),
-                          Card(
-                            elevation: 4,
-                            margin: const EdgeInsets.all(16),
-                            color: tema.colorScheme.primaryContainer,
-                            child: Container(
-                              width: size.width * .8,
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Total de Saídas: ',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    'R\$ ${Moeda.format(valor: state?.totalSaida ?? 0)}',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                ],
-                              ),
+                        ),
+                        Card(
+                          elevation: 4,
+                          margin: const EdgeInsets.all(16),
+                          color: tema.colorScheme.primaryContainer,
+                          child: Container(
+                            width: size.width * .8,
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Saldo do período:',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  'R\$ ${Moeda.format(valor: state?.totalSaldo ?? 0)}',
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ],
                             ),
                           ),
-                          Card(
-                            elevation: 4,
-                            margin: const EdgeInsets.all(16),
-                            color: tema.colorScheme.primaryContainer,
-                            child: Container(
-                              width: size.width * .8,
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Saldo do periodo:',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    'R\$ ${Moeda.format(valor: state?.totalSaldo ?? 0)}',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
