@@ -11,7 +11,7 @@ import 'package:budgetopia/pages/home/module/home_module.dart';
 import 'package:budgetopia/pages/home/state/home_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class HomeController with DDIEventSender<HomeState>, PostConstruct {
+class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   HomeController(this._movimentacaoRepository, this._timeLineOpacityController);
 
   final MovimentacaoRepository _movimentacaoRepository;
@@ -39,9 +39,11 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct {
         valorSaldo: 0,
       );
 
+  late final StreamSubscription<Map<String, List<MovimentacaoModel>>> _streamRef;
+
   @override
   FutureOr<void> onPostConstruct() {
-    _movimentacaoRepository.filter().listen((Map<String, List<MovimentacaoModel>> event) {
+    _streamRef = _movimentacaoRepository.filter().listen((Map<String, List<MovimentacaoModel>> event) {
       _todasMovimentacoes = event;
 
       double entrada = 0;
@@ -140,5 +142,10 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct {
         _movimentacoesMesSelecionado.where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id).toList(),
       TipoRegistroEnum.saida => _movimentacoesMesSelecionado.where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.saida.id).toList(),
     };
+  }
+
+  @override
+  FutureOr<void> onPreDestroy() {
+    _streamRef.cancel();
   }
 }

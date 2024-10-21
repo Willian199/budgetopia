@@ -9,16 +9,13 @@ class LegendaEsquerda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (value == 0.0) {
-      return Container();
-    }
-
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: Text(
         meta.formattedValue,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
+          fontSize: 14,
         ),
       ),
     );

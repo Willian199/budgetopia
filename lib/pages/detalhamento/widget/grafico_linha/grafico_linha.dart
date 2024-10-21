@@ -1,41 +1,72 @@
-import 'package:budgetopia/common/components/grafico/legenda_esquerda.dart';
-import 'package:budgetopia/common/components/grafico/legenda_inferior.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
-import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/pages/detalhamento/controller/detalhamento_controller.dart';
+import 'package:budgetopia/pages/detalhamento/state/grafico_state.dart';
+import 'package:budgetopia/pages/detalhamento/widget/grafico_linha/legenda_esquerda.dart';
+import 'package:budgetopia/pages/detalhamento/widget/grafico_linha/legenda_inferior.dart';
 import 'package:budgetopia/pages/home/model/grafico_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class GraficoLinha extends StatelessWidget {
-  GraficoLinha({
+class GraficoLinha extends StatefulWidget {
+  const GraficoLinha({
     super.key,
   });
 
-  final List<GraficoModel> values = GraficoModel.values;
+  @override
+  State<GraficoLinha> createState() => _GraficoLinhaState();
+}
 
-  final AxisTitles empty = const AxisTitles();
+class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> with DDIInject<DetalhamentoController> {
+  double minY = 0;
+  List<GraficoModel> eval(List<GraficoModel> values) {
+    if (values.isEmpty) {
+      return [];
+    }
+
+    minY = values.reduce((current, next) => current.valor < next.valor ? current : next).valor;
+
+    return [
+      GraficoModel(index: 0, valor: minY, legenda: ''),
+      GraficoModel(index: 1, valor: minY, legenda: ''),
+      ...values,
+      GraficoModel(index: values.length + 2, valor: minY, legenda: ''),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = context.colorScheme;
+    print('Building GraficoLinha');
+    final ColorScheme colorScheme = AdaptiveTheme.of(context).theme.colorScheme;
+
     final Color corBack = ddi.get<bool>(qualifier: Qualifier.dark_mode) ? colorScheme.primary : colorScheme.tertiary;
 
-    final List<FlSpot> allSpots = values.map((GraficoModel item) => FlSpot(item.index, item.valor)).toList();
+    if (instance.state.saldo.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final List<GraficoModel> itensGrafico = eval(instance.state.saldo);
+    final List<FlSpot> allSpots = itensGrafico.map((GraficoModel item) => FlSpot(item.index, item.valor)).toList();
+
+    if (allSpots.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 40),
+      padding: const EdgeInsets.only(left: 10, top: 40),
       child: LineChart(
         LineChartData(
-          minY: 0,
-          minX: values.length > 8 ? 1.5 : 1,
+          minY: minY < 0 ? minY : 0,
+          minX: 1.2,
+          baselineY: minY,
           backgroundColor: Colors.transparent,
           gridData: const FlGridData(show: false),
           borderData: FlBorderData(show: false),
           lineTouchData: LineTouchData(
             getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
-              final int tamanho = values.length;
+              final int tamanho = allSpots.length;
 
               return spotIndexes.map((int index) {
                 return TouchedSpotIndicatorData(
@@ -46,7 +77,7 @@ class GraficoLinha extends StatelessWidget {
                   ),
                   //Bolinha ao selecionar o item no gráfico
                   FlDotData(
-                    show: (index > (tamanho > 8 ? 1 : 0)) && (index < (tamanho - 1)),
+                    show: (index > 1) && (index < (tamanho - 1)),
                     getDotPainter: (FlSpot spot, double percent, LineChartBarData barData, int index) {
                       return FlDotCirclePainter(
                         radius: 8,
@@ -61,21 +92,22 @@ class GraficoLinha extends StatelessWidget {
             },
             //Campo do valor ao clicar no gráfico
             touchTooltipData: LineTouchTooltipData(
-              fitInsideHorizontally: true,
               getTooltipColor: (_) => colorScheme.primary,
               tooltipRoundedRadius: 8,
               getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
                 return lineBarsSpot.map((LineBarSpot lineBarSpot) {
-                  return LineTooltipItem(
-                    Moeda.format(
-                      valor: lineBarSpot.y,
-                      simbolo: 'R\$',
-                    ),
-                    const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
+                  if (lineBarSpot.x > 1 && lineBarSpot.x != itensGrafico.last.index) {
+                    return LineTooltipItem(
+                      Moeda.format(
+                        valor: lineBarSpot.y,
+                        simbolo: 'R\$',
+                      ),
+                      const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }
                 }).toList();
               },
             ),
@@ -85,8 +117,9 @@ class GraficoLinha extends StatelessWidget {
               spots: allSpots,
               isCurved: true,
               barWidth: 4,
+              preventCurveOverShooting: true,
               shadow: const Shadow(
-                blurRadius: 8,
+                blurRadius: 5,
               ),
               belowBarData: BarAreaData(
                 show: true,
@@ -104,13 +137,7 @@ class GraficoLinha extends StatelessWidget {
                   );
                 },
                 checkToShowDot: (FlSpot spot, LineChartBarData barData) {
-                  bool flag = spot.x != values.last.index;
-                  if (values.length > 6) {
-                    flag = flag && spot.x > 1;
-                  } else {
-                    flag = flag && spot.x != 0;
-                  }
-                  return flag;
+                  return spot.x > 1 && spot.x != itensGrafico.last.index;
                 },
               ),
               color: corBack,
@@ -118,11 +145,12 @@ class GraficoLinha extends StatelessWidget {
           ],
           titlesData: FlTitlesData(
             leftTitles: AxisTitles(
-              //drawBehindEverything: false,
               drawBelowEverything: false,
               sideTitles: SideTitles(
                   showTitles: true,
-                  reservedSize: 40,
+                  maxIncluded: false,
+                  minIncluded: false,
+                  reservedSize: 60,
                   getTitlesWidget: (double value, TitleMeta meta) {
                     return LegendaEsquerda(
                       value: value,
@@ -130,17 +158,18 @@ class GraficoLinha extends StatelessWidget {
                     );
                   }),
             ),
-            rightTitles: empty,
-            topTitles: empty,
+            rightTitles: const AxisTitles(),
+            topTitles: const AxisTitles(),
             bottomTitles: AxisTitles(
+              drawBelowEverything: false,
               sideTitles: SideTitles(
                 showTitles: true,
-                interval: values.length > 8 ? 2 : 1,
+                interval: itensGrafico.length > 12 ? 2 : 1,
                 reservedSize: 30,
                 getTitlesWidget: (double value, TitleMeta meta) {
                   return LegendaInferior(
                     meta: meta,
-                    item: values.where((GraficoModel element) => element.index == value.truncate()).first,
+                    item: itensGrafico.where((GraficoModel element) => element.index == value.truncate()).first,
                   );
                 },
               ),
