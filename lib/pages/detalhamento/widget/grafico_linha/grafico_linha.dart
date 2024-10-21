@@ -41,7 +41,21 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
     print('Building GraficoLinha');
     final ColorScheme colorScheme = AdaptiveTheme.of(context).theme.colorScheme;
 
-    final Color corBack = ddi.get<bool>(qualifier: Qualifier.dark_mode) ? colorScheme.primary : colorScheme.tertiary;
+    final Color corBack;
+    final Color corTooltipSaldoMenor;
+    final Color corBordaSaldoMenor;
+    final Color corTooltipSaldoOk;
+    if (ddi.get<bool>(qualifier: Qualifier.dark_mode)) {
+      corBack = colorScheme.primary;
+      corTooltipSaldoMenor = colorScheme.errorContainer;
+      corBordaSaldoMenor = colorScheme.error;
+      corTooltipSaldoOk = colorScheme.tertiaryContainer;
+    } else {
+      corBack = colorScheme.tertiary;
+      corTooltipSaldoMenor = colorScheme.error;
+      corBordaSaldoMenor = colorScheme.errorContainer;
+      corTooltipSaldoOk = colorScheme.tertiary;
+    }
 
     if (instance.state.saldo.isEmpty) {
       return const SizedBox.shrink();
@@ -55,7 +69,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
     }
 
     return Padding(
-      padding: const EdgeInsets.only(left: 10, top: 60),
+      padding: const EdgeInsets.only(left: 10, top: 30),
       child: SafeArea(
         top: false,
         bottom: false,
@@ -84,9 +98,9 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                       getDotPainter: (FlSpot spot, double percent, LineChartBarData barData, int index) {
                         return FlDotCirclePainter(
                           radius: 8,
-                          color: colorScheme.primary,
+                          color: spot.y > instance.valorSaldoObjetivo ? corTooltipSaldoOk : corTooltipSaldoMenor,
                           strokeWidth: 3,
-                          strokeColor: colorScheme.onPrimary,
+                          strokeColor: spot.y > instance.valorSaldoObjetivo ? corTooltipSaldoOk : corBordaSaldoMenor,
                         );
                       },
                     ),
@@ -95,7 +109,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
               },
               //Campo do valor ao clicar no gráfico
               touchTooltipData: LineTouchTooltipData(
-                getTooltipColor: (_) => colorScheme.primary,
+                getTooltipColor: (LineBarSpot lineBarSpot) => lineBarSpot.y > instance.valorSaldoObjetivo ? corTooltipSaldoOk : corTooltipSaldoMenor,
                 tooltipRoundedRadius: 8,
                 getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
                   return lineBarsSpot.map((LineBarSpot lineBarSpot) {
@@ -106,7 +120,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                           simbolo: 'R\$',
                         ),
                         const TextStyle(
-                          color: Colors.white,
+                          //color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       );
@@ -136,7 +150,8 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                     int index,
                   ) {
                     return FlDotCirclePainter(
-                      color: colorScheme.tertiaryContainer,
+                      color: spot.y > instance.valorSaldoObjetivo ? colorScheme.tertiaryContainer : corTooltipSaldoMenor,
+                      radius: 5,
                     );
                   },
                   checkToShowDot: (FlSpot spot, LineChartBarData barData) {
@@ -151,6 +166,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                 drawBelowEverything: false,
                 sideTitles: SideTitles(
                     showTitles: true,
+                    maxIncluded: false,
                     minIncluded: false,
                     reservedSize: 60,
                     getTitlesWidget: (double value, TitleMeta meta) {

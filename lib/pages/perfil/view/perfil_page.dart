@@ -21,7 +21,7 @@ class PerfilPage extends StatefulWidget {
   State<PerfilPage> createState() => _PerfilPageState();
 }
 
-class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<SalvarPerfilController> {
+class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<PerfilController> {
   @override
   void initState() {
     super.initState();

@@ -6,17 +6,21 @@ import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/pages/detalhamento/state/detalhamento_state.dart';
 import 'package:budgetopia/pages/detalhamento/state/grafico_state.dart';
 import 'package:budgetopia/pages/home/model/grafico_model.dart';
+import 'package:budgetopia/pages/perfil/controller/salvar_perfil_controller.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class DetalhamentoController with DDIEventSender<GraficoState>, PostConstruct, PreDestroy {
   DetalhamentoController();
 
   late final MovimentacaoRepository _movimentacaoRepository = ddi();
+  late final PerfilController _perfilController = ddi();
 
   @override
   GraficoState get state => super.state ?? GraficoState();
 
   late StreamSubscription<Map<String, List<MovimentacaoModel>>> _refer;
+
+  double get valorSaldoObjetivo => _perfilController.registroSalvo?.valor ?? 0;
 
   @override
   FutureOr<void> onPostConstruct() {

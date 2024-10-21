@@ -10,7 +10,7 @@ final class PerfilModule with DDIModule {
     Future.wait([
       registerApplication(DataNascimentoController.new),
       register(
-        factory: ScopeFactory.application(builder: SalvarPerfilController.new.builder),
+        factory: ScopeFactory.application(builder: PerfilController.new.builder),
       ),
     ]);
   }

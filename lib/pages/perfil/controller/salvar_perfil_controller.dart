@@ -6,15 +6,15 @@ import 'package:budgetopia/config/banco/repository/perfil/perfil_repository.dart
 import 'package:budgetopia/pages/perfil/controller/data_nascimento_controller.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class SalvarPerfilController with PostConstruct {
-  SalvarPerfilController(this._dataNascimentoController, this._userImageController, this._perfilRepository);
+class PerfilController with PostConstruct {
+  PerfilController();
 
   PerfilEntity? _registroSalvo;
   PerfilEntity? get registroSalvo => _registroSalvo;
 
-  final DataNascimentoController _dataNascimentoController;
-  final UserImageController _userImageController;
-  final PerfilRepository _perfilRepository;
+  late final DataNascimentoController _dataNascimentoController = ddi();
+  late final UserImageController _userImageController = ddi();
+  late final PerfilRepository _perfilRepository = ddi();
 
   @override
   FutureOr<void> onPostConstruct() {
