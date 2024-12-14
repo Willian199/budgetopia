@@ -51,7 +51,6 @@ class DefaultBackButtonState extends State<DefaultBackButton> with TickerProvide
           case DrawerState.closed:
             _animationController.reverse();
             break;
-          default:
         }
 
         return child!;

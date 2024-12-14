@@ -4,7 +4,7 @@ import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/config/modules/start_module.dart';
 import 'package:budgetopia/config/theme/dark_theme.dart';
 import 'package:budgetopia/config/theme/light_theme.dart';
-import 'package:budgetopia/pages/drawer/view/drawer.dart';
+import 'package:budgetopia/ui/drawer/view/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
