@@ -1,6 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
-import 'package:budgetopia/ui/drawer/widget/drawer_item_page.dart';
+import 'package:budgetopia/ui/drawer/view/widget/drawer_item_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:lottie/lottie.dart';

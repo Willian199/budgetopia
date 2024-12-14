@@ -5,9 +5,11 @@ class GraficoState {
     this.saidas = const [],
     this.entradas = const [],
     this.saldo = const [],
+    this.valorSaldoObjetivo = 0,
   });
 
   final List<GraficoModel> saidas;
   final List<GraficoModel> entradas;
   final List<GraficoModel> saldo;
+  final double valorSaldoObjetivo;
 }

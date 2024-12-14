@@ -2,8 +2,8 @@ import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
 import 'package:budgetopia/config/banco/generated/objectbox.g.dart';
 import 'package:budgetopia/config/banco/module/store_register.dart';
-import 'package:budgetopia/config/banco/repository/movimentacao/movimentacao_repository.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
+import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class MovimentacaoRepositoryImpl implements MovimentacaoRepository {

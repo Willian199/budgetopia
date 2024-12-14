@@ -6,7 +6,7 @@ import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/ui/detalhamento/controller/detalhamento_controller.dart';
 import 'package:budgetopia/ui/detalhamento/state/detalhamento_state.dart';
-import 'package:budgetopia/ui/detalhamento/widget/grafico_linha/grafico_linha.dart';
+import 'package:budgetopia/ui/detalhamento/view/widget/grafico_linha/grafico_linha.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 

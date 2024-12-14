@@ -1,5 +1,5 @@
 import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
-import 'package:budgetopia/config/banco/repository/movimentacao/movimentacao_repository.dart';
+import 'package:budgetopia/data/service/movimentacao/movimentacao_service.dart';
 import 'package:budgetopia/ui/movimentacao/controller/categoria_controller.dart';
 import 'package:budgetopia/ui/movimentacao/controller/data_movimentacao_controller.dart';
 import 'package:budgetopia/ui/movimentacao/controller/status_pagamento_controller.dart';
@@ -12,7 +12,7 @@ class MovimentacaoController {
   late final DataMovimentacaoController _dataMovimentacaoController = ddi();
   late final CategoriaController _categoriaController = ddi();
   late final TipoMovimentacaoController _tipoMovimentacaoController = ddi();
-  late final MovimentacaoRepository _movimentacaoRepository = ddi();
+  late final MovimentacaoService _movimentacaoService = ddi();
   late final StatusPagamentoController _statusPagamentoController = ddi();
 
   bool salvar({required String titulo, required double valor, required String observacao, required int id}) {
@@ -27,8 +27,8 @@ class MovimentacaoController {
       status: _statusPagamentoController.status,
     );
 
-    return _movimentacaoRepository.salvar(obj) > 0;
+    return _movimentacaoService.salvar(obj) > 0;
   }
 
-  bool remover(int id) => _movimentacaoRepository.remover(id);
+  bool remover(int id) => _movimentacaoService.remover(id);
 }

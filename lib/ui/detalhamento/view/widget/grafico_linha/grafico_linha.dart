@@ -1,10 +1,10 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
-import 'package:budgetopia/ui/detalhamento/controller/detalhamento_controller.dart';
+import 'package:budgetopia/ui/detalhamento/controller/grafico_controller.dart';
 import 'package:budgetopia/ui/detalhamento/state/grafico_state.dart';
-import 'package:budgetopia/ui/detalhamento/widget/grafico_linha/legenda_esquerda.dart';
-import 'package:budgetopia/ui/detalhamento/widget/grafico_linha/legenda_inferior.dart';
+import 'package:budgetopia/ui/detalhamento/view/widget/grafico_linha/legenda_esquerda.dart';
+import 'package:budgetopia/ui/detalhamento/view/widget/grafico_linha/legenda_inferior.dart';
 import 'package:budgetopia/ui/home/model/grafico_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +19,15 @@ class GraficoLinha extends StatefulWidget {
   State<GraficoLinha> createState() => _GraficoLinhaState();
 }
 
-class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> with DDIInject<DetalhamentoController> {
+class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> with DDIInject<GraficoController> {
   double minY = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    instance.valorSaldoObjetivo;
+  }
+
   List<GraficoModel> eval(List<GraficoModel> values) {
     if (values.isEmpty) {
       return [];
@@ -57,11 +64,11 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
       corTooltipSaldoOk = colorScheme.tertiary;
     }
 
-    if (instance.state.saldo.isEmpty) {
+    if (state?.saldo.isEmpty ?? true) {
       return const SizedBox.shrink();
     }
 
-    final List<GraficoModel> itensGraficoSaldo = eval(instance.state.saldo);
+    final List<GraficoModel> itensGraficoSaldo = eval(state?.saldo ?? []);
     final List<FlSpot> spotsSaldo = itensGraficoSaldo.map((GraficoModel item) => FlSpot(item.index, item.valor)).toList();
 
     if (spotsSaldo.isEmpty) {
@@ -98,9 +105,9 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                       getDotPainter: (FlSpot spot, double percent, LineChartBarData barData, int index) {
                         return FlDotCirclePainter(
                           radius: 8,
-                          color: spot.y > instance.valorSaldoObjetivo ? corTooltipSaldoOk : corTooltipSaldoMenor,
+                          color: spot.y > (state?.valorSaldoObjetivo ?? 0) ? corTooltipSaldoOk : corTooltipSaldoMenor,
                           strokeWidth: 3,
-                          strokeColor: spot.y > instance.valorSaldoObjetivo ? corTooltipSaldoOk : corBordaSaldoMenor,
+                          strokeColor: spot.y > (state?.valorSaldoObjetivo ?? 0) ? corTooltipSaldoOk : corBordaSaldoMenor,
                         );
                       },
                     ),
@@ -109,7 +116,8 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
               },
               //Campo do valor ao clicar no gráfico
               touchTooltipData: LineTouchTooltipData(
-                getTooltipColor: (LineBarSpot lineBarSpot) => lineBarSpot.y > instance.valorSaldoObjetivo ? corTooltipSaldoOk : corTooltipSaldoMenor,
+                getTooltipColor: (LineBarSpot lineBarSpot) =>
+                    lineBarSpot.y > (state?.valorSaldoObjetivo ?? 0) ? corTooltipSaldoOk : corTooltipSaldoMenor,
                 tooltipRoundedRadius: 8,
                 getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
                   return lineBarsSpot.map((LineBarSpot lineBarSpot) {
@@ -150,7 +158,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                     int index,
                   ) {
                     return FlDotCirclePainter(
-                      color: spot.y > instance.valorSaldoObjetivo ? colorScheme.tertiaryContainer : corTooltipSaldoMenor,
+                      color: spot.y > (state?.valorSaldoObjetivo ?? 0) ? colorScheme.tertiaryContainer : corTooltipSaldoMenor,
                       radius: 5,
                     );
                   },

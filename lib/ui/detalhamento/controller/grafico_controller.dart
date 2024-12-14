@@ -2,30 +2,29 @@ import 'dart:async';
 
 import 'package:budgetopia/data/service/movimentacao/movimentacao_service.dart';
 import 'package:budgetopia/data/service/movimentacao/movimentacao_service_impl.dart';
-import 'package:budgetopia/ui/detalhamento/state/detalhamento_state.dart';
+import 'package:budgetopia/ui/detalhamento/state/grafico_state.dart';
 import 'package:budgetopia/ui/perfil/controller/salvar_perfil_controller.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class DetalhamentoController with DDIEventSender<DetalhamentoState>, PostConstruct, PreDestroy {
-  DetalhamentoController();
-
+class GraficoController with DDIEventSender<GraficoState>, PostConstruct, PreDestroy {
   late final MovimentacaoService _movimentacaoService = ddi();
   late final PerfilController _perfilController = ddi();
 
-  double get valorSaldoObjetivo => _perfilController.registroSalvo?.valor ?? 0;
-
   late StreamSubscription<MovimentacaoDados> _refer;
+
+  double get valorSaldoObjetivo => _perfilController.registroSalvo?.valor ?? 0;
 
   @override
   FutureOr<void> onPostConstruct() {
     _refer = _movimentacaoService.buscarDadosDetalhamento().listen((MovimentacaoDados dados) {
-      final (_, detalhamento) = dados;
+      final (grafico, _) = dados;
 
       fire(
-        DetalhamentoState(
-          totalEntrada: detalhamento.totalEntrada,
-          totalSaida: detalhamento.totalSaida,
-          totalSaldo: detalhamento.totalSaldo,
+        GraficoState(
+          saidas: grafico.saidas,
+          entradas: grafico.entradas,
+          saldo: grafico.saldo,
+          valorSaldoObjetivo: _perfilController.registroSalvo?.valor ?? 0,
         ),
       );
     });

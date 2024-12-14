@@ -7,7 +7,7 @@ class TimeLineOpacityController with DDIEventSender<OpacityState> {
   void changePosition(double value) {
     if ((exibindo && value <= 10) || (!exibindo && value > 10)) {
       exibindo = value > 10;
-      ddiEvent.fire<OpacityState>(OpacityState(value));
+      fire(OpacityState(value));
     }
   }
 }

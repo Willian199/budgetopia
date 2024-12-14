@@ -4,17 +4,17 @@ import 'package:budgetopia/common/components/selecao_horizontal/controller/selec
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
-import 'package:budgetopia/config/banco/repository/movimentacao/movimentacao_repository.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
+import 'package:budgetopia/data/service/movimentacao/movimentacao_service.dart';
 import 'package:budgetopia/ui/home/controller/time_line_opacity_controller.dart';
 import 'package:budgetopia/ui/home/module/home_module.dart';
 import 'package:budgetopia/ui/home/state/home_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
-  HomeController(this._movimentacaoRepository, this._timeLineOpacityController);
+  HomeController(this._movimentacaoService, this._timeLineOpacityController);
 
-  final MovimentacaoRepository _movimentacaoRepository;
+  final MovimentacaoService _movimentacaoService;
   final TimeLineOpacityController _timeLineOpacityController;
   late final SelecaoHorizontalController _selecaoHorizontalController = ddi.getComponent(module: HomeModule);
 
@@ -29,21 +29,11 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   TipoRegistroEnum _tabSelecionada = TipoRegistroEnum.todos;
   TipoRegistroEnum get tabSelecionada => _tabSelecionada;
 
-  @override
-  HomeState get state =>
-      super.state ??
-      HomeState(
-        tabSelecionada: {TipoRegistroEnum.todos},
-        valorEntrada: 0,
-        valorSaida: 0,
-        valorSaldo: 0,
-      );
-
   late final StreamSubscription<Map<String, List<MovimentacaoModel>>> _streamRef;
 
   @override
   FutureOr<void> onPostConstruct() {
-    _streamRef = _movimentacaoRepository.filter().listen((Map<String, List<MovimentacaoModel>> event) {
+    _streamRef = _movimentacaoService.buscarDadosMovimentacao().listen((Map<String, List<MovimentacaoModel>> event) {
       _todasMovimentacoes = event;
 
       double entrada = 0;
@@ -104,7 +94,13 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   void refresh(Set<TipoRegistroEnum> value) {
     _tabSelecionada = value.first;
     _filtrarMovimentacaoes();
-    fire(state.copyWith(tabSelecionada: {_tabSelecionada}));
+    fire(state?.copyWith(tabSelecionada: {_tabSelecionada}) ??
+        HomeState(
+          tabSelecionada: {TipoRegistroEnum.todos},
+          valorEntrada: 0,
+          valorSaida: 0,
+          valorSaldo: 0,
+        ));
   }
 
   void alterouSelecao(int pos) {

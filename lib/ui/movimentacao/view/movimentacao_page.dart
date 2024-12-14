@@ -13,10 +13,10 @@ import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.da
 import 'package:budgetopia/ui/movimentacao/controller/status_pagamento_controller.dart';
 import 'package:budgetopia/ui/movimentacao/controller/tipo_movimentacao_controller.dart';
 import 'package:budgetopia/ui/movimentacao/mixin/movimentacao_page_mixin.dart';
-import 'package:budgetopia/ui/movimentacao/widgets/data_movimentacao.dart';
-import 'package:budgetopia/ui/movimentacao/widgets/selecionar_categoria.dart';
-import 'package:budgetopia/ui/movimentacao/widgets/status_pagamento.dart';
-import 'package:budgetopia/ui/movimentacao/widgets/tipo_movimentacao.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/data_movimentacao.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/selecionar_categoria.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/status_pagamento.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/tipo_movimentacao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

@@ -1,7 +1,7 @@
 import 'package:budgetopia/config/banco/entity/perfil_entity.dart';
 import 'package:budgetopia/config/banco/generated/objectbox.g.dart';
 import 'package:budgetopia/config/banco/module/store_register.dart';
-import 'package:budgetopia/config/banco/repository/perfil/perfil_repository.dart';
+import 'package:budgetopia/data/repository/perfil/perfil_repository.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class PerfilRepositoryImpl implements PerfilRepository {
