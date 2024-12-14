@@ -101,7 +101,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                       focusNode: nomeFocusNode,
                       autofocus: true,
                       decoration: const InputDecoration(
-                        labelText: 'Nome',
+                        labelText: Strings.NOME,
                         prefixIcon: SizedBox(
                           width: 40,
                           child: Center(
@@ -122,7 +122,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                       },
                       validator: (value) {
                         if (value?.isEmpty ?? false) {
-                          return 'Por favor, informe o seu nome';
+                          return Strings.INFORME_NOME;
                         }
                         return null;
                       },
@@ -157,7 +157,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                         }
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Objetivo Saldo Mensal',
+                        labelText: Strings.OBJETIVO_SALDO_MENSAL,
                         prefixIcon: SizedBox(
                           width: 40,
                           child: Center(
@@ -178,7 +178,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                       ],
                       validator: (value) {
                         if (value?.isEmpty ?? false) {
-                          return 'Por favor, insira um valor';
+                          return Strings.INFORME_VALOR;
                         }
                         return null;
                       },

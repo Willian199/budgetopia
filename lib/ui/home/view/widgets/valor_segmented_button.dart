@@ -1,3 +1,4 @@
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class ValorSegmentedButton extends StatelessWidget {
           style: TextStyle(color: color),
         ),
         Text(
-          'R\$ ${Moeda.format(valor: valor)}',
+          '${Strings.RS} ${Moeda.format(valor: valor)}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: color,

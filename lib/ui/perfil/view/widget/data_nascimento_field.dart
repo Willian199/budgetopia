@@ -1,3 +1,4 @@
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/ui/perfil/controller/data_nascimento_controller.dart';
@@ -53,7 +54,7 @@ class _DataNascimentoFieldState extends EventListenerState<DataNascimentoField, 
       onEditingComplete: widget.nextFocus.requestFocus,
       textInputAction: TextInputAction.next,
       decoration: const InputDecoration(
-        labelText: 'Data de Nascimento',
+        labelText: Strings.DATA_NASCIMENTO,
         prefixIcon: SizedBox(
           width: 40,
           child: Center(

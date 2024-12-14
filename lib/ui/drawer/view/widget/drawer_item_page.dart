@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:budgetopia/common/constantes/integer.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/ui/drawer/view/widget/drawer_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
@@ -68,22 +69,22 @@ class _DrawerItemPageState extends State<DrawerItemPage> with SingleTickerProvid
               children: <Widget>[
                 DrawerTile(
                   Icons.home,
-                  "Home",
+                  Strings.HOME,
                   Integer.ZERO,
                 ),
                 DrawerTile(
                   Icons.show_chart,
-                  "Detalhes",
+                  Strings.DETALHES,
                   Integer.UM,
                 ),
                 DrawerTile(
                   Icons.person,
-                  "Perfil",
+                  Strings.PERFIL,
                   Integer.DOIS,
                 ),
                 DrawerTile(
                   Icons.info_rounded,
-                  "Sobre",
+                  Strings.SOBRE,
                   Integer.TRES,
                 ),
               ],

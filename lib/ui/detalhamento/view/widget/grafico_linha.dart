@@ -1,10 +1,11 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/ui/detalhamento/controller/grafico_controller.dart';
 import 'package:budgetopia/ui/detalhamento/state/grafico_state.dart';
-import 'package:budgetopia/ui/detalhamento/view/widget/grafico_linha/legenda_esquerda.dart';
-import 'package:budgetopia/ui/detalhamento/view/widget/grafico_linha/legenda_inferior.dart';
+import 'package:budgetopia/ui/detalhamento/view/widget/legenda_esquerda.dart';
+import 'package:budgetopia/ui/detalhamento/view/widget/legenda_inferior.dart';
 import 'package:budgetopia/ui/home/model/grafico_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
 
   @override
   Widget build(BuildContext context) {
-    print('Building GraficoLinha');
+    debugPrint('Building GraficoLinha');
     final ColorScheme colorScheme = AdaptiveTheme.of(context).theme.colorScheme;
 
     final Color corBack;
@@ -125,7 +126,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                       return LineTooltipItem(
                         Moeda.format(
                           valor: lineBarSpot.y,
-                          simbolo: 'R\$',
+                          simbolo: Strings.RS,
                         ),
                         const TextStyle(
                           //color: Colors.white,

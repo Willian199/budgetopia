@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/generics/default_back_button.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 
 class SobrePage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _SobrePageState extends State<SobrePage> {
     final ThemeData tema = AdaptiveTheme.of(context).theme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sobre o App'),
+        title: const Text(Strings.SOBRE),
         leading: const DefaultBackButton(),
       ),
       body: Container(
@@ -49,7 +50,7 @@ class _SobrePageState extends State<SobrePage> {
                   ),
                   SizedBox(height: 16.0),
                   Text(
-                    'Versão:',
+                    Strings.VERSAO,
                     style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                   ),
                   Text(

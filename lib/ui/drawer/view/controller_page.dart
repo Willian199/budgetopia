@@ -27,13 +27,8 @@ class _ControllerPageState extends State<ControllerPage> with DDIInject<PageCont
         controller: instance,
         children: <Widget>[
           FlutterDDIBuilder(
-            key: const ValueKey("home"),
             module: HomeModule.new,
-            child: (_) {
-              return const HomePage(
-                key: ValueKey("homekey"),
-              );
-            },
+            child: (_) => const HomePage(),
           ),
           FlutterDDIBuilder(
             module: DetalhamentoModule.new,

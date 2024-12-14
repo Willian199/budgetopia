@@ -1,5 +1,6 @@
 import 'package:budgetopia/common/components/user_imagem/controller/user_image_controller.dart';
 import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +25,7 @@ class _UserImagemAvatarState extends State<UserImagemAvatar> with DDIInject<User
                 children: [
                   ListTile(
                     leading: const Icon(Icons.photo_library),
-                    title: const Text('Galeria'),
+                    title: const Text(Strings.GALERIA),
                     onTap: () {
                       instance.selecionarImagem(ImageSource.gallery);
                       Navigator.of(context).pop();
@@ -32,7 +33,7 @@ class _UserImagemAvatarState extends State<UserImagemAvatar> with DDIInject<User
                   ),
                   ListTile(
                     leading: const Icon(Icons.photo_camera),
-                    title: const Text('Camera'),
+                    title: const Text(Strings.CAMERA),
                     onTap: () {
                       instance.selecionarImagem(ImageSource.camera);
                       Navigator.of(context).pop();
