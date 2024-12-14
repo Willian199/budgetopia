@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
-final class StartModule with DDIModule {
+final class StartModule with DDIModule, PreDestroy {
   @override
   Future<void> onPostConstruct() async {
     registerObject<GlobalKey<NavigatorState>>(GlobalKey<NavigatorState>());
@@ -42,9 +42,16 @@ final class StartModule with DDIModule {
       ),
     ]);
 
+    DatabaseInterceptor.new.builder.asSingleton().register();
+
     await registerSingleton<Database>(
       () async => ObjectBox.create(),
-      interceptors: [DatabaseInterceptor.new],
+      interceptors: {DatabaseInterceptor},
     );
+  }
+
+  @override
+  FutureOr<void> onPreDestroy() {
+    ddi.destroy<DatabaseInterceptor>();
   }
 }
