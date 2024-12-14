@@ -1,16 +1,16 @@
 import 'dart:async';
 
-import 'package:budgetopia/data/repository/perfil/perfil_repository.dart';
+import 'package:budgetopia/data/service/perfil/perfil_service.dart';
 import 'package:budgetopia/ui/home/state/imagem_usuario_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class ImagemUsuarioController with DDIEventSender<ImagemUsuarioState>, PostConstruct {
-  ImagemUsuarioController() : _perfilRepository = ddi();
+  ImagemUsuarioController() : _perfilService = ddi();
 
-  final PerfilRepository _perfilRepository;
+  final PerfilService _perfilService;
 
   @override
   FutureOr<void> onPostConstruct() {
-    fire(ImagemUsuarioState(_perfilRepository.getFirst?.pathImagem));
+    fire(ImagemUsuarioState(_perfilService.getFirst?.pathImagem));
   }
 }
