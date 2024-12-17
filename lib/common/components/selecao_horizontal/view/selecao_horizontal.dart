@@ -1,29 +1,33 @@
 import 'dart:async';
 
+import 'package:budgetopia/common/components/selecao_horizontal/config/update_interface.dart';
 import 'package:budgetopia/common/components/selecao_horizontal/controller/selecao_horizontal_controller.dart';
 import 'package:budgetopia/common/components/selecao_horizontal/state/selecao_horizontal_state.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class HorizontalSelecaoMes<ModuleT extends DDIModule> extends StatefulWidget {
+class HorizontalSelecaoMes<ModuleT extends DDIModule, CaseT extends UpdateInterface> extends StatefulWidget {
   const HorizontalSelecaoMes({super.key, this.onPageChanged});
 
   final void Function(int)? onPageChanged;
 
   @override
-  State<HorizontalSelecaoMes> createState() => _HorizontalSelecaoMesState<ModuleT>();
+  State<HorizontalSelecaoMes> createState() => _HorizontalSelecaoMesState<ModuleT, CaseT>();
 }
 
-class _HorizontalSelecaoMesState<ModuleT extends DDIModule> extends State<HorizontalSelecaoMes>
-    with DDIComponentInject<SelecaoHorizontalController, ModuleT> {
+class _HorizontalSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterface> extends State<HorizontalSelecaoMes>
+    with DDIComponentInject<SelecaoHorizontalController<CaseT>, ModuleT> {
   final Completer<void> _complete = Completer();
 
   late final PageController _pageController;
+  List<String> itens = [];
+  int posicao = 0;
   @override
   void initState() {
     ddiEvent.subscribe<SelecaoHorizontalState>(listen);
     super.initState();
+    instance.alterouPosicao(0);
 
     _pageController = PageController(
       onAttach: (position) {
@@ -42,6 +46,8 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule> extends State<Horizo
   }
 
   Future<void> listen(SelecaoHorizontalState state) async {
+    itens = state.itens;
+    posicao = state.posicao;
     setState(() {});
     if (!_complete.isCompleted) {
       await _complete.future;
@@ -53,7 +59,7 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule> extends State<Horizo
 
   @override
   Widget build(BuildContext context) {
-    if (instance.itens.isEmpty) {
+    if (itens.isEmpty) {
       return const Center(
         child: Text('Nenhum mês disponível'),
       );
@@ -73,9 +79,9 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule> extends State<Horizo
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             icon: const Center(child: Icon(Icons.arrow_back)),
-            onPressed: instance.posicao > 0
+            onPressed: posicao > 0
                 ? () {
-                    _pageController.animateToPage(instance.posicao - 1, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+                    _pageController.animateToPage(posicao - 1, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
                   }
                 : null,
           ),
@@ -84,7 +90,7 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule> extends State<Horizo
             width: width - 150,
             child: PageView.builder(
               controller: _pageController,
-              itemCount: instance.itens.length,
+              itemCount: itens.length,
               onPageChanged: (int posicao) {
                 instance.alterouPosicao(posicao);
                 widget.onPageChanged?.call(posicao);
@@ -92,7 +98,7 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule> extends State<Horizo
               itemBuilder: (context, index) {
                 return Center(
                   child: Text(
-                    instance.itens[index].capitalize,
+                    itens[index].capitalize,
                     style: const TextStyle(fontSize: 20),
                   ),
                 );
@@ -104,9 +110,9 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule> extends State<Horizo
             icon: const Icon(Icons.arrow_forward),
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            onPressed: instance.posicao < instance.itens.length - 1 // Altere o valor máximo conforme necessário
+            onPressed: posicao < itens.length - 1 // Altere o valor máximo conforme necessário
                 ? () {
-                    final int pos = instance.posicao + 1;
+                    final int pos = posicao + 1;
                     _pageController.animateToPage(pos, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
                   }
                 : null,

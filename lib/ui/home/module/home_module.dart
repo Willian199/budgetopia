@@ -13,7 +13,7 @@ class HomeModule with DDIModule {
   void onPostConstruct() {
     Future.wait([
       registerApplication(HomeCase.new),
-      registerComponent(SelecaoHorizontalController.new),
+      registerComponent(SelecaoHorizontalController<HomeCase>.new),
       registerSingleton(TimeLineOpacityController.new),
       register(
         factory: ScopeFactory.application(builder: HomeController.new.builder),

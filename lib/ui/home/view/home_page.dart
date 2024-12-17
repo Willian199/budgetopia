@@ -6,6 +6,7 @@ import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
+import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
 import 'package:budgetopia/ui/home/mixins/home_mixin.dart';
 import 'package:budgetopia/ui/home/module/home_module.dart';
@@ -131,7 +132,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  HorizontalSelecaoMes<HomeModule>(
+                  HorizontalSelecaoMes<HomeModule, HomeCase>(
                     onPageChanged: instance.alterouSelecao,
                   ),
                   Padding(

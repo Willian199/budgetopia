@@ -1,20 +1,17 @@
 import 'dart:async';
 
-import 'package:budgetopia/common/components/selecao_horizontal/controller/selecao_horizontal_controller.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/data/repository/home/home_repository.dart';
 import 'package:budgetopia/ui/home/case/home_case.dart';
-import 'package:budgetopia/ui/home/module/home_module.dart';
 import 'package:budgetopia/ui/home/state/home_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   late final HomeRepository _homeRepository = ddi();
   late final HomeCase _homeCase = ddi();
-  late final SelecaoHorizontalController _selecaoHorizontalController = ddi.getComponent(module: HomeModule);
 
   List<MovimentacaoModel> get registrosAbaMovimentacao => _homeRepository.movimentacoesPorAba.reversed.toList();
 
@@ -38,7 +35,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
 
           posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
         } else {
-          final String mesSelecionado = _selecaoHorizontalController.itens[_selecaoHorizontalController.posicao];
+          final String mesSelecionado = _homeCase.getByPosicao;
 
           mesesDisponiveis = event.keys.toList();
 
@@ -63,7 +60,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
       }
       _homeCase.changePosition(0);
 
-      _selecaoHorizontalController.setDados(posicaoSelecionada, mesesDisponiveis);
+      _homeCase.update(posicaoSelecionada, mesesDisponiveis);
 
       fire(
         HomeState(
