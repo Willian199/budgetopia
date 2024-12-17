@@ -17,8 +17,8 @@ class _SelecionarCategoriaState extends EventListenerState<SelecionarCategoria, 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<CategoriaEnum>(
-      value: state ?? instance.listarCategorias.first,
-      items: instance.listarCategorias.map((CategoriaEnum category) {
+      value: state ?? CategoriaEnum.values.first,
+      items: CategoriaEnum.values.map((CategoriaEnum category) {
         return DropdownMenuItem(
           value: category,
           child: Row(

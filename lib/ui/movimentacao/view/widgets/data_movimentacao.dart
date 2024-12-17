@@ -41,7 +41,7 @@ class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSe
   Widget build(BuildContext context) {
     return TextFormField(
       controller: TextEditingController(
-        text: instance.dataSelecionada.format(),
+        text: (state ?? DateTime.now()).format(),
       ),
       focusNode: widget.focusNode,
       onTap: () async {

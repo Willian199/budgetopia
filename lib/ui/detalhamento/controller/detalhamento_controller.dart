@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:budgetopia/data/service/movimentacao/movimentacao_service.dart';
-import 'package:budgetopia/data/service/movimentacao/movimentacao_service_impl.dart';
-import 'package:budgetopia/data/service/perfil/perfil_service.dart';
+import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.dart';
+import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository_impl.dart';
+import 'package:budgetopia/data/repository/perfil/perfil_repository.dart';
 import 'package:budgetopia/ui/detalhamento/state/detalhamento_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class DetalhamentoController with DDIEventSender<DetalhamentoState>, PostConstruct, PreDestroy {
-  late final MovimentacaoService _movimentacaoService = ddi();
-  late final PerfilService _perfilService = ddi();
+  late final MovimentacaoRepository _movimentacaoRepository = ddi();
+  late final PerfilRepository _perfilService = ddi();
 
   double get valorSaldoObjetivo => _perfilService.getFirst?.valor ?? 0;
 
@@ -16,7 +16,7 @@ class DetalhamentoController with DDIEventSender<DetalhamentoState>, PostConstru
 
   @override
   FutureOr<void> onPostConstruct() {
-    _refer = _movimentacaoService.buscarDadosDetalhamento().listen((MovimentacaoDados dados) {
+    _refer = _movimentacaoRepository.buscarDadosDetalhamento().listen((MovimentacaoDados dados) {
       final (_, detalhamento) = dados;
 
       fire(

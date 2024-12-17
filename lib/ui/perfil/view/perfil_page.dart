@@ -5,8 +5,8 @@ import 'package:budgetopia/common/components/input_formatters/decimal_input_form
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/ui/perfil/case/salvar_perfil_case.dart';
 import 'package:budgetopia/ui/perfil/controller/data_nascimento_controller.dart';
-import 'package:budgetopia/ui/perfil/controller/salvar_perfil_controller.dart';
 import 'package:budgetopia/ui/perfil/mixin/perfil_page_mixin.dart';
 import 'package:budgetopia/ui/perfil/view/widget/data_nascimento_field.dart';
 import 'package:budgetopia/ui/perfil/view/widget/user_imagem_avatar.dart';
@@ -21,7 +21,7 @@ class PerfilPage extends StatefulWidget {
   State<PerfilPage> createState() => _PerfilPageState();
 }
 
-class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<PerfilController> {
+class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<PerfilCase> {
   @override
   void initState() {
     super.initState();

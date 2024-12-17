@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:budgetopia/data/service/movimentacao/movimentacao_service.dart';
-import 'package:budgetopia/data/service/movimentacao/movimentacao_service_impl.dart';
+import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.dart';
+import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository_impl.dart';
 import 'package:budgetopia/ui/detalhamento/state/grafico_state.dart';
-import 'package:budgetopia/ui/perfil/controller/salvar_perfil_controller.dart';
+import 'package:budgetopia/ui/perfil/case/salvar_perfil_case.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class GraficoController with DDIEventSender<GraficoState>, PostConstruct, PreDestroy {
-  late final MovimentacaoService _movimentacaoService = ddi();
-  late final PerfilController _perfilController = ddi();
+  late final MovimentacaoRepository _movimentacaoRepository = ddi();
+  late final PerfilCase _perfilController = ddi();
 
   late StreamSubscription<MovimentacaoDados> _refer;
 
@@ -16,7 +16,7 @@ class GraficoController with DDIEventSender<GraficoState>, PostConstruct, PreDes
 
   @override
   FutureOr<void> onPostConstruct() {
-    _refer = _movimentacaoService.buscarDadosDetalhamento().listen((MovimentacaoDados dados) {
+    _refer = _movimentacaoRepository.buscarDadosDetalhamento().listen((MovimentacaoDados dados) {
       final (grafico, _) = dados;
 
       fire(

@@ -1,12 +1,12 @@
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
-import 'package:budgetopia/data/service/home/home_service.dart';
-import 'package:budgetopia/data/service/movimentacao/movimentacao_service.dart';
+import 'package:budgetopia/data/repository/home/home_repository.dart';
+import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class HomeServiceImpl implements HomeService {
-  late final MovimentacaoService _movimentacaoService = ddi();
+class HomeRepositoryImpl implements HomeRepository {
+  late final MovimentacaoRepository _movimentacaoRepository = ddi();
 
   late Map<String, List<MovimentacaoModel>> _todasMovimentacoes = {};
 
@@ -22,7 +22,7 @@ class HomeServiceImpl implements HomeService {
 
   @override
   Stream<Map<String, List<MovimentacaoModel>>> buscarDadosMovimentacao() {
-    return _movimentacaoService.buscarDadosMovimentacao().map((Map<String, List<MovimentacaoModel>> event) {
+    return _movimentacaoRepository.buscarDadosMovimentacao().map((Map<String, List<MovimentacaoModel>> event) {
       _todasMovimentacoes = event;
       return event;
     });

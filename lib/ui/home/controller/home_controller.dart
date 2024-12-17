@@ -5,24 +5,24 @@ import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
-import 'package:budgetopia/data/service/home/home_service.dart';
-import 'package:budgetopia/ui/home/controller/time_line_opacity_controller.dart';
+import 'package:budgetopia/data/repository/home/home_repository.dart';
+import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/module/home_module.dart';
 import 'package:budgetopia/ui/home/state/home_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
-  late final HomeService _homeService = ddi();
-  late final TimeLineOpacityController _timeLineOpacityController = ddi();
+  late final HomeRepository _homeRepository = ddi();
+  late final HomeCase _homeCase = ddi();
   late final SelecaoHorizontalController _selecaoHorizontalController = ddi.getComponent(module: HomeModule);
 
-  List<MovimentacaoModel> get registrosAbaMovimentacao => _homeService.movimentacoesPorAba.reversed.toList();
+  List<MovimentacaoModel> get registrosAbaMovimentacao => _homeRepository.movimentacoesPorAba.reversed.toList();
 
   late final StreamSubscription<Map<String, List<MovimentacaoModel>>> _streamRef;
 
   @override
   FutureOr<void> onPostConstruct() {
-    _streamRef = _homeService.buscarDadosMovimentacao().listen((Map<String, List<MovimentacaoModel>> event) {
+    _streamRef = _homeRepository.buscarDadosMovimentacao().listen((Map<String, List<MovimentacaoModel>> event) {
       double entrada = 0;
       double saida = 0;
 
@@ -31,7 +31,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
 
       if (event.isNotEmpty) {
         //Somente será vazio quando for o primeiro evento disparado
-        if (_homeService.movimentacoesMesSelecionado.isEmpty) {
+        if (_homeRepository.movimentacoesMesSelecionado.isEmpty) {
           mesesDisponiveis = event.keys.toList();
 
           final int newPos = mesesDisponiveis.indexOf(DateTime.now().getFormattedMonth());
@@ -48,7 +48,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
         }
 
         final movimentacoesMesSelecionado =
-            _homeService.filtrarMovimentacao(posicaoSelecionada, state?.tabSelecionada.first ?? TipoRegistroEnum.todos);
+            _homeRepository.filtrarMovimentacao(posicaoSelecionada, state?.tabSelecionada.first ?? TipoRegistroEnum.todos);
 
         for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
           if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {
@@ -61,7 +61,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
         mesesDisponiveis = [];
         posicaoSelecionada = 0;
       }
-      _timeLineOpacityController.changePosition(0);
+      _homeCase.changePosition(0);
 
       _selecaoHorizontalController.setDados(posicaoSelecionada, mesesDisponiveis);
 
@@ -77,7 +77,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   }
 
   void refresh(Set<TipoRegistroEnum> value) {
-    _homeService.filtrarMovimentacaoAba(value.first);
+    _homeRepository.filtrarMovimentacaoAba(value.first);
 
     fire(state?.copyWith(tabSelecionada: {value.first}) ??
         HomeState(
@@ -89,7 +89,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   }
 
   void alterouSelecao(int pos) {
-    final movimentacoesMesSelecionado = _homeService.filtrarMovimentacao(pos, state!.tabSelecionada.first);
+    final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(pos, state!.tabSelecionada.first);
 
     double entrada = 0;
     double saida = 0;
@@ -102,7 +102,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
       }
     }
 
-    _timeLineOpacityController.changePosition(0);
+    _homeCase.changePosition(0);
 
     fire(
       HomeState(

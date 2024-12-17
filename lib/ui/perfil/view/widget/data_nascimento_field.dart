@@ -42,7 +42,7 @@ class _DataNascimentoFieldState extends EventListenerState<DataNascimentoField, 
   Widget build(BuildContext context) {
     return TextFormField(
       controller: TextEditingController(
-        text: instance.dataNascimento.format(),
+        text: (state ?? DateTime(2006)).format(),
       ),
       focusNode: widget.focusNode,
       readOnly: true,
