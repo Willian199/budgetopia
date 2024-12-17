@@ -1,7 +1,7 @@
-typedef SelecaoHorizontalDados = (int posicao, List<String> itens);
-
 abstract interface class UpdateInterface {
-  void update(int posicao, List<String> itens);
+  Stream<List<String>> get dados;
 
-  Stream<SelecaoHorizontalDados> get dados;
+  Stream<int> get slidePosition;
+
+  void updatePosition(int posicao);
 }

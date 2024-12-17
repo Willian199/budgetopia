@@ -4,41 +4,52 @@ import 'package:budgetopia/common/components/selecao_horizontal/config/update_in
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 final class HomeCase with PreDestroy implements UpdateInterface {
-  double positionValue = 0.0;
+  late final StreamController<double> _scrollPosition = StreamController<double>.broadcast();
+  late final StreamController<int> _slidePosition = StreamController<int>.broadcast();
 
-  late final StreamController<double> _position = StreamController<double>.broadcast();
-  late final StreamController<SelecaoHorizontalDados> _dadosSelecaoHorizontal = StreamController<SelecaoHorizontalDados>.broadcast();
-
-  Stream<double> get position => _position.stream;
+  late final StreamController<List<String>> _dadosSelecaoHorizontal = StreamController<List<String>>.broadcast();
 
   List<String> _itens = [];
 
   List<String> get itens => _itens;
 
-  int _posicao = 0;
+  int _slidePosicaoValue = 0;
 
-  int get posicao => _posicao;
+  int get slidePosicaoValue => _slidePosicaoValue;
 
-  String get getByPosicao => itens[posicao];
+  String get getByPosicao => itens[_slidePosicaoValue];
 
-  void changePosition(double value) {
-    positionValue = value;
+  Stream<double> get scrollPosition => _scrollPosition.stream;
 
-    _position.add(value);
+  @override
+  Stream<int> get slidePosition => _slidePosition.stream;
+
+  @override
+  Stream<List<String>> get dados => _dadosSelecaoHorizontal.stream;
+
+  @override
+  void updatePosition(int value) {
+    if (_slidePosicaoValue == value) {
+      return;
+    }
+
+    _slidePosicaoValue = value;
+
+    _slidePosition.add(value);
+  }
+
+  void changeScrollPosition(double value) {
+    _scrollPosition.add(value);
   }
 
   @override
   FutureOr<void> onPreDestroy() {
-    _position.close();
+    _scrollPosition.close();
   }
 
-  @override
-  Stream<SelecaoHorizontalDados> get dados => _dadosSelecaoHorizontal.stream;
-
-  @override
   void update(int posicao, List<String> itens) {
-    _posicao = posicao;
     _itens = itens;
-    _dadosSelecaoHorizontal.add((posicao, itens));
+    _dadosSelecaoHorizontal.add(itens);
+    updatePosition(posicao);
   }
 }

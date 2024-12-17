@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HorizontalSelecaoMes<ModuleT extends DDIModule, CaseT extends UpdateInterface> extends StatefulWidget {
-  const HorizontalSelecaoMes({super.key, this.onPageChanged});
-
-  final void Function(int)? onPageChanged;
+  const HorizontalSelecaoMes({super.key});
 
   @override
   State<HorizontalSelecaoMes> createState() => _HorizontalSelecaoMesState<ModuleT, CaseT>();
@@ -91,10 +89,7 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule, CaseT extends Update
             child: PageView.builder(
               controller: _pageController,
               itemCount: itens.length,
-              onPageChanged: (int posicao) {
-                instance.alterouPosicao(posicao);
-                widget.onPageChanged?.call(posicao);
-              },
+              onPageChanged: instance.updatePosition,
               itemBuilder: (context, index) {
                 return Center(
                   child: Text(

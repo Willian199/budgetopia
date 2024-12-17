@@ -132,9 +132,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  HorizontalSelecaoMes<HomeModule, HomeCase>(
-                    onPageChanged: instance.alterouSelecao,
-                  ),
+                  const HorizontalSelecaoMes<HomeModule, HomeCase>(),
                   Padding(
                     padding: const EdgeInsets.only(top: Double.DEZ),
                     child: SizedBox(

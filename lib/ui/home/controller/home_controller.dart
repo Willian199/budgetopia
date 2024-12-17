@@ -16,10 +16,14 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   List<MovimentacaoModel> get registrosAbaMovimentacao => _homeRepository.movimentacoesPorAba.reversed.toList();
 
   late final StreamSubscription<Map<String, List<MovimentacaoModel>>> _streamRef;
+  late final StreamSubscription<int> _streamSliderRef;
 
   @override
   FutureOr<void> onPostConstruct() {
+    _streamSliderRef = _homeCase.slidePosition.listen(alterouSelecao);
+
     _streamRef = _homeRepository.buscarDadosMovimentacao().listen((Map<String, List<MovimentacaoModel>> event) {
+      print('buscarDadosMovimentacao');
       double entrada = 0;
       double saida = 0;
 
@@ -58,7 +62,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
         mesesDisponiveis = [];
         posicaoSelecionada = 0;
       }
-      _homeCase.changePosition(0);
+      _homeCase.changeScrollPosition(0);
 
       _homeCase.update(posicaoSelecionada, mesesDisponiveis);
 
@@ -74,6 +78,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   }
 
   void refresh(Set<TipoRegistroEnum> value) {
+    print('refresh');
     _homeRepository.filtrarMovimentacaoAba(value.first);
 
     fire(state?.copyWith(tabSelecionada: {value.first}) ??
@@ -86,6 +91,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   }
 
   void alterouSelecao(int pos) {
+    print('alterouSelecao');
     final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(pos, state!.tabSelecionada.first);
 
     double entrada = 0;
@@ -98,8 +104,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
         saida += item.valor;
       }
     }
-
-    _homeCase.changePosition(0);
+    _homeCase.changeScrollPosition(0);
 
     fire(
       HomeState(
@@ -114,5 +119,6 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   @override
   FutureOr<void> onPreDestroy() {
     _streamRef.cancel();
+    _streamSliderRef.cancel();
   }
 }

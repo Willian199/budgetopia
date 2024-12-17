@@ -11,10 +11,10 @@ class TimeLineOpacityController with DDIEventSender<OpacityState>, PostConstruct
   late final HomeCase _homeCase = ddi();
 
   void changePosition(double value) {
-    _homeCase.changePosition(value);
+    _homeCase.changeScrollPosition(value);
   }
 
-  void _applyPosition(double value) {
+  void _applyScrollPosition(double value) {
     if ((exibindo && value <= 10) || (!exibindo && value > 10)) {
       exibindo = value > 10;
       fire(OpacityState(value));
@@ -23,7 +23,7 @@ class TimeLineOpacityController with DDIEventSender<OpacityState>, PostConstruct
 
   @override
   FutureOr<void> onPostConstruct() {
-    _ref = _homeCase.position.listen(_applyPosition);
+    _ref = _homeCase.scrollPosition.listen(_applyScrollPosition);
   }
 
   @override
