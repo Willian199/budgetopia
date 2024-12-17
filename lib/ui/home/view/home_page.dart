@@ -6,13 +6,14 @@ import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
+import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
 import 'package:budgetopia/ui/home/mixins/home_mixin.dart';
 import 'package:budgetopia/ui/home/module/home_module.dart';
 import 'package:budgetopia/ui/home/state/home_state.dart';
-import 'package:budgetopia/ui/home/widgets/movimentacao_list_builder.dart';
-import 'package:budgetopia/ui/home/widgets/time_line_opacity_effect.dart';
-import 'package:budgetopia/ui/home/widgets/valor_segmented_button.dart';
+import 'package:budgetopia/ui/home/view/widgets/movimentacao_list_builder.dart';
+import 'package:budgetopia/ui/home/view/widgets/time_line_opacity_effect.dart';
+import 'package:budgetopia/ui/home/view/widgets/valor_segmented_button.dart';
 import 'package:budgetopia/ui/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/ui/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
@@ -131,9 +132,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  HorizontalSelecaoMes<HomeModule>(
-                    onPageChanged: instance.alterouSelecao,
-                  ),
+                  const HorizontalSelecaoMes<HomeModule, HomeCase>(),
                   Padding(
                     padding: const EdgeInsets.only(top: Double.DEZ),
                     child: SizedBox(

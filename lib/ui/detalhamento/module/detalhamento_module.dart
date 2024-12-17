@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:budgetopia/ui/detalhamento/controller/detalhamento_controller.dart';
-import 'package:budgetopia/ui/perfil/controller/salvar_perfil_controller.dart';
+import 'package:budgetopia/ui/detalhamento/controller/grafico_controller.dart';
+import 'package:budgetopia/ui/perfil/case/salvar_perfil_case.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 final class DetalhamentoModule with DDIModule {
@@ -9,9 +10,10 @@ final class DetalhamentoModule with DDIModule {
   void onPostConstruct() {
     Future.wait([
       register(
-        factory: ScopeFactory.application(builder: PerfilController.new.builder),
+        factory: ScopeFactory.application(builder: PerfilCase.new.builder),
       ),
       registerApplication(DetalhamentoController.new),
+      registerApplication(GraficoController.new),
     ]);
   }
 }

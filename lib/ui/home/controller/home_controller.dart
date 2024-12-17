@@ -1,51 +1,29 @@
 import 'dart:async';
 
-import 'package:budgetopia/common/components/selecao_horizontal/controller/selecao_horizontal_controller.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
-import 'package:budgetopia/config/banco/repository/movimentacao/movimentacao_repository.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
-import 'package:budgetopia/ui/home/controller/time_line_opacity_controller.dart';
-import 'package:budgetopia/ui/home/module/home_module.dart';
+import 'package:budgetopia/data/repository/home/home_repository.dart';
+import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/state/home_state.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
-  HomeController(this._movimentacaoRepository, this._timeLineOpacityController);
+  late final HomeRepository _homeRepository = ddi();
+  late final HomeCase _homeCase = ddi();
 
-  final MovimentacaoRepository _movimentacaoRepository;
-  final TimeLineOpacityController _timeLineOpacityController;
-  late final SelecaoHorizontalController _selecaoHorizontalController = ddi.getComponent(module: HomeModule);
-
-  Map<String, List<MovimentacaoModel>> _todasMovimentacoes = {};
-
-  List<MovimentacaoModel> _movimentacoesMesSelecionado = [];
-
-  late List<MovimentacaoModel> _registrosAbaMovimentacao;
-
-  List<MovimentacaoModel> get registrosAbaMovimentacao => _registrosAbaMovimentacao.reversed.toList();
-
-  TipoRegistroEnum _tabSelecionada = TipoRegistroEnum.todos;
-  TipoRegistroEnum get tabSelecionada => _tabSelecionada;
-
-  @override
-  HomeState get state =>
-      super.state ??
-      HomeState(
-        tabSelecionada: {TipoRegistroEnum.todos},
-        valorEntrada: 0,
-        valorSaida: 0,
-        valorSaldo: 0,
-      );
+  List<MovimentacaoModel> get registrosAbaMovimentacao => _homeRepository.movimentacoesPorAba.reversed.toList();
 
   late final StreamSubscription<Map<String, List<MovimentacaoModel>>> _streamRef;
+  late final StreamSubscription<int> _streamSliderRef;
 
   @override
   FutureOr<void> onPostConstruct() {
-    _streamRef = _movimentacaoRepository.filter().listen((Map<String, List<MovimentacaoModel>> event) {
-      _todasMovimentacoes = event;
+    _streamSliderRef = _homeCase.slidePosition.listen(alterouSelecao);
 
+    _streamRef = _homeRepository.buscarDadosMovimentacao().listen((Map<String, List<MovimentacaoModel>> event) {
+      print('buscarDadosMovimentacao');
       double entrada = 0;
       double saida = 0;
 
@@ -54,14 +32,14 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
 
       if (event.isNotEmpty) {
         //Somente será vazio quando for o primeiro evento disparado
-        if (_movimentacoesMesSelecionado.isEmpty) {
+        if (_homeRepository.movimentacoesMesSelecionado.isEmpty) {
           mesesDisponiveis = event.keys.toList();
 
           final int newPos = mesesDisponiveis.indexOf(DateTime.now().getFormattedMonth());
 
           posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
         } else {
-          final String mesSelecionado = _selecaoHorizontalController.itens[_selecaoHorizontalController.posicao];
+          final String mesSelecionado = _homeCase.getByPosicao;
 
           mesesDisponiveis = event.keys.toList();
 
@@ -70,11 +48,10 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
           posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
         }
 
-        _movimentacoesMesSelecionado = _todasMovimentacoes.entries.elementAt(posicaoSelecionada).value;
+        final movimentacoesMesSelecionado =
+            _homeRepository.filtrarMovimentacao(posicaoSelecionada, state?.tabSelecionada.first ?? TipoRegistroEnum.todos);
 
-        _filtrarMovimentacaoes();
-
-        for (final MovimentacaoModel item in _movimentacoesMesSelecionado) {
+        for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
           if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {
             entrada += item.valor;
           } else {
@@ -82,17 +59,16 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
           }
         }
       } else {
-        _movimentacoesMesSelecionado = [];
         mesesDisponiveis = [];
         posicaoSelecionada = 0;
       }
-      _timeLineOpacityController.changePosition(0);
+      _homeCase.changeScrollPosition(0);
 
-      _selecaoHorizontalController.setDados(posicaoSelecionada, mesesDisponiveis);
+      _homeCase.update(posicaoSelecionada, mesesDisponiveis);
 
       fire(
         HomeState(
-          tabSelecionada: {_tabSelecionada},
+          tabSelecionada: state?.tabSelecionada ?? {TipoRegistroEnum.todos},
           valorEntrada: entrada,
           valorSaida: saida,
           valorSaldo: entrada - saida,
@@ -102,32 +78,37 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   }
 
   void refresh(Set<TipoRegistroEnum> value) {
-    _tabSelecionada = value.first;
-    _filtrarMovimentacaoes();
-    fire(state.copyWith(tabSelecionada: {_tabSelecionada}));
+    print('refresh');
+    _homeRepository.filtrarMovimentacaoAba(value.first);
+
+    fire(state?.copyWith(tabSelecionada: {value.first}) ??
+        HomeState(
+          tabSelecionada: {value.first},
+          valorEntrada: 0,
+          valorSaida: 0,
+          valorSaldo: 0,
+        ));
   }
 
   void alterouSelecao(int pos) {
-    _movimentacoesMesSelecionado = _todasMovimentacoes.entries.toList()[pos].value;
-
-    _filtrarMovimentacaoes();
+    print('alterouSelecao');
+    final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(pos, state!.tabSelecionada.first);
 
     double entrada = 0;
     double saida = 0;
 
-    for (final MovimentacaoModel item in _movimentacoesMesSelecionado) {
+    for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
       if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {
         entrada += item.valor;
       } else {
         saida += item.valor;
       }
     }
-
-    _timeLineOpacityController.changePosition(0);
+    _homeCase.changeScrollPosition(0);
 
     fire(
       HomeState(
-        tabSelecionada: {_tabSelecionada},
+        tabSelecionada: state!.tabSelecionada,
         valorEntrada: entrada,
         valorSaida: saida,
         valorSaldo: entrada - saida,
@@ -135,17 +116,9 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
     );
   }
 
-  void _filtrarMovimentacaoes() {
-    _registrosAbaMovimentacao = switch (_tabSelecionada) {
-      TipoRegistroEnum.todos => _movimentacoesMesSelecionado,
-      TipoRegistroEnum.entrada =>
-        _movimentacoesMesSelecionado.where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id).toList(),
-      TipoRegistroEnum.saida => _movimentacoesMesSelecionado.where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.saida.id).toList(),
-    };
-  }
-
   @override
   FutureOr<void> onPreDestroy() {
     _streamRef.cancel();
+    _streamSliderRef.cancel();
   }
 }

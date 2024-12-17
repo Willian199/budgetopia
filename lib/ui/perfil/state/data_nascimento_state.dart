@@ -1,1 +1,1 @@
-extension type DataNascimentoState(DateTime data) implements Object {}
+extension type DataNascimentoState(DateTime data) implements DateTime {}

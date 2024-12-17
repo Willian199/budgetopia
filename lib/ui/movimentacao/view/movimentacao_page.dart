@@ -7,16 +7,16 @@ import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
+import 'package:budgetopia/ui/movimentacao/case/movimentacao_case.dart';
 import 'package:budgetopia/ui/movimentacao/controller/categoria_controller.dart';
 import 'package:budgetopia/ui/movimentacao/controller/data_movimentacao_controller.dart';
-import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:budgetopia/ui/movimentacao/controller/status_pagamento_controller.dart';
 import 'package:budgetopia/ui/movimentacao/controller/tipo_movimentacao_controller.dart';
 import 'package:budgetopia/ui/movimentacao/mixin/movimentacao_page_mixin.dart';
-import 'package:budgetopia/ui/movimentacao/widgets/data_movimentacao.dart';
-import 'package:budgetopia/ui/movimentacao/widgets/selecionar_categoria.dart';
-import 'package:budgetopia/ui/movimentacao/widgets/status_pagamento.dart';
-import 'package:budgetopia/ui/movimentacao/widgets/tipo_movimentacao.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/data_movimentacao.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/selecionar_categoria.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/status_pagamento.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/tipo_movimentacao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -63,7 +63,7 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
                 color: Colors.redAccent,
               ),
               onPressed: () {
-                final MovimentacaoController controller = ddi.get<MovimentacaoController>();
+                final MovimentacaoCase controller = ddi.get();
                 if (controller.remover(widget.movimentacaoModel!.id)) {
                   Navigator.pop(context);
 
@@ -79,10 +79,11 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
               color: tema.colorScheme.primary,
             ),
             onPressed: () {
-              if (formKey.currentState?.validate() ?? false) {
+              final double valor = Moeda.parse(valor: valueController.text, simbolo: 'R\$').toDouble();
+              if ((formKey.currentState?.validate() ?? false) && valor > 0) {
                 context.closeKeyboard();
 
-                final MovimentacaoController salvar = ddi.get<MovimentacaoController>();
+                final MovimentacaoCase salvar = ddi.get();
 
                 final bool status = salvar.salvar(
                   id: widget.movimentacaoModel?.id ?? 0,

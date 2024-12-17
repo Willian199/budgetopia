@@ -1,1 +1,1 @@
-extension type DataSelecionarState(DateTime data) implements Object {}
+extension type DataSelecionarState(DateTime data) implements DateTime {}

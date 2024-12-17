@@ -5,11 +5,11 @@ import 'package:budgetopia/common/components/input_formatters/decimal_input_form
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/ui/perfil/case/salvar_perfil_case.dart';
 import 'package:budgetopia/ui/perfil/controller/data_nascimento_controller.dart';
-import 'package:budgetopia/ui/perfil/controller/salvar_perfil_controller.dart';
 import 'package:budgetopia/ui/perfil/mixin/perfil_page_mixin.dart';
-import 'package:budgetopia/ui/perfil/widget/data_nascimento_field.dart';
-import 'package:budgetopia/ui/perfil/widget/user_imagem_avatar.dart';
+import 'package:budgetopia/ui/perfil/view/widget/data_nascimento_field.dart';
+import 'package:budgetopia/ui/perfil/view/widget/user_imagem_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,7 +21,7 @@ class PerfilPage extends StatefulWidget {
   State<PerfilPage> createState() => _PerfilPageState();
 }
 
-class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<PerfilController> {
+class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<PerfilCase> {
   @override
   void initState() {
     super.initState();
@@ -101,7 +101,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                       focusNode: nomeFocusNode,
                       autofocus: true,
                       decoration: const InputDecoration(
-                        labelText: 'Nome',
+                        labelText: Strings.NOME,
                         prefixIcon: SizedBox(
                           width: 40,
                           child: Center(
@@ -122,7 +122,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                       },
                       validator: (value) {
                         if (value?.isEmpty ?? false) {
-                          return 'Por favor, informe o seu nome';
+                          return Strings.INFORME_NOME;
                         }
                         return null;
                       },
@@ -157,7 +157,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                         }
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Objetivo Saldo Mensal',
+                        labelText: Strings.OBJETIVO_SALDO_MENSAL,
                         prefixIcon: SizedBox(
                           width: 40,
                           child: Center(
@@ -178,7 +178,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
                       ],
                       validator: (value) {
                         if (value?.isEmpty ?? false) {
-                          return 'Por favor, insira um valor';
+                          return Strings.INFORME_VALOR;
                         }
                         return null;
                       },

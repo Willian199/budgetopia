@@ -6,7 +6,7 @@ import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/ui/detalhamento/controller/detalhamento_controller.dart';
 import 'package:budgetopia/ui/detalhamento/state/detalhamento_state.dart';
-import 'package:budgetopia/ui/detalhamento/widget/grafico_linha/grafico_linha.dart';
+import 'package:budgetopia/ui/detalhamento/view/widget/grafico_linha.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
@@ -26,7 +26,7 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Strings.DETALHAMENTO),
+        title: const Text(Strings.DETALHES),
         leading: const DefaultBackButton(),
       ),
       body: Container(
@@ -47,11 +47,11 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Saldo objetivo mensal:',
+                      Strings.SALDO_OBJETIVO_MENSAL,
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
-                      'R\$ ${Moeda.format(valor: instance.valorSaldoObjetivo)}',
+                      '${Strings.RS} ${Moeda.format(valor: instance.valorSaldoObjetivo)}',
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
@@ -108,11 +108,11 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
-                                      'Total de entradas:',
+                                      Strings.TOTAL_ENTRADAS,
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
-                                      'R\$ ${Moeda.format(valor: state?.totalEntrada ?? 0)}',
+                                      '${Strings.RS} ${Moeda.format(valor: state?.totalEntrada ?? 0)}',
                                       style: const TextStyle(fontSize: 18),
                                     ),
                                   ],
@@ -130,11 +130,11 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
-                                      'Total de saídas: ',
+                                      Strings.TOTAL_SAIDAS,
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
-                                      'R\$ ${Moeda.format(valor: state?.totalSaida ?? 0)}',
+                                      '${Strings.RS} ${Moeda.format(valor: state?.totalSaida ?? 0)}',
                                       style: const TextStyle(fontSize: 18),
                                     ),
                                   ],
@@ -152,11 +152,11 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
-                                      'Saldo do período:',
+                                      Strings.SALDO_PERIODO,
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
-                                      'R\$ ${Moeda.format(valor: state?.totalSaldo ?? 0)}',
+                                      '${Strings.RS} ${Moeda.format(valor: state?.totalSaldo ?? 0)}',
                                       style: const TextStyle(fontSize: 18),
                                     ),
                                   ],
