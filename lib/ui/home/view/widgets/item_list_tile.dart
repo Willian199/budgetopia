@@ -67,7 +67,7 @@ class _ItemListTileState extends EventListenerState<ItemListTile, HomeState> {
                       boxShadow: GradientBoxShadow(
                         gradient: LinearGradient(
                           colors: [
-                            context.colorScheme.primary.withOpacity(0.2),
+                            context.colorScheme.primary.withAlpha(50),
                             Colors.transparent,
                           ],
                         ),
@@ -94,7 +94,7 @@ class _ItemListTileState extends EventListenerState<ItemListTile, HomeState> {
                         color: context.colorScheme.tertiaryContainer,
                         boxShadow: [
                           BoxShadow(
-                            color: context.colorScheme.primary.withOpacity(0.2),
+                            color: context.colorScheme.primary.withAlpha(50),
                             spreadRadius: 6,
                             blurRadius: 5,
                           ),
@@ -111,12 +111,12 @@ class _ItemListTileState extends EventListenerState<ItemListTile, HomeState> {
                     height: 40,
                     padding: const EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: darkMode ? Colors.transparent : context.colorScheme.tertiary.withOpacity(0.8),
+                      color: darkMode ? Colors.transparent : context.colorScheme.tertiary.withAlpha(210),
                       border: Border.all(width: 4, color: context.colorScheme.tertiaryContainer),
                       borderRadius: BorderRadius.circular(60),
                       boxShadow: [
                         BoxShadow(
-                          color: context.colorScheme.primary.withOpacity(0.2),
+                          color: context.colorScheme.primary.withAlpha(50),
                           spreadRadius: 2,
                           blurRadius: 4,
                           blurStyle: BlurStyle.inner,
@@ -141,7 +141,7 @@ class _ItemListTileState extends EventListenerState<ItemListTile, HomeState> {
                 color: context.colorScheme.onPrimary,
                 boxShadow: [
                   BoxShadow(
-                    color: context.colorScheme.primary.withOpacity(0.2),
+                    color: context.colorScheme.primary.withAlpha(50),
                     spreadRadius: 6,
                     blurRadius: 5,
                   ),

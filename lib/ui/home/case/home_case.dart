@@ -7,7 +7,7 @@ final class HomeCase with PreDestroy implements UpdateInterface {
   late final StreamController<double> _scrollPosition = StreamController<double>.broadcast();
   late final StreamController<int> _slidePosition = StreamController<int>.broadcast();
 
-  late final StreamController<List<String>> _dadosSelecaoHorizontal = StreamController<List<String>>.broadcast();
+  late final StreamController<(int, List<String>)> _dadosSelecaoHorizontal = StreamController<(int, List<String>)>.broadcast();
 
   List<String> _itens = [];
 
@@ -25,7 +25,7 @@ final class HomeCase with PreDestroy implements UpdateInterface {
   Stream<int> get slidePosition => _slidePosition.stream;
 
   @override
-  Stream<List<String>> get dados => _dadosSelecaoHorizontal.stream;
+  Stream<(int, List<String>)> get dados => _dadosSelecaoHorizontal.stream;
 
   @override
   void updatePosition(int value) {
@@ -49,7 +49,7 @@ final class HomeCase with PreDestroy implements UpdateInterface {
 
   void update(int posicao, List<String> itens) {
     _itens = itens;
-    _dadosSelecaoHorizontal.add(itens);
-    updatePosition(posicao);
+    _slidePosicaoValue = posicao;
+    _dadosSelecaoHorizontal.add((posicao, itens));
   }
 }

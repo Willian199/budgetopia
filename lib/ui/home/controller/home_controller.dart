@@ -23,7 +23,6 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
     _streamSliderRef = _homeCase.slidePosition.listen(alterouSelecao);
 
     _streamRef = _homeRepository.buscarDadosMovimentacao().listen((Map<String, List<MovimentacaoModel>> event) {
-      print('buscarDadosMovimentacao');
       double entrada = 0;
       double saida = 0;
 
@@ -78,7 +77,6 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   }
 
   void refresh(Set<TipoRegistroEnum> value) {
-    print('refresh');
     _homeRepository.filtrarMovimentacaoAba(value.first);
 
     fire(state?.copyWith(tabSelecionada: {value.first}) ??
@@ -91,7 +89,6 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
   }
 
   void alterouSelecao(int pos) {
-    print('alterouSelecao');
     final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(pos, state!.tabSelecionada.first);
 
     double entrada = 0;

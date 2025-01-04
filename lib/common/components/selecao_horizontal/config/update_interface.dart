@@ -1,5 +1,7 @@
+typedef EstruturaEvento = (int posicao, List<String> itens);
+
 abstract interface class UpdateInterface {
-  Stream<List<String>> get dados;
+  Stream<EstruturaEvento> get dados;
 
   Stream<int> get slidePosition;
 

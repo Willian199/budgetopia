@@ -15,6 +15,7 @@ class _TimeLineOpacityeffectState extends EventListenerState<TimeLineOpacityeffe
   @override
   Widget build(BuildContext context) {
     debugPrint('Building TimeLineOpacityeffect');
+
     final ThemeData tema = AdaptiveTheme.of(context).theme;
     return AnimatedOpacity(
       opacity: (state?.position ?? 0) > 10 ? 1 : 0,
@@ -24,10 +25,10 @@ class _TimeLineOpacityeffectState extends EventListenerState<TimeLineOpacityeffe
         margin: const EdgeInsets.symmetric(horizontal: 5),
         decoration: Degrade.efeitoDegrade(
           cores: <Color>[
-            tema.colorScheme.primaryContainer.withOpacity(0.9),
-            tema.colorScheme.primaryContainer.withOpacity(0.7),
-            tema.colorScheme.primaryContainer.withOpacity(0.2),
-            tema.colorScheme.primaryContainer.withOpacity(0)
+            tema.colorScheme.primaryContainer.withAlpha(230),
+            tema.colorScheme.primaryContainer.withAlpha(180),
+            tema.colorScheme.primaryContainer.withAlpha(80),
+            tema.colorScheme.primaryContainer.withAlpha(0),
           ],
         ),
       ),

@@ -34,7 +34,7 @@ class Notificacao {
       isOverlayTapDismiss: false,
       backgroundColor: darkMode ? tema.colorScheme.onSecondary : tema.colorScheme.secondary,
       animationDuration: const Duration(milliseconds: 300),
-      overlayColor: tema.colorScheme.secondaryContainer.withOpacity(0.4),
+      overlayColor: tema.colorScheme.secondaryContainer.withAlpha(120),
       alertBorder: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Double.VINTE),
       ),

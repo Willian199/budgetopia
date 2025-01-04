@@ -15,7 +15,7 @@ class MovimentacaoServiceImpl implements MovimentacaoService {
   Stream<Map<String, List<MovimentacaoModel>>> filter() {
     final DateTime now = DateTime.now();
     final Stream<Query<MovimentacaoEntity>> query = _entity
-        .query(MovimentacaoEntity_.data.greaterOrEqualDate(now.minusSixMonth.firstDayOfMonth))
+        .query(MovimentacaoEntity_.data.greaterOrEqualDate(now.subtractMonths(11).firstDayOfMonth))
         .order(MovimentacaoEntity_.data)
         .order(MovimentacaoEntity_.titulo)
         .watch(triggerImmediately: true);

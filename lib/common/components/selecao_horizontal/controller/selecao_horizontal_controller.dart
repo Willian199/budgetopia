@@ -5,18 +5,17 @@ import 'package:budgetopia/common/components/selecao_horizontal/state/selecao_ho
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 final class SelecaoHorizontalController<ConfigT extends UpdateInterface> with DDIEventSender<SelecaoHorizontalState>, PreDestroy, PostConstruct {
-  late final StreamSubscription<List<String>> _refDados;
+  late final StreamSubscription<EstruturaEvento> _refDados;
   late final StreamSubscription<int> _refPosicao;
   late final UpdateInterface _updateInterface = ddi.get<ConfigT>();
 
-  void alterouItens(List<String> itens) {
-    print('setDados');
+  void alterouItens(EstruturaEvento evento) {
+    final (int posicao, List<String> itens) = evento;
 
-    fire(state?.copyWith(itens: itens) ?? SelecaoHorizontalState(posicao: itens.length - 1, itens: itens));
+    fire(state?.copyWith(itens: itens, posicao: posicao) ?? SelecaoHorizontalState(posicao: posicao, itens: itens));
   }
 
   void alterouPosicao(int posicao) {
-    print('alterouPosicao $posicao');
     fire(state?.copyWith(posicao: posicao) ?? SelecaoHorizontalState(posicao: posicao, itens: []));
   }
 
