@@ -19,7 +19,7 @@ class LegendaInferior extends StatelessWidget {
 
     return SideTitleWidget(
       space: 5,
-      axisSide: meta.axisSide,
+      meta: meta,
       child: Text(
         item.legenda,
         style: TextStyle(

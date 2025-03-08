@@ -1,7 +1,6 @@
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/ui/movimentacao/controller/data_movimentacao_controller.dart';
-import 'package:budgetopia/ui/movimentacao/state/data_selecionar_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,7 +15,7 @@ class DataMovimentacao extends StatefulWidget {
   State<DataMovimentacao> createState() => _DataMovimentacaoState();
 }
 
-class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSelecionarState> with DDIInject<DataMovimentacaoController> {
+class _DataMovimentacaoState extends ListenableState<DataMovimentacao, DataMovimentacaoController> {
   @override
   void initState() {
     super.initState();
@@ -32,7 +31,7 @@ class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSe
   void openDataFocus() async {
     if (widget.focusNode.hasFocus) {
       context.closeKeyboard();
-      await instance.selecionarDataMovimentacao();
+      await listenable.selecionarDataMovimentacao();
       widget.nextFocus.requestFocus();
     }
   }
@@ -41,12 +40,12 @@ class _DataMovimentacaoState extends EventListenerState<DataMovimentacao, DataSe
   Widget build(BuildContext context) {
     return TextFormField(
       controller: TextEditingController(
-        text: (state ?? DateTime.now()).format(),
+        text: (listenable.value).format(),
       ),
       focusNode: widget.focusNode,
       onTap: () async {
         context.closeKeyboard();
-        await instance.selecionarDataMovimentacao();
+        await listenable.selecionarDataMovimentacao();
         widget.nextFocus.requestFocus();
       },
       onEditingComplete: widget.nextFocus.requestFocus,

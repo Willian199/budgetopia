@@ -41,6 +41,7 @@ android/gradlew.bat
 android/local.properties
 android/app/.externalNativeBuild
 android/app/build/
+android/app/.cxx/
 android/app/outputs/
 android/app/src/main/flutter_assets/
 android/app/src/main/kotlin/com/example/app/generated/

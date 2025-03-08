@@ -3,7 +3,6 @@ import 'package:budgetopia/common/constantes/qualifiers.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/ui/detalhamento/controller/grafico_controller.dart';
-import 'package:budgetopia/ui/detalhamento/state/grafico_state.dart';
 import 'package:budgetopia/ui/detalhamento/view/widget/legenda_esquerda.dart';
 import 'package:budgetopia/ui/detalhamento/view/widget/legenda_inferior.dart';
 import 'package:budgetopia/ui/home/model/grafico_model.dart';
@@ -20,13 +19,12 @@ class GraficoLinha extends StatefulWidget {
   State<GraficoLinha> createState() => _GraficoLinhaState();
 }
 
-class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> with DDIInject<GraficoController> {
+class _GraficoLinhaState extends ListenableState<GraficoLinha, GraficoController> {
   double minY = 0;
 
   @override
   void initState() {
     super.initState();
-    instance.valorSaldoObjetivo;
   }
 
   List<GraficoModel> eval(List<GraficoModel> values) {
@@ -65,11 +63,11 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
       corTooltipSaldoOk = colorScheme.tertiary;
     }
 
-    if (state?.saldo.isEmpty ?? true) {
+    if (listenable.value.saldo.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    final List<GraficoModel> itensGraficoSaldo = eval(state?.saldo ?? []);
+    final List<GraficoModel> itensGraficoSaldo = eval(listenable.value.saldo);
     final List<FlSpot> spotsSaldo = itensGraficoSaldo.map((GraficoModel item) => FlSpot(item.index, item.valor)).toList();
 
     if (spotsSaldo.isEmpty) {
@@ -106,9 +104,9 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                       getDotPainter: (FlSpot spot, double percent, LineChartBarData barData, int index) {
                         return FlDotCirclePainter(
                           radius: 8,
-                          color: spot.y > (state?.valorSaldoObjetivo ?? 0) ? corTooltipSaldoOk : corTooltipSaldoMenor,
+                          color: spot.y > (listenable.value.valorSaldoObjetivo) ? corTooltipSaldoOk : corTooltipSaldoMenor,
                           strokeWidth: 3,
-                          strokeColor: spot.y > (state?.valorSaldoObjetivo ?? 0) ? corTooltipSaldoOk : corBordaSaldoMenor,
+                          strokeColor: spot.y > (listenable.value.valorSaldoObjetivo) ? corTooltipSaldoOk : corBordaSaldoMenor,
                         );
                       },
                     ),
@@ -118,7 +116,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
               //Campo do valor ao clicar no gráfico
               touchTooltipData: LineTouchTooltipData(
                 getTooltipColor: (LineBarSpot lineBarSpot) =>
-                    lineBarSpot.y > (state?.valorSaldoObjetivo ?? 0) ? corTooltipSaldoOk : corTooltipSaldoMenor,
+                    lineBarSpot.y > (listenable.value.valorSaldoObjetivo) ? corTooltipSaldoOk : corTooltipSaldoMenor,
                 tooltipRoundedRadius: 8,
                 getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
                   return lineBarsSpot.map((LineBarSpot lineBarSpot) {
@@ -159,7 +157,7 @@ class _GraficoLinhaState extends EventListenerState<GraficoLinha, GraficoState> 
                     int index,
                   ) {
                     return FlDotCirclePainter(
-                      color: spot.y > (state?.valorSaldoObjetivo ?? 0) ? colorScheme.tertiaryContainer : corTooltipSaldoMenor,
+                      color: spot.y > (listenable.value.valorSaldoObjetivo) ? colorScheme.tertiaryContainer : corTooltipSaldoMenor,
                       radius: 5,
                     );
                   },

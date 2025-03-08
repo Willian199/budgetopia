@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/state/opacity_state.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class TimeLineOpacityController with DDIEventSender<OpacityState>, PostConstruct, PreDestroy {
+class TimeLineOpacityController extends ValueNotifier<OpacityState> with PostConstruct, PreDestroy {
+  TimeLineOpacityController() : super(OpacityState(0));
+
   bool exibindo = false;
   late final StreamSubscription<double> _ref;
 
@@ -14,10 +17,10 @@ class TimeLineOpacityController with DDIEventSender<OpacityState>, PostConstruct
     _homeCase.changeScrollPosition(value);
   }
 
-  void _applyScrollPosition(double value) {
-    if ((exibindo && value <= 10) || (!exibindo && value > 10)) {
-      exibindo = value > 10;
-      fire(OpacityState(value));
+  void _applyScrollPosition(double pos) {
+    if ((exibindo && pos <= 10) || (!exibindo && pos > 10)) {
+      exibindo = pos > 10;
+      value = OpacityState(pos);
     }
   }
 

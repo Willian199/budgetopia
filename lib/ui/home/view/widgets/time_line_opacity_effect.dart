@@ -1,6 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
-import 'package:budgetopia/ui/home/state/opacity_state.dart';
+import 'package:budgetopia/ui/home/controller/time_line_opacity_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
@@ -11,14 +11,14 @@ class TimeLineOpacityeffect extends StatefulWidget {
   State<TimeLineOpacityeffect> createState() => _TimeLineOpacityeffectState();
 }
 
-class _TimeLineOpacityeffectState extends EventListenerState<TimeLineOpacityeffect, OpacityState> {
+class _TimeLineOpacityeffectState extends ListenableState<TimeLineOpacityeffect, TimeLineOpacityController> {
   @override
   Widget build(BuildContext context) {
     debugPrint('Building TimeLineOpacityeffect');
 
     final ThemeData tema = AdaptiveTheme.of(context).theme;
     return AnimatedOpacity(
-      opacity: (state?.position ?? 0) > 10 ? 1 : 0,
+      opacity: listenable.value.position > 10 ? 1 : 0,
       duration: const Duration(milliseconds: 500),
       child: Container(
         height: 30,

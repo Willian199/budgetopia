@@ -12,12 +12,12 @@ class TipoMovimentacao extends StatefulWidget {
   State<TipoMovimentacao> createState() => _TipoMovimentacaoState();
 }
 
-class _TipoMovimentacaoState extends EventListenerState<TipoMovimentacao, TipoMovimentacaoEnum> with DDIInject<TipoMovimentacaoController> {
+class _TipoMovimentacaoState extends ListenableState<TipoMovimentacao, TipoMovimentacaoController> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<TipoMovimentacaoEnum>(
-      value: state ?? instance.listarTiposMovimentacao.first,
-      items: instance.listarTiposMovimentacao.map((TipoMovimentacaoEnum item) {
+      value: listenable.value,
+      items: listenable.listarTiposMovimentacao.map((TipoMovimentacaoEnum item) {
         return DropdownMenuItem(
           value: item,
           child: Row(
@@ -34,7 +34,7 @@ class _TipoMovimentacaoState extends EventListenerState<TipoMovimentacao, TipoMo
         );
       }).toList(),
       onChanged: (value) {
-        instance.selecionarTipoMovimentacao(value);
+        listenable.selecionarTipoMovimentacao(value);
         widget.nextFocusNode.requestFocus();
       },
       focusNode: widget.focusNode,

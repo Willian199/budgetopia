@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:budgetopia/common/components/selecao_horizontal/config/update_interface.dart';
 import 'package:budgetopia/common/components/selecao_horizontal/state/selecao_horizontal_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-final class SelecaoHorizontalController<ConfigT extends UpdateInterface> with DDIEventSender<SelecaoHorizontalState>, PreDestroy, PostConstruct {
+final class SelecaoHorizontalController<ConfigT extends UpdateInterface> extends ValueNotifier<SelecaoHorizontalState>
+    with PreDestroy, PostConstruct {
+  SelecaoHorizontalController() : super(SelecaoHorizontalState(itens: []));
   late final StreamSubscription<EstruturaEvento> _refDados;
   late final StreamSubscription<int> _refPosicao;
   late final UpdateInterface _updateInterface = ddi.get<ConfigT>();
@@ -12,11 +15,11 @@ final class SelecaoHorizontalController<ConfigT extends UpdateInterface> with DD
   void alterouItens(EstruturaEvento evento) {
     final (int posicao, List<String> itens) = evento;
 
-    fire(state?.copyWith(itens: itens, posicao: posicao) ?? SelecaoHorizontalState(posicao: posicao, itens: itens));
+    value = value.copyWith(itens: itens, posicao: posicao);
   }
 
   void alterouPosicao(int posicao) {
-    fire(state?.copyWith(posicao: posicao) ?? SelecaoHorizontalState(posicao: posicao, itens: []));
+    value = value.copyWith(posicao: posicao);
   }
 
   @override

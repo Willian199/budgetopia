@@ -3,7 +3,8 @@ import 'package:budgetopia/ui/perfil/state/data_nascimento_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class DataNascimentoController with DDIEventSender<DataNascimentoState> {
+class DataNascimentoController extends ValueNotifier<DataNascimentoState> {
+  DataNascimentoController() : super(DataNascimentoState(DateTime(2006)));
   late final PerfilCase _perfilCase = ddi();
 
   Future<void> selecionarDataNascimento() async {
@@ -18,12 +19,12 @@ class DataNascimentoController with DDIEventSender<DataNascimentoState> {
 
     if (picked != null && picked != _perfilCase.dataNascimento) {
       _perfilCase.dataNascimento = picked;
-      fire(DataNascimentoState(picked));
+      value = DataNascimentoState(picked);
     }
   }
 
   void alterarDataNascimento(DateTime data) {
     _perfilCase.dataNascimento = data;
-    fire(DataNascimentoState(data));
+    value = DataNascimentoState(data);
   }
 }

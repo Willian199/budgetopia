@@ -2,7 +2,6 @@ import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/ui/perfil/controller/data_nascimento_controller.dart';
-import 'package:budgetopia/ui/perfil/state/data_nascimento_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,7 +16,7 @@ class DataNascimentoField extends StatefulWidget {
   State<DataNascimentoField> createState() => _DataNascimentoFieldState();
 }
 
-class _DataNascimentoFieldState extends EventListenerState<DataNascimentoField, DataNascimentoState> with DDIInject<DataNascimentoController> {
+class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, DataNascimentoController> {
   @override
   void initState() {
     super.initState();
@@ -33,7 +32,7 @@ class _DataNascimentoFieldState extends EventListenerState<DataNascimentoField, 
   void openDataFocus() async {
     if (widget.focusNode.hasFocus) {
       context.closeKeyboard();
-      await instance.selecionarDataNascimento();
+      await listenable.selecionarDataNascimento();
       widget.nextFocus.requestFocus();
     }
   }
@@ -42,13 +41,13 @@ class _DataNascimentoFieldState extends EventListenerState<DataNascimentoField, 
   Widget build(BuildContext context) {
     return TextFormField(
       controller: TextEditingController(
-        text: (state ?? DateTime(2006)).format(),
+        text: (listenable.value).format(),
       ),
       focusNode: widget.focusNode,
       readOnly: true,
       onTap: () async {
         context.closeKeyboard();
-        await instance.selecionarDataNascimento();
+        await listenable.selecionarDataNascimento();
         widget.nextFocus.requestFocus();
       },
       onEditingComplete: widget.nextFocus.requestFocus,

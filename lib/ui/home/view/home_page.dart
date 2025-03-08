@@ -10,7 +10,6 @@ import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
 import 'package:budgetopia/ui/home/mixins/home_mixin.dart';
 import 'package:budgetopia/ui/home/module/home_module.dart';
-import 'package:budgetopia/ui/home/state/home_state.dart';
 import 'package:budgetopia/ui/home/view/widgets/movimentacao_list_builder.dart';
 import 'package:budgetopia/ui/home/view/widgets/time_line_opacity_effect.dart';
 import 'package:budgetopia/ui/home/view/widgets/valor_segmented_button.dart';
@@ -29,11 +28,11 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInject<HomeController>, HomeMixin {
+class _HomePageState extends ListenableState<HomePage, HomeController> with HomeMixin {
   @override
   void initState() {
     super.initState();
-    instance.refresh(state?.tabSelecionada ?? {TipoRegistroEnum.todos});
+    listenable.refresh(listenable.value.tabSelecionada);
 
     Future.delayed(Duration.zero, () {
       FlutterNativeSplash.remove();
@@ -44,7 +43,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
   Widget build(BuildContext context) {
     debugPrint('Building HomePage');
 
-    final currentTab = state?.tabSelecionada ?? {TipoRegistroEnum.todos};
+    final currentTab = listenable.value.tabSelecionada;
 
     final ThemeData tema = AdaptiveTheme.of(context).theme;
     final Size size = MediaQuery.sizeOf(context);
@@ -64,7 +63,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
             ),
           );
 
-          instance.refresh(state?.tabSelecionada ?? {TipoRegistroEnum.todos});
+          listenable.refresh(listenable.value.tabSelecionada);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -143,7 +142,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                             value: TipoRegistroEnum.todos,
                             label: ValorSegmentedButton(
                               titulo: Strings.SALDO,
-                              valor: state?.valorSaldo ?? 0,
+                              valor: listenable.value.valorSaldo,
                               selecionada: TipoRegistroEnum.todos == currentTab.first,
                             ),
                           ),
@@ -151,7 +150,7 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                             value: TipoRegistroEnum.entrada,
                             label: ValorSegmentedButton(
                               titulo: Strings.ENTRADA,
-                              valor: state?.valorEntrada ?? 0,
+                              valor: listenable.value.valorEntrada,
                               selecionada: TipoRegistroEnum.entrada == currentTab.first,
                             ),
                           ),
@@ -159,13 +158,13 @@ class _HomePageState extends EventListenerState<HomePage, HomeState> with DDIInj
                             value: TipoRegistroEnum.saida,
                             label: ValorSegmentedButton(
                               titulo: Strings.SAIDA,
-                              valor: state?.valorSaida ?? 0,
+                              valor: listenable.value.valorSaida,
                               selecionada: TipoRegistroEnum.saida == currentTab.first,
                             ),
                           ),
                         ],
                         selected: currentTab,
-                        onSelectionChanged: instance.refresh,
+                        onSelectionChanged: listenable.refresh,
                         showSelectedIcon: false,
                       ),
                     ),

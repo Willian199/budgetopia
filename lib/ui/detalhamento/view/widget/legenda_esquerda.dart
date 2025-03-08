@@ -10,7 +10,7 @@ class LegendaEsquerda extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child: Text(
         meta.formattedValue,
         style: const TextStyle(

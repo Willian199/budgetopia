@@ -13,11 +13,11 @@ class SelecionarCategoria extends StatefulWidget {
   State<SelecionarCategoria> createState() => _SelecionarCategoriaState();
 }
 
-class _SelecionarCategoriaState extends EventListenerState<SelecionarCategoria, CategoriaEnum> with DDIInject<CategoriaController> {
+class _SelecionarCategoriaState extends ListenableState<SelecionarCategoria, CategoriaController> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<CategoriaEnum>(
-      value: state ?? CategoriaEnum.values.first,
+      value: listenable.value,
       items: CategoriaEnum.values.map((CategoriaEnum category) {
         return DropdownMenuItem(
           value: category,
@@ -35,7 +35,7 @@ class _SelecionarCategoriaState extends EventListenerState<SelecionarCategoria, 
         );
       }).toList(),
       onChanged: (value) {
-        instance.selecionarCategoria(value);
+        listenable.selecionarCategoria(value);
         widget.nextFocusNode.requestFocus();
       },
       focusNode: widget.focusNode,

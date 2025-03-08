@@ -5,7 +5,6 @@ import 'package:budgetopia/common/constantes/qualifiers.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/ui/detalhamento/controller/detalhamento_controller.dart';
-import 'package:budgetopia/ui/detalhamento/state/detalhamento_state.dart';
 import 'package:budgetopia/ui/detalhamento/view/widget/grafico_linha.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
@@ -17,7 +16,7 @@ class DetalhamentoPage extends StatefulWidget {
   State<DetalhamentoPage> createState() => _DetalhamentoPageState();
 }
 
-class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, DetalhamentoState> with DDIInject<DetalhamentoController> {
+class _DetalhamentoPageState extends ListenableState<DetalhamentoPage, DetalhamentoController> {
   @override
   Widget build(BuildContext context) {
     final ThemeData tema = AdaptiveTheme.of(context).theme;
@@ -51,7 +50,7 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
-                      '${Strings.RS} ${Moeda.format(valor: instance.valorSaldoObjetivo)}',
+                      '${Strings.RS} ${Moeda.format(valor: listenable.valorSaldoObjetivo)}',
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
@@ -112,7 +111,7 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
-                                      '${Strings.RS} ${Moeda.format(valor: state?.totalEntrada ?? 0)}',
+                                      '${Strings.RS} ${Moeda.format(valor: listenable.value.totalEntrada)}',
                                       style: const TextStyle(fontSize: 18),
                                     ),
                                   ],
@@ -134,7 +133,7 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
-                                      '${Strings.RS} ${Moeda.format(valor: state?.totalSaida ?? 0)}',
+                                      '${Strings.RS} ${Moeda.format(valor: listenable.value.totalSaida)}',
                                       style: const TextStyle(fontSize: 18),
                                     ),
                                   ],
@@ -156,7 +155,7 @@ class _DetalhamentoPageState extends EventListenerState<DetalhamentoPage, Detalh
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
-                                      '${Strings.RS} ${Moeda.format(valor: state?.totalSaldo ?? 0)}',
+                                      '${Strings.RS} ${Moeda.format(valor: listenable.value.totalSaldo)}',
                                       style: const TextStyle(fontSize: 18),
                                     ),
                                   ],

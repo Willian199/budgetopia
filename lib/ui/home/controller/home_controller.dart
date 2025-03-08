@@ -7,9 +7,12 @@ import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/data/repository/home/home_repository.dart';
 import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/state/home_state.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
+class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDestroy {
+  HomeController() : super(HomeState(tabSelecionada: {TipoRegistroEnum.todos}, valorEntrada: 0, valorSaida: 0, valorSaldo: 0));
+
   late final HomeRepository _homeRepository = ddi();
   late final HomeCase _homeCase = ddi();
 
@@ -47,8 +50,7 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
           posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
         }
 
-        final movimentacoesMesSelecionado =
-            _homeRepository.filtrarMovimentacao(posicaoSelecionada, state?.tabSelecionada.first ?? TipoRegistroEnum.todos);
+        final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(posicaoSelecionada, value.tabSelecionada.first);
 
         for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
           if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {
@@ -65,31 +67,23 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
 
       _homeCase.update(posicaoSelecionada, mesesDisponiveis);
 
-      fire(
-        HomeState(
-          tabSelecionada: state?.tabSelecionada ?? {TipoRegistroEnum.todos},
-          valorEntrada: entrada,
-          valorSaida: saida,
-          valorSaldo: entrada - saida,
-        ),
+      value = HomeState(
+        tabSelecionada: value.tabSelecionada,
+        valorEntrada: entrada,
+        valorSaida: saida,
+        valorSaldo: entrada - saida,
       );
     });
   }
 
-  void refresh(Set<TipoRegistroEnum> value) {
-    _homeRepository.filtrarMovimentacaoAba(value.first);
+  void refresh(Set<TipoRegistroEnum> tab) {
+    _homeRepository.filtrarMovimentacaoAba(tab.first);
 
-    fire(state?.copyWith(tabSelecionada: {value.first}) ??
-        HomeState(
-          tabSelecionada: {value.first},
-          valorEntrada: 0,
-          valorSaida: 0,
-          valorSaldo: 0,
-        ));
+    value = value.copyWith(tabSelecionada: {tab.first});
   }
 
   void alterouSelecao(int pos) {
-    final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(pos, state!.tabSelecionada.first);
+    final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(pos, value.tabSelecionada.first);
 
     double entrada = 0;
     double saida = 0;
@@ -103,13 +97,11 @@ class HomeController with DDIEventSender<HomeState>, PostConstruct, PreDestroy {
     }
     _homeCase.changeScrollPosition(0);
 
-    fire(
-      HomeState(
-        tabSelecionada: state!.tabSelecionada,
-        valorEntrada: entrada,
-        valorSaida: saida,
-        valorSaldo: entrada - saida,
-      ),
+    value = HomeState(
+      tabSelecionada: value.tabSelecionada,
+      valorEntrada: entrada,
+      valorSaida: saida,
+      valorSaldo: entrada - saida,
     );
   }
 

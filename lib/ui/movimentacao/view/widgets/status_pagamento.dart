@@ -1,7 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/ui/movimentacao/controller/status_pagamento_controller.dart';
-import 'package:budgetopia/ui/movimentacao/state/status_pagamento_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
@@ -12,7 +11,7 @@ class StatusPagamento extends StatefulWidget {
   State<StatusPagamento> createState() => _StatusPagamentoState();
 }
 
-class _StatusPagamentoState extends EventListenerState<StatusPagamento, StatusPagamentoState> with DDIInject<StatusPagamentoController> {
+class _StatusPagamentoState extends ListenableState<StatusPagamento, StatusPagamentoController> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = AdaptiveTheme.of(context).theme.colorScheme;
@@ -24,10 +23,10 @@ class _StatusPagamentoState extends EventListenerState<StatusPagamento, StatusPa
           child: Text("Transação realizada: "),
         ),
         Switch.adaptive(
-          value: state?.status ?? false,
+          value: listenable.value.status,
           inactiveThumbColor: colorScheme.error,
           inactiveTrackColor: colorScheme.onError,
-          onChanged: instance.alterarStatus,
+          onChanged: listenable.alterarStatus,
         ),
       ],
     );

@@ -3,7 +3,8 @@ import 'package:budgetopia/ui/movimentacao/state/data_selecionar_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class DataMovimentacaoController with DDIEventSender<DataSelecionarState> {
+class DataMovimentacaoController extends ValueNotifier<DataSelecionarState> {
+  DataMovimentacaoController() : super(DataSelecionarState(DateTime.now()));
   late final MovimentacaoCase _movimentacaoCase = ddi();
 
   Future<void> selecionarDataMovimentacao() async {
@@ -19,12 +20,12 @@ class DataMovimentacaoController with DDIEventSender<DataSelecionarState> {
     if (picked != null && picked != _movimentacaoCase.dataSelecionada) {
       final data = picked.isBefore(start) ? start : picked;
       _movimentacaoCase.dataSelecionada = data;
-      fire(DataSelecionarState(data));
+      value = DataSelecionarState(data);
     }
   }
 
   void alterarDataMovimentacao(DateTime data) {
     _movimentacaoCase.dataSelecionada = data;
-    fire(DataSelecionarState(data));
+    value = DataSelecionarState(data);
   }
 }

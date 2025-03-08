@@ -2,13 +2,11 @@ import 'package:budgetopia/common/components/generics/gradient_rect.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
-import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
-import 'package:budgetopia/ui/home/state/home_state.dart';
 import 'package:budgetopia/ui/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/ui/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +23,7 @@ class ItemListTile extends StatefulWidget {
   State<ItemListTile> createState() => _ItemListTileState();
 }
 
-class _ItemListTileState extends EventListenerState<ItemListTile, HomeState> {
+class _ItemListTileState extends ListenableState<ItemListTile, HomeController> {
   @override
   Widget build(BuildContext context) {
     final bool darkMode = context.get(Qualifier.dark_mode);
@@ -163,7 +161,7 @@ class _ItemListTileState extends EventListenerState<ItemListTile, HomeState> {
                       ),
                     );
                     final HomeController controller = ddi.get();
-                    controller.refresh(state?.tabSelecionada ?? {TipoRegistroEnum.todos});
+                    controller.refresh(listenable.value.tabSelecionada);
                   },
                   splashColor: context.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(10),

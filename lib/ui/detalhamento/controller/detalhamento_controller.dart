@@ -4,9 +4,12 @@ import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.
 import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository_impl.dart';
 import 'package:budgetopia/data/repository/perfil/perfil_repository.dart';
 import 'package:budgetopia/ui/detalhamento/state/detalhamento_state.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class DetalhamentoController with DDIEventSender<DetalhamentoState>, PostConstruct, PreDestroy {
+class DetalhamentoController extends ValueNotifier<DetalhamentoState> with PostConstruct, PreDestroy {
+  DetalhamentoController() : super(DetalhamentoState(totalEntrada: 0, totalSaida: 0, totalSaldo: 0));
+
   late final MovimentacaoRepository _movimentacaoRepository = ddi();
   late final PerfilRepository _perfilService = ddi();
 
@@ -19,12 +22,10 @@ class DetalhamentoController with DDIEventSender<DetalhamentoState>, PostConstru
     _refer = _movimentacaoRepository.buscarDadosDetalhamento().listen((MovimentacaoDados dados) {
       final (_, detalhamento) = dados;
 
-      fire(
-        DetalhamentoState(
-          totalEntrada: detalhamento.totalEntrada,
-          totalSaida: detalhamento.totalSaida,
-          totalSaldo: detalhamento.totalSaldo,
-        ),
+      value = DetalhamentoState(
+        totalEntrada: detalhamento.totalEntrada,
+        totalSaida: detalhamento.totalSaida,
+        totalSaldo: detalhamento.totalSaldo,
       );
     });
   }
