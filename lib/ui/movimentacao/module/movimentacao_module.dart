@@ -10,12 +10,12 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 class MovimentacaoModule with DDIModule {
   @override
   void onPostConstruct() {
-    Future.wait([
-      registerApplication(DataMovimentacaoController.new),
-      registerApplication(CategoriaController.new),
-      registerApplication(TipoMovimentacaoController.new),
-      registerApplication(StatusPagamentoController.new),
-      registerApplication(MovimentacaoCase.new),
+    Future.wait(<Future<void>>[
+      application(DataMovimentacaoController.new),
+      application(CategoriaController.new),
+      application(TipoMovimentacaoController.new),
+      application(StatusPagamentoController.new),
+      application(MovimentacaoCase.new),
     ]);
   }
 }

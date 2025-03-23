@@ -14,11 +14,12 @@ class HorizontalSelecaoMes<ModuleT extends DDIModule, CaseT extends UpdateInterf
   State<HorizontalSelecaoMes> createState() => _HorizontalSelecaoMesState<ModuleT, CaseT>();
 }
 
-class _HorizontalSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterface> extends State<HorizontalSelecaoMes>
-    with DDIComponentInject<SelecaoHorizontalController<CaseT>, ModuleT> {
+class _HorizontalSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterface> extends State<HorizontalSelecaoMes> {
   late final PageController _pageController;
 
   final Completer<void> complete = Completer();
+
+  final SelecaoHorizontalController<CaseT> instance = ddi.get(qualifier: '$ModuleT${SelecaoHorizontalController<CaseT>}');
   @override
   void initState() {
     super.initState();

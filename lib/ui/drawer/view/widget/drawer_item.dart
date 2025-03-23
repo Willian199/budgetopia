@@ -56,11 +56,11 @@ class _DrawerItemState extends State<DrawerItem> with SingleTickerProviderStateM
               if (_backgroundController.isCompleted) {
                 _backgroundController.reverse();
                 AdaptiveTheme.of(context).setLight();
-                ddi.refreshObject(false, qualifier: Qualifier.dark_mode);
+                ddi.addDecorator([(_) => false], qualifier: Qualifier.dark_mode);
               } else {
                 _backgroundController.forward();
                 AdaptiveTheme.of(context).setDark();
-                ddi.refreshObject(true, qualifier: Qualifier.dark_mode);
+                ddi.addDecorator([(_) => true], qualifier: Qualifier.dark_mode);
               }
             },
             child: Container(

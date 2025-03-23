@@ -13,13 +13,13 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 final class StartModule with DDIModule, PreDestroy {
   @override
   Future<void> onPostConstruct() async {
-    registerObject<GlobalKey<NavigatorState>>(GlobalKey<NavigatorState>());
+    object<GlobalKey<NavigatorState>>(GlobalKey<NavigatorState>());
 
     final AdaptiveThemeMode themeMode = await AdaptiveTheme.getThemeMode() ?? AdaptiveThemeMode.system;
 
     Future.wait([
-      registerObject(themeMode, qualifier: Qualifier.adaptive_theme_mode),
-      registerObject(
+      object(themeMode, qualifier: Qualifier.adaptive_theme_mode),
+      object(
         switch (themeMode) {
           AdaptiveThemeMode.system => WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark,
           AdaptiveThemeMode.light => false,
@@ -27,24 +27,24 @@ final class StartModule with DDIModule, PreDestroy {
         },
         qualifier: Qualifier.dark_mode,
       ),
-      registerApplication(ZoomDrawerController.new),
-      registerApplication(PageController.new),
+      application(ZoomDrawerController.new),
+      application(PageController.new),
       register<ErrorModuleInterface>(
-        factory: ScopeFactory.dependent(
+        factory: DependentFactory(
             builder: (AsyncSnapshot snapshot) {
           return CustomErrorModule(snapshot);
         }.builder),
       ),
       register<LoaderModuleInterface>(
-        factory: ScopeFactory.dependent(
+        factory: DependentFactory(
           builder: CustomLoaderModule.new.builder,
         ),
       ),
     ]);
 
-    DatabaseInterceptor.new.builder.asSingleton().register();
+    DatabaseInterceptor.new.builder.asSingleton();
 
-    await registerSingleton<Database>(
+    await singleton<Database>(
       () async => ObjectBox.create(),
       interceptors: {DatabaseInterceptor},
     );

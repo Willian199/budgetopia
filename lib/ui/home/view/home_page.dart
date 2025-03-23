@@ -1,18 +1,16 @@
+// cyberpunk_home_page.dart
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:budgetopia/common/components/generics/default_back_button.dart';
-import 'package:budgetopia/common/components/generics/degrade.dart';
-import 'package:budgetopia/common/components/selecao_horizontal/view/selecao_horizontal.dart';
-import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
-import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
-import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
 import 'package:budgetopia/ui/home/mixins/home_mixin.dart';
 import 'package:budgetopia/ui/home/module/home_module.dart';
-import 'package:budgetopia/ui/home/view/widgets/movimentacao_list_builder.dart';
-import 'package:budgetopia/ui/home/view/widgets/time_line_opacity_effect.dart';
-import 'package:budgetopia/ui/home/view/widgets/valor_segmented_button.dart';
+import 'package:budgetopia/ui/home/view/widgets/home_add_button.dart';
+import 'package:budgetopia/ui/home/view/widgets/home_app_bar.dart';
+import 'package:budgetopia/ui/home/view/widgets/home_background.dart';
+import 'package:budgetopia/ui/home/view/widgets/home_segmented_button.dart';
+import 'package:budgetopia/ui/home/view/widgets/home_selecao_mes.dart';
+import 'package:budgetopia/ui/home/view/widgets/home_transaction_list.dart';
 import 'package:budgetopia/ui/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/ui/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
@@ -20,39 +18,53 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({
-    super.key,
-  });
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ListenableState<HomePage, HomeController> with HomeMixin {
+class _HomePageState extends ListenableState<HomePage, HomeController> with HomeMixin, SingleTickerProviderStateMixin {
+  late AnimationController _fadeInController;
+  late Animation<double> _fadeInAnimation;
+
   @override
   void initState() {
     super.initState();
-    listenable.refresh(listenable.value.tabSelecionada);
-
     Future.delayed(Duration.zero, () {
       FlutterNativeSplash.remove();
     });
+    listenable.refresh(listenable.value.tabSelecionada);
+
+    _fadeInController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _fadeInAnimation = CurvedAnimation(
+      parent: _fadeInController,
+      curve: Curves.easeOut,
+    );
+
+    _fadeInController.forward();
+  }
+
+  @override
+  void dispose() {
+    _fadeInController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('Building HomePage');
+    final ThemeData theme = AdaptiveTheme.of(context).theme;
+    final bool isDarkMode = theme.brightness == Brightness.dark;
+    final Color backgroundColor = isDarkMode ? const Color(0xFF002215) : const Color(0xFFebffe5);
 
-    final currentTab = listenable.value.tabSelecionada;
-
-    final ThemeData tema = AdaptiveTheme.of(context).theme;
-    final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          color: tema.colorScheme.onPrimary,
-        ),
+      backgroundColor: backgroundColor,
+      floatingActionButton: HomeAddButton(
+        animation: _fadeInAnimation,
         onPressed: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
@@ -62,130 +74,51 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
               ),
             ),
           );
-
           listenable.refresh(listenable.value.tabSelecionada);
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      appBar: AppBar(
-        title: const Text(Strings.APP_NAME),
-        leading: const DefaultBackButton(),
-        actions: <Widget>[
-          Stack(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(
-                  top: Double.CINCO,
-                  right: Double.DEZ,
-                  left: Double.QUINZE,
+      body: Stack(
+        children: [
+          const HomeBackground(),
+          SafeArea(
+            child: Column(
+              children: [
+                HomeAppBar(
+                  animation: _fadeInAnimation,
+                  title: Strings.APP_NAME,
+                  notificationCount: notificationCount,
                 ),
-                child: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: UserImage(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: HomeSelecaoMes<HomeModule, HomeCase>(),
                 ),
-              ),
-              if (notificationCount > 0)
-                Positioned(
-                  right: Double.DEZ,
-                  top: Double.CINCO,
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
+                AnimatedBuilder(
+                  animation: _fadeInAnimation,
+                  builder: (context, child) => Opacity(
+                    opacity: _fadeInAnimation.value,
+                    child: child!,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    child: HomeSegmentedButton(),
+                  ),
+                ),
+                Expanded(
+                  child: AnimatedBuilder(
+                    animation: _fadeInAnimation,
+                    builder: (context, child) => Opacity(
+                      opacity: _fadeInAnimation.value,
+                      child: child!,
                     ),
-                    constraints: const BoxConstraints(
-                      minWidth: 16,
-                      minHeight: 16,
-                    ),
-                    child: Text(
-                      notificationCount.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                      ),
-                      textAlign: TextAlign.center,
+                    child: HomeTransactionList(
+                      listenable: listenable,
                     ),
                   ),
                 ),
-            ],
-          ),
-        ],
-      ),
-      body: Container(
-        width: double.maxFinite,
-        decoration: Degrade.efeitoDegrade(
-          cores: <Color>[
-            tema.colorScheme.primaryContainer,
-            tema.colorScheme.onSecondary,
-          ],
-        ),
-        child: SafeArea(
-          top: false,
-          bottom: false,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const HorizontalSelecaoMes<HomeModule, HomeCase>(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: Double.DEZ),
-                    child: SizedBox(
-                      width: double.maxFinite,
-                      child: SegmentedButton<TipoRegistroEnum>(
-                        segments: <ButtonSegment<TipoRegistroEnum>>[
-                          ButtonSegment<TipoRegistroEnum>(
-                            value: TipoRegistroEnum.todos,
-                            label: ValorSegmentedButton(
-                              titulo: Strings.SALDO,
-                              valor: listenable.value.valorSaldo,
-                              selecionada: TipoRegistroEnum.todos == currentTab.first,
-                            ),
-                          ),
-                          ButtonSegment<TipoRegistroEnum>(
-                            value: TipoRegistroEnum.entrada,
-                            label: ValorSegmentedButton(
-                              titulo: Strings.ENTRADA,
-                              valor: listenable.value.valorEntrada,
-                              selecionada: TipoRegistroEnum.entrada == currentTab.first,
-                            ),
-                          ),
-                          ButtonSegment<TipoRegistroEnum>(
-                            value: TipoRegistroEnum.saida,
-                            label: ValorSegmentedButton(
-                              titulo: Strings.SAIDA,
-                              valor: listenable.value.valorSaida,
-                              selecionada: TipoRegistroEnum.saida == currentTab.first,
-                            ),
-                          ),
-                        ],
-                        selected: currentTab,
-                        onSelectionChanged: listenable.refresh,
-                        showSelectedIcon: false,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: Double.VINTE),
-                    child: SizedBox(
-                      height: size.height - 210,
-                      child: Stack(
-                        children: [
-                          MovimentacaoListBuilder(),
-                          const TimeLineOpacityeffect(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }

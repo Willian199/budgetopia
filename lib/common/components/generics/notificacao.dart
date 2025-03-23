@@ -1,5 +1,6 @@
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -126,7 +127,7 @@ class Notificacao {
     style ??= _alertStyle();
 
     if (buttonDefault) {
-      final ThemeData tema = Theme.of(context);
+      final ThemeData tema = context.theme;
       final bool darkMode = tema.brightness == Brightness.dark;
 
       buttons = [

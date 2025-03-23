@@ -8,9 +8,9 @@ final class PerfilModule with DDIModule {
   @override
   FutureOr<void> onPostConstruct() {
     Future.wait([
-      registerApplication(DataNascimentoController.new),
+      application(DataNascimentoController.new),
       register(
-        factory: ScopeFactory.application(builder: PerfilCase.new.builder),
+        factory: ApplicationFactory(builder: PerfilCase.new.builder),
       ),
     ]);
   }

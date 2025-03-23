@@ -1,68 +1,141 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:budgetopia/common/components/generics/default_back_button.dart';
-import 'package:budgetopia/common/components/generics/degrade.dart';
-import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/components/button/container_back_button.dart';
+import 'package:budgetopia/common/components/painter/grid_painter.dart';
+import 'package:budgetopia/ui/sobre/widget/sobre_corpo.dart';
 import 'package:flutter/material.dart';
 
-class SobrePage extends StatefulWidget {
-  const SobrePage({
-    super.key,
-  });
+class SobrePage extends StatelessWidget {
+  const SobrePage({super.key});
 
-  @override
-  State<SobrePage> createState() => _SobrePageState();
-}
-
-class _SobrePageState extends State<SobrePage> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = AdaptiveTheme.of(context).theme;
+    final theme = AdaptiveTheme.of(context).theme;
+    final isDarkMode = theme.brightness == Brightness.dark;
+
+    // Using theme colors directly from your theme files
+    final primaryColor = theme.colorScheme.primary;
+    final secondaryColor = theme.colorScheme.secondary;
+    final tertiaryColor = theme.colorScheme.tertiary;
+    final backgroundColor = isDarkMode
+        ? const Color(0xFF002215) // Dark theme inputDecoratorFillColor
+        : const Color(0xFFebffe5); // Light theme inputDecoratorFillColor
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(Strings.SOBRE),
-        leading: const DefaultBackButton(),
-      ),
-      body: Container(
-        height: double.infinity,
-        decoration: Degrade.efeitoDegrade(
-          cores: <Color>[
-            tema.colorScheme.primaryContainer,
-            tema.colorScheme.onSecondary,
-          ],
-        ),
-        child: const SafeArea(
-          top: false,
-          bottom: false,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    '''
-            Gerencie suas finanças com facilidade. Budgetopia permite que você acompanhe suas entradas e saídas financeiras de forma simples e eficaz. Com recursos práticos e uma interface amigável, você pode manter suas finanças sob controle, alcançando seus objetivos financeiros com mais tranquilidade.
-                  
-            Mantenha-se no comando das suas finanças com Budgetopia - seu parceiro confiável para uma jornada financeira mais inteligente. 
-                  ''',
-                    style: TextStyle(fontSize: 18.0),
-                    textAlign: TextAlign.justify,
+      backgroundColor: backgroundColor,
+      body: Stack(
+        children: [
+          // Cyberpunk grid background
+          Positioned.fill(
+            child: CustomPaint(
+              painter: GridPainter(
+                lineColor: primaryColor.withAlpha(26),
+                lineWidth: 1,
+              ),
+            ),
+          ),
+
+          // Glowing orbs for futuristic effect
+          Positioned(
+            top: -50,
+            right: -30,
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: tertiaryColor.withAlpha(77),
+                    blurRadius: 80,
+                    spreadRadius: 20,
                   ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    Strings.VERSAO,
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    '1.0.0',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  SizedBox(height: 16.0),
                 ],
               ),
             ),
           ),
-        ),
+
+          Positioned(
+            bottom: -40,
+            left: -20,
+            child: Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: secondaryColor.withAlpha(77),
+                    blurRadius: 60,
+                    spreadRadius: 15,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Main content
+          SafeArea(
+            child: Column(
+              children: [
+                // Custom Title Bar with Menu Button
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                  child: Row(
+                    children: [
+                      // Custom Menu Button with glow effect
+                      const ContainerBackButton(),
+
+                      Expanded(
+                        child: Center(
+                          // Title with cyberpunk container
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: tertiaryColor.withAlpha(128),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: tertiaryColor.withAlpha(51),
+                                  blurRadius: 12,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              'BUDGETOPIA',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 3,
+                                color: tertiaryColor,
+                                shadows: [
+                                  Shadow(
+                                    color: tertiaryColor.withAlpha(179),
+                                    blurRadius: 8,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Balance layout with empty container
+                      const SizedBox(width: 30),
+                    ],
+                  ),
+                ),
+
+                // Scrollable content area
+                const Expanded(
+                  child: SobreCorpo(),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

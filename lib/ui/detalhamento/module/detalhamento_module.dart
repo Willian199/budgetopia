@@ -10,10 +10,10 @@ final class DetalhamentoModule with DDIModule {
   void onPostConstruct() {
     Future.wait([
       register(
-        factory: ScopeFactory.application(builder: PerfilCase.new.builder),
+        factory: ApplicationFactory(builder: PerfilCase.new.builder),
       ),
-      registerApplication(DetalhamentoController.new),
-      registerApplication(GraficoController.new),
+      application(DetalhamentoController.new),
+      application(GraficoController.new),
     ]);
   }
 }

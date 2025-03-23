@@ -15,12 +15,12 @@ class ControlerPageModule with DDIModule {
   @override
   void onPostConstruct() async {
     Future.wait([
-      registerApplication<MovimentacaoService>(MovimentacaoServiceImpl.new),
-      registerApplication<MovimentacaoRepository>(MovimentacaoRepositoryImpl.new),
-      registerApplication<PerfilService>(PerfilServiceImpl.new),
-      registerApplication<PerfilRepository>(PerfilRepositoryImpl.new),
+      application<MovimentacaoService>(MovimentacaoServiceImpl.new),
+      application<MovimentacaoRepository>(MovimentacaoRepositoryImpl.new),
+      application<PerfilService>(PerfilServiceImpl.new),
+      application<PerfilRepository>(PerfilRepositoryImpl.new),
       register(
-        factory: ScopeFactory.application(builder: UserImageController.new.builder),
+        factory: ApplicationFactory(builder: UserImageController.new.builder),
       ),
     ]);
   }
