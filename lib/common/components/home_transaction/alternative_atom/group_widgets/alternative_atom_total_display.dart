@@ -1,19 +1,18 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AtompunkTotalDisplay extends StatelessWidget {
-  const AtompunkTotalDisplay({
-    required this.totalValue,
-    super.key,
-  });
+  const AtompunkTotalDisplay({required this.totalValue, super.key});
 
   final double totalValue;
 
   @override
   Widget build(BuildContext context) {
     final bool isPositive = totalValue >= 0;
-    final Color valueColor = isPositive ? AtomPunkColorPalette.neonGreen : Colors.redAccent;
+    final Color valueColor = isPositive
+        ? AtomPunkColorPalette.neonGreen
+        : Colors.redAccent;
     final formattedValue = Moeda.format(valor: totalValue.abs());
 
     return Container(
@@ -21,9 +20,7 @@ class AtompunkTotalDisplay extends StatelessWidget {
       decoration: BoxDecoration(
         color: AtomPunkColorPalette.darkGreen,
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(
-          color: valueColor.withValues(alpha: 0.5),
-        ),
+        border: Border.all(color: valueColor.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
             color: valueColor.withValues(alpha: 0.2),
@@ -41,9 +38,7 @@ class AtompunkTotalDisplay extends StatelessWidget {
             height: 16,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: valueColor.withValues(alpha: 0.5),
-              ),
+              border: Border.all(color: valueColor.withValues(alpha: 0.5)),
             ),
             child: Center(
               child: Icon(

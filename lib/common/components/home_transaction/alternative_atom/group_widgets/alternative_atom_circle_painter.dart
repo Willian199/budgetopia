@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomCirclePainter extends CustomPainter {
@@ -17,11 +17,7 @@ class AlternativeAtomCirclePainter extends CustomPainter {
 
     // Draw concentric circles
     for (int i = 1; i <= 3; i++) {
-      canvas.drawCircle(
-        center,
-        size.width * (i / 4),
-        paint,
-      );
+      canvas.drawCircle(center, size.width * (i / 4), paint);
     }
 
     // Draw lines connecting the circles
@@ -30,11 +26,7 @@ class AlternativeAtomCirclePainter extends CustomPainter {
       final x = center.dx + (size.width / 2) * math.cos(angle);
       final y = center.dy + (size.height / 2) * math.sin(angle);
 
-      canvas.drawLine(
-        center,
-        Offset(x, y),
-        paint,
-      );
+      canvas.drawLine(center, Offset(x, y), paint);
     }
   }
 

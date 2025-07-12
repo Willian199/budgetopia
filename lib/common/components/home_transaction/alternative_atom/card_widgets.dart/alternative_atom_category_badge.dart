@@ -1,5 +1,5 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomCategoryBadge extends StatelessWidget {
@@ -22,10 +22,7 @@ class AlternativeAtomCategoryBadge extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AtomPunkColorPalette.mainGreen,
-        border: Border.all(
-          color: accentColor,
-          width: 1.5,
-        ),
+        border: Border.all(color: accentColor, width: 1.5),
         boxShadow: [
           BoxShadow(
             color: accentColor.withValues(alpha: 0.4),

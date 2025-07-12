@@ -1,10 +1,8 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AtompunkRetroLabel extends StatelessWidget {
-  const AtompunkRetroLabel({
-    super.key,
-  });
+  const AtompunkRetroLabel({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,4 @@
 import 'package:budgetopia/common/components/generics/cache.dart';
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternative_atom_category_badge.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternative_atom_scanner_line.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternative_atom_side_bar.dart';
@@ -8,6 +7,7 @@ import 'package:budgetopia/common/components/home_transaction/alternative_atom/c
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternatve_atom_category_tag.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomContainer extends StatefulWidget {
@@ -27,10 +27,12 @@ class AlternativeAtomContainer extends StatefulWidget {
   final String nomeCategoria;
 
   @override
-  State<AlternativeAtomContainer> createState() => _AlternativeAtomContainerState();
+  State<AlternativeAtomContainer> createState() =>
+      _AlternativeAtomContainerState();
 }
 
-class _AlternativeAtomContainerState extends State<AlternativeAtomContainer> with SingleTickerProviderStateMixin {
+class _AlternativeAtomContainerState extends State<AlternativeAtomContainer>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _pulseAnimation;
 
@@ -41,9 +43,10 @@ class _AlternativeAtomContainerState extends State<AlternativeAtomContainer> wit
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
-    _pulseAnimation = Tween<double>(begin: 0.1, end: 0.6).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    );
+    _pulseAnimation = Tween<double>(
+      begin: 0.1,
+      end: 0.6,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
     _controller.repeat(reverse: true);
   }
@@ -80,7 +83,9 @@ class _AlternativeAtomContainerState extends State<AlternativeAtomContainer> wit
                       ),
                     ],
                     border: Border.all(
-                      color: widget.accentColor.withValues(alpha: 0.2 + (value)),
+                      color: widget.accentColor.withValues(
+                        alpha: 0.2 + (value),
+                      ),
                       width: 1.5,
                     ),
                   ),
@@ -122,7 +127,9 @@ class _AlternativeAtomContainerState extends State<AlternativeAtomContainer> wit
                           ),
 
                           // Status as light indicator
-                          AlternativeAtomStatusIndicator(isCompleted: widget.transaction.status),
+                          AlternativeAtomStatusIndicator(
+                            isCompleted: widget.transaction.status,
+                          ),
                         ],
                       ),
 

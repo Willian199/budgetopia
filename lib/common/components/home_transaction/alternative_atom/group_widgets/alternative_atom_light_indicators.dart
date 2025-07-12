@@ -1,4 +1,4 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomLightIndicators extends StatelessWidget {
@@ -18,7 +18,7 @@ class AlternativeAtomLightIndicators extends StatelessWidget {
               AtomPunkColorPalette.neonGreen,
               AtomPunkColorPalette.chartreuse,
               AtomPunkColorPalette.neonGreen,
-              AtomPunkColorPalette.cream
+              AtomPunkColorPalette.cream,
             ][index],
             boxShadow: [
               BoxShadow(
@@ -27,9 +27,8 @@ class AlternativeAtomLightIndicators extends StatelessWidget {
                   AtomPunkColorPalette.neonGreen,
                   AtomPunkColorPalette.chartreuse,
                   AtomPunkColorPalette.neonGreen,
-                  AtomPunkColorPalette.cream
-                ][index]
-                    .withValues(alpha: 0.6),
+                  AtomPunkColorPalette.cream,
+                ][index].withValues(alpha: 0.6),
                 blurRadius: 4,
               ),
             ],

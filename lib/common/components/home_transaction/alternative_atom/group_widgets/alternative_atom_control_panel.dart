@@ -1,4 +1,3 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/controller/alternative_atom_group_notifier.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/group_widgets/alternative_atom_date_circle.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/group_widgets/alternative_atom_expand_button.dart';
@@ -6,6 +5,7 @@ import 'package:budgetopia/common/components/home_transaction/alternative_atom/g
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/group_widgets/alternative_atom_light_indicators.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/group_widgets/alternative_atom_retro_label.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/group_widgets/alternative_atom_total_display.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomControlPanel extends StatelessWidget {
@@ -73,9 +73,7 @@ class AlternativeAtomControlPanel extends StatelessWidget {
                         ),
 
                         // Total value display
-                        AtompunkTotalDisplay(
-                          totalValue: totalValue,
-                        ),
+                        AtompunkTotalDisplay(totalValue: totalValue),
                       ],
                     ),
                   ),
@@ -85,7 +83,9 @@ class AlternativeAtomControlPanel extends StatelessWidget {
                 ListenableBuilder(
                   listenable: notifier,
                   builder: (context, child) {
-                    return AlternativeAtomExpandButton(isExpanded: notifier.isExpanded);
+                    return AlternativeAtomExpandButton(
+                      isExpanded: notifier.isExpanded,
+                    );
                   },
                 ),
               ],

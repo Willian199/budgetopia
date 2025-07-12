@@ -1,5 +1,5 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/group_widgets/alternative_atom_circle_painter.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomDateCircle extends StatelessWidget {
@@ -59,7 +59,9 @@ class AlternativeAtomDateCircle extends StatelessWidget {
                     letterSpacing: 1,
                     shadows: [
                       Shadow(
-                        color: AtomPunkColorPalette.neonGreen.withValues(alpha: 0.5),
+                        color: AtomPunkColorPalette.neonGreen.withValues(
+                          alpha: 0.5,
+                        ),
                         blurRadius: 2,
                         offset: const Offset(0, 1),
                       ),
@@ -67,7 +69,10 @@ class AlternativeAtomDateCircle extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 1,
+                  ),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: AtomPunkColorPalette.cream.withValues(alpha: 0.3),

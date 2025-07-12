@@ -6,16 +6,6 @@ import 'package:budgetopia/common/components/home_transaction/alternative_atom/g
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:flutter/material.dart';
 
-// Color palette class to centralize all colors
-class AtomPunkColorPalette {
-  static const Color mainGreen = Color(0xFF009969);
-  static const Color darkGreen = Color(0xFF005E40);
-  static const Color lightGreen = Color(0xFF00D489);
-  static const Color neonGreen = Color(0xFF00FF9A);
-  static const Color chartreuse = Color(0xFFCDFF00);
-  static const Color cream = Color(0xFFEBFFE5);
-}
-
 // Main widget
 class AlternativeAtomGroup extends StatefulWidget {
   const AlternativeAtomGroup({
@@ -37,7 +27,8 @@ class AlternativeAtomGroup extends StatefulWidget {
   State<AlternativeAtomGroup> createState() => _AlternativeAtomGroupState();
 }
 
-class _AlternativeAtomGroupState extends State<AlternativeAtomGroup> with SingleTickerProviderStateMixin {
+class _AlternativeAtomGroupState extends State<AlternativeAtomGroup>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late AlternativeAtomGroupNotifier _notifier;
 
@@ -106,10 +97,7 @@ class _AlternativeAtomGroupState extends State<AlternativeAtomGroup> with Single
           animation: _controller,
           builder: (BuildContext context, Widget? child) {
             return ClipRect(
-              child: Align(
-                heightFactor: _controller.value,
-                child: child,
-              ),
+              child: Align(heightFactor: _controller.value, child: child),
             );
           },
           child: Column(
@@ -123,7 +111,8 @@ class _AlternativeAtomGroupState extends State<AlternativeAtomGroup> with Single
               }),
 
               // Connector to next group
-              if (!widget.isLast && _notifier.isExpanded) const AlternativeAtomConnector(),
+              if (!widget.isLast && _notifier.isExpanded)
+                const AlternativeAtomConnector(),
             ],
           ),
         ),

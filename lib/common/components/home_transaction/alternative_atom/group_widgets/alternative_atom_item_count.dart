@@ -1,11 +1,8 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomItemCount extends StatelessWidget {
-  const AlternativeAtomItemCount({
-    required this.count,
-    super.key,
-  });
+  const AlternativeAtomItemCount({required this.count, super.key});
 
   final int count;
 

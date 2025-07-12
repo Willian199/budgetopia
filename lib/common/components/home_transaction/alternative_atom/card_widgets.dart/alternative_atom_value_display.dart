@@ -1,5 +1,5 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomValueDisplay extends StatelessWidget {
@@ -15,7 +15,9 @@ class AlternativeAtomValueDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedValue = Moeda.format(valor: value);
-    final Color indicatorColor = isEntrada ? AtomPunkColorPalette.neonGreen : Colors.redAccent;
+    final Color indicatorColor = isEntrada
+        ? AtomPunkColorPalette.neonGreen
+        : Colors.redAccent;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),

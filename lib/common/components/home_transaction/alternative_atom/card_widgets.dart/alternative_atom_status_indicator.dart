@@ -1,17 +1,16 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomStatusIndicator extends StatelessWidget {
-  const AlternativeAtomStatusIndicator({
-    required this.isCompleted,
-    super.key,
-  });
+  const AlternativeAtomStatusIndicator({required this.isCompleted, super.key});
 
   final bool isCompleted;
 
   @override
   Widget build(BuildContext context) {
-    final Color statusColor = isCompleted ? AtomPunkColorPalette.neonGreen : Colors.redAccent;
+    final Color statusColor = isCompleted
+        ? AtomPunkColorPalette.neonGreen
+        : Colors.redAccent;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

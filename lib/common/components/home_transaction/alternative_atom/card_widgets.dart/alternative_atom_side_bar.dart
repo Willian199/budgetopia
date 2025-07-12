@@ -1,11 +1,8 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:flutter/material.dart';
 
 class AlternativeAtomSideBar extends StatelessWidget {
-  const AlternativeAtomSideBar({
-    required this.accentColor,
-    super.key,
-  });
+  const AlternativeAtomSideBar({required this.accentColor, super.key});
 
   final Color accentColor;
 
@@ -24,9 +21,7 @@ class AlternativeAtomSideBar extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: AtomPunkColorPalette.darkGreen,
-              border: Border.all(
-                color: accentColor.withValues(alpha: 0.7),
-              ),
+              border: Border.all(color: accentColor.withValues(alpha: 0.7)),
             ),
           ),
         ),

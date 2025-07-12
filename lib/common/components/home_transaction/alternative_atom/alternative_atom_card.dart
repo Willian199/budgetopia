@@ -1,9 +1,10 @@
 // File: alternative_atompunk_card.dart
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
+
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternative_atom_container.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
+import 'package:budgetopia/config/theme/home_color_template.dart';
 import 'package:budgetopia/ui/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/ui/movimentacao/view/movimentacao_page.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,8 @@ class AlternativeAtomCard extends StatefulWidget {
   State<AlternativeAtomCard> createState() => _AlternativeAtomCardState();
 }
 
-class _AlternativeAtomCardState extends State<AlternativeAtomCard> with SingleTickerProviderStateMixin {
+class _AlternativeAtomCardState extends State<AlternativeAtomCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -36,9 +38,10 @@ class _AlternativeAtomCardState extends State<AlternativeAtomCard> with SingleTi
       vsync: this,
     );
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.97).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.97,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
   }
 
   @override
@@ -50,9 +53,14 @@ class _AlternativeAtomCardState extends State<AlternativeAtomCard> with SingleTi
   @override
   Widget build(BuildContext context) {
     final isEntrada = widget.transaction.tipoMovimentacao == 1;
-    final tipoMovimentacao = TipoMovimentacaoEnum.getById(widget.transaction.tipoMovimentacao);
-    final nomeCategoria = CategoriaEnum.getById(widget.transaction.codigoCategoria)?.nome ?? '';
-    final Color accentColor = isEntrada ? AtomPunkColorPalette.neonGreen : Colors.redAccent;
+    final tipoMovimentacao = TipoMovimentacaoEnum.getById(
+      widget.transaction.tipoMovimentacao,
+    );
+    final nomeCategoria =
+        CategoriaEnum.getById(widget.transaction.codigoCategoria)?.nome ?? '';
+    final Color accentColor = isEntrada
+        ? AtomPunkColorPalette.neonGreen
+        : Colors.redAccent;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
@@ -71,9 +79,8 @@ class _AlternativeAtomCardState extends State<AlternativeAtomCard> with SingleTi
             MaterialPageRoute(
               builder: (context) => FlutterDDIBuilder(
                 module: MovimentacaoModule.new,
-                child: (_) => MovimentacaoPage(
-                  movimentacaoModel: widget.transaction,
-                ),
+                child: (_) =>
+                    MovimentacaoPage(movimentacaoModel: widget.transaction),
               ),
             ),
           );
