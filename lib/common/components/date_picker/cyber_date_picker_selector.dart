@@ -94,36 +94,37 @@ class _CyberDatePickerSelectorState extends State<CyberDatePickerSelector> with 
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-        listenable: _model,
-        builder: (context, _) {
-          final previousDate = _model.getPreviousValue();
-          final nextDate = _model.getNextValue();
+      listenable: _model,
+      builder: (context, _) {
+        final previousDate = _model.getPreviousValue();
+        final nextDate = _model.getNextValue();
 
-          return GestureDetector(
-            onHorizontalDragStart: (_) => _model.onDragStart(),
-            onHorizontalDragUpdate: (details) => _model.onDragUpdate(details),
-            onHorizontalDragEnd: (_) => _model.onDragEnd(),
-            child: SizedBox(
-              height: 140,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildPreviousValueWidget(context, previousDate),
+        return GestureDetector(
+          onHorizontalDragStart: (_) => _model.onDragStart(),
+          onHorizontalDragUpdate: (details) => _model.onDragUpdate(details),
+          onHorizontalDragEnd: (_) => _model.onDragEnd(),
+          child: SizedBox(
+            height: 140,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildPreviousValueWidget(context, previousDate),
 
-                  // Usando o widget separado para o valor atual
-                  CyberDatePickerSelectorValue(
-                    model: _model,
-                    glitchAnimation: widget.glitchAnimation,
-                    componentAnimation: _componentAnimation,
-                    dateRotationAnimation: _dateRotationAnimation,
-                  ),
+                // Usando o widget separado para o valor atual
+                CyberDatePickerSelectorValue(
+                  model: _model,
+                  glitchAnimation: widget.glitchAnimation,
+                  componentAnimation: _componentAnimation,
+                  dateRotationAnimation: _dateRotationAnimation,
+                ),
 
-                  _buildNextValueWidget(context, nextDate),
-                ],
-              ),
+                _buildNextValueWidget(context, nextDate),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   // Widget para o valor anterior (esquerda)

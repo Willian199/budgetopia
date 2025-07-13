@@ -8,15 +8,15 @@ class CyberDatePickerModel extends ChangeNotifier {
     required this.onDateSelected,
     this.firstDate,
     this.lastDate,
-  })  : _selectedDate = initialDate,
-        _activeComponent = CyberDateComponent.day,
-        _mode = CyberDatePickerMode.selector,
-        dayController = TextEditingController(text: initialDate.day.toString()),
-        monthController = TextEditingController(text: initialDate.month.toString()),
-        yearController = TextEditingController(text: initialDate.year.toString()),
-        dayFocus = FocusNode(),
-        monthFocus = FocusNode(),
-        yearFocus = FocusNode() {
+  }) : _selectedDate = initialDate,
+       _activeComponent = CyberDateComponent.day,
+       _mode = CyberDatePickerMode.selector,
+       dayController = TextEditingController(text: initialDate.day.toString()),
+       monthController = TextEditingController(text: initialDate.month.toString()),
+       yearController = TextEditingController(text: initialDate.year.toString()),
+       dayFocus = FocusNode(),
+       monthFocus = FocusNode(),
+       yearFocus = FocusNode() {
     _applyDateConstraints();
   }
 

@@ -15,15 +15,26 @@ class HomeTransactionList extends StatefulWidget {
 }
 
 class _HomeTransactionListState extends State<HomeTransactionList> {
-  late final List<int> diasOrdenados;
+  late List<int> diasOrdenados = [];
   final Map<int, List<MovimentacaoModel>> transacoesPorDia = {};
   late final controller = ddi.get<HomeController>();
 
   @override
-  void initState() {
-    super.initState();
+  void didUpdateWidget(covariant HomeTransactionList oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-    // Agrupar por dia
+    _refresh();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _refresh();
+  }
+
+  void _refresh() {
+    transacoesPorDia.clear();
+    diasOrdenados.clear();
 
     for (var transacao in widget.transacoes) {
       final int dia = transacao.data.day;

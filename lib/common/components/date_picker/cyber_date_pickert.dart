@@ -48,15 +48,16 @@ class _CyberDatePickerState extends State<CyberDatePicker> with TickerProviderSt
       vsync: this,
     )..repeat(reverse: true);
 
-    _glitchAnimation = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 0, end: 1), weight: 50),
-      TweenSequenceItem(tween: Tween(begin: 1, end: 0), weight: 50),
-    ]).animate(
-      CurvedAnimation(
-        parent: _glitchAnimController,
-        curve: const Interval(0.0, 1.0, curve: Curves.easeInOut),
-      ),
-    );
+    _glitchAnimation =
+        TweenSequence<double>([
+          TweenSequenceItem(tween: Tween(begin: 0, end: 1), weight: 50),
+          TweenSequenceItem(tween: Tween(begin: 1, end: 0), weight: 50),
+        ]).animate(
+          CurvedAnimation(
+            parent: _glitchAnimController,
+            curve: const Interval(0.0, 1.0, curve: Curves.easeInOut),
+          ),
+        );
   }
 
   @override
@@ -72,74 +73,77 @@ class _CyberDatePickerState extends State<CyberDatePicker> with TickerProviderSt
       backgroundColor: Colors.transparent,
       body: SafeArea(
         child: AnimatedBuilder(
-            animation: _model,
-            builder: (context, child) {
-              return Stack(
-                children: [
-                  Center(
-                    child: Container(
-                      margin: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: context.backgroundColor,
-                      ),
-                      height: 500,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Component selector (only visible in selector mode)
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 300),
-                            opacity: _model.mode == CyberDatePickerMode.selector ? 1.0 : 0.0,
-                            child: CyberDatePickerSelectorType(
-                              activeComponent: _model.activeComponent,
-                              onComponentSelected: _model.switchComponent,
-                            ),
+          animation: _model,
+          builder: (context, child) {
+            return Stack(
+              children: [
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: context.backgroundColor,
+                    ),
+                    height: 500,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Component selector (only visible in selector mode)
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: _model.mode == CyberDatePickerMode.selector ? 1.0 : 0.0,
+                          child: CyberDatePickerSelectorType(
+                            activeComponent: _model.activeComponent,
+                            onComponentSelected: _model.switchComponent,
                           ),
+                        ),
 
-                          const SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                          // Mode toggle content
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 200),
-                            switchInCurve: Curves.easeIn,
-                            switchOutCurve: Curves.easeOut,
-                            transitionBuilder: (child, animation) {
-                              return SizeTransition(
-                                sizeFactor: animation,
-                                child: child,
-                              );
-                            },
-                            child: _model.mode == CyberDatePickerMode.selector
-                                ?
+                        // Mode toggle content
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          switchInCurve: Curves.easeIn,
+                          switchOutCurve: Curves.easeOut,
+                          transitionBuilder: (child, animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          child: _model.mode == CyberDatePickerMode.selector
+                              ?
                                 // Selector mode
                                 CyberDatePickerSelector(
-                                    key: const ValueKey(CyberDatePickerMode.selector),
-                                    selectedDate: _model.selectedDate,
-                                    activeComponent: _model.activeComponent,
-                                    firstDate: widget.firstDate,
-                                    lastDate: widget.lastDate,
-                                    glitchAnimation: _glitchAnimation,
-                                    onDateChanged: _model.updateDate,
-                                  )
-                                :
+                                  key: const ValueKey(CyberDatePickerMode.selector),
+                                  selectedDate: _model.selectedDate,
+                                  activeComponent: _model.activeComponent,
+                                  firstDate: widget.firstDate,
+                                  lastDate: widget.lastDate,
+                                  glitchAnimation: _glitchAnimation,
+                                  onDateChanged: _model.updateDate,
+                                )
+                              :
                                 // Input mode
                                 CyberDatePickerInput(
-                                    key: const ValueKey(CyberDatePickerMode.input),
-                                    dayController: _model.dayController,
-                                    monthController: _model.monthController,
-                                    yearController: _model.yearController,
-                                    dayFocus: _model.dayFocus,
-                                    monthFocus: _model.monthFocus,
-                                    yearFocus: _model.yearFocus,
-                                    onSubmitted: (_) => _model.updateDateFromInput(),
-                                  ),
-                          ),
+                                  key: const ValueKey(CyberDatePickerMode.input),
+                                  dayController: _model.dayController,
+                                  monthController: _model.monthController,
+                                  yearController: _model.yearController,
+                                  dayFocus: _model.dayFocus,
+                                  monthFocus: _model.monthFocus,
+                                  yearFocus: _model.yearFocus,
+                                  onSubmitted: (_) => _model.updateDateFromInput(),
+                                ),
+                        ),
 
-                          const SizedBox(height: 40),
+                        const SizedBox(height: 40),
 
-                          // Instructions text
-                          Padding(
+                        // Instructions text
+                        SizedBox(
+                          height: 40,
+                          width: double.maxFinite,
+                          child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
                               _model.mode == CyberDatePickerMode.selector
@@ -149,61 +153,65 @@ class _CyberDatePickerState extends State<CyberDatePicker> with TickerProviderSt
                               style: context.instructionTextStyle(),
                             ),
                           ),
+                        ),
 
-                          const SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
-                          // Full date display for reference - clickable to toggle mode
-                          GestureDetector(
-                            onTap: _model.toggleMode,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                              decoration: context.dateDisplayDecoration(),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    '${_model.selectedDate.day} ${CyberDatePickerConstants.months[_model.selectedDate.month - 1]} ${_model.selectedDate.year}',
-                                    style: context.dateDisplayTextStyle(),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Icon(
-                                    _model.mode == CyberDatePickerMode.selector ? Icons.edit : Icons.change_circle_outlined,
-                                    color: context.accentColor,
-                                    size: 16,
-                                  ),
-                                ],
-                              ),
+                        // Full date display for reference - clickable to toggle mode
+                        GestureDetector(
+                          onTap: _model.toggleMode,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            decoration: context.dateDisplayDecoration(),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  '${_model.selectedDate.day} ${CyberDatePickerConstants.months[_model.selectedDate.month - 1]} ${_model.selectedDate.year}',
+                                  style: context.dateDisplayTextStyle(),
+                                ),
+                                const SizedBox(width: 10),
+                                Icon(
+                                  _model.mode == CyberDatePickerMode.selector
+                                      ? Icons.edit
+                                      : Icons.change_circle_outlined,
+                                  color: context.accentColor,
+                                  size: 16,
+                                ),
+                              ],
                             ),
                           ),
+                        ),
 
-                          const SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
-                          // Select Button
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_model.mode == CyberDatePickerMode.input) {
-                                _model.updateDateFromInput();
-                              }
-                              widget.onDateSelected(_model.selectedDate);
-                              Navigator.of(context).pop();
-                            },
-                            style: context.confirmButtonStyle(),
-                            child: const Text(
-                              'CONFIRM DATE',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                              ),
+                        // Select Button
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_model.mode == CyberDatePickerMode.input) {
+                              _model.updateDateFromInput();
+                            }
+                            widget.onDateSelected(_model.selectedDate);
+                            Navigator.of(context).pop();
+                          },
+                          style: context.confirmButtonStyle(),
+                          child: const Text(
+                            'CONFIRM DATE',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              );
-            }),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

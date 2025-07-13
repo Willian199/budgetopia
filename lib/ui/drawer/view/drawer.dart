@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/components/generics/cache.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
@@ -40,21 +41,26 @@ class DrawerPage extends StatelessWidget {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      child: ZoomDrawer(
-        controller: ddi(),
-        mainScreenTapClose: true,
-        duration: const Duration(milliseconds: 200),
-        reverseDuration: const Duration(milliseconds: 100),
-        mainScreen: const ControllerPage(),
-        menuScreen: const Padding(
-          padding: EdgeInsets.only(left: Double.DEZ),
-          child: DrawerItem(),
-        ),
-        borderRadius: 30.0,
-        showShadow: true,
-        //style: DrawerStyle.style1,
-        drawerShadowsBackgroundColor: shadow,
-        slideWidth: MediaQuery.sizeOf(context).width * 0.65,
+      child: Cache<ZoomDrawerController>(
+        value: ddi.get<ZoomDrawerController>(),
+        builder: (context, controller) {
+          return ZoomDrawer(
+            controller: controller,
+            mainScreenTapClose: true,
+            duration: const Duration(milliseconds: 200),
+            reverseDuration: const Duration(milliseconds: 100),
+            mainScreen: const ControllerPage(),
+            menuScreen: const Padding(
+              padding: EdgeInsets.only(left: Double.DEZ),
+              child: DrawerItem(),
+            ),
+            borderRadius: 30.0,
+            showShadow: true,
+            //style: DrawerStyle.style1,
+            drawerShadowsBackgroundColor: shadow,
+            slideWidth: MediaQuery.sizeOf(context).width * 0.65,
+          );
+        },
       ),
     );
   }

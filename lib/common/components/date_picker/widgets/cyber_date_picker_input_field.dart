@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CyberDatePickerInputField extends StatelessWidget {
-  const CyberDatePickerInputField(
-      {required this.controller, required this.onSubmitted, required this.focusNode, required this.hintText, required this.onChanged, super.key});
+  const CyberDatePickerInputField({
+    required this.controller,
+    required this.onSubmitted,
+    required this.focusNode,
+    required this.hintText,
+    required this.onChanged,
+    super.key,
+  });
 
   final TextEditingController controller;
   final FocusNode focusNode;

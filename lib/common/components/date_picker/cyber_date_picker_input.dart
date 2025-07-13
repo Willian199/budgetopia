@@ -25,7 +25,7 @@ class CyberDatePickerInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 120,
+      height: 140,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
