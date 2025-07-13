@@ -24,7 +24,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ListenableState<HomePage, HomeController> with HomeMixin, SingleTickerProviderStateMixin {
+class _HomePageState extends ListenableState<HomePage, HomeController>
+    with HomeMixin, SingleTickerProviderStateMixin {
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
 
@@ -59,7 +60,9 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
   Widget build(BuildContext context) {
     final ThemeData theme = AdaptiveTheme.of(context).theme;
     final bool isDarkMode = theme.brightness == Brightness.dark;
-    final Color backgroundColor = isDarkMode ? const Color(0xFF002215) : const Color(0xFFebffe5);
+    final Color backgroundColor = isDarkMode
+        ? const Color(0xFF002215)
+        : const Color(0xFFebffe5);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -94,10 +97,8 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
                 ),
                 AnimatedBuilder(
                   animation: _fadeInAnimation,
-                  builder: (context, child) => Opacity(
-                    opacity: _fadeInAnimation.value,
-                    child: child!,
-                  ),
+                  builder: (context, child) =>
+                      Opacity(opacity: _fadeInAnimation.value, child: child!),
                   child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     child: HomeSegmentedButton(),
@@ -106,12 +107,10 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
                 Expanded(
                   child: AnimatedBuilder(
                     animation: _fadeInAnimation,
-                    builder: (context, child) => Opacity(
-                      opacity: _fadeInAnimation.value,
-                      child: child!,
-                    ),
+                    builder: (context, child) =>
+                        Opacity(opacity: _fadeInAnimation.value, child: child!),
                     child: HomeTransactionList(
-                      listenable: listenable,
+                      transacoes: listenable.registrosAbaMovimentacao,
                     ),
                   ),
                 ),

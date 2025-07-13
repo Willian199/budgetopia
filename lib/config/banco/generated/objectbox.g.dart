@@ -22,117 +22,137 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(1, 1745928540738626264),
-      name: 'UserPreferencesEntity',
-      lastPropertyId: const obx_int.IdUid(4, 3276671438813952584),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 2361412992308745981),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 4707883405290619868),
-            name: 'descricao',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 6724198172593630985),
-            name: 'valor',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 3276671438813952584),
-            name: 'dataAlteracao',
-            type: 10,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[]),
+    id: const obx_int.IdUid(1, 1745928540738626264),
+    name: 'UserPreferencesEntity',
+    lastPropertyId: const obx_int.IdUid(4, 3276671438813952584),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 2361412992308745981),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 4707883405290619868),
+        name: 'descricao',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 6724198172593630985),
+        name: 'valor',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 3276671438813952584),
+        name: 'dataAlteracao',
+        type: 10,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(2, 5638960901270906135),
-      name: 'MovimentacaoEntity',
-      lastPropertyId: const obx_int.IdUid(11, 7734183961005732622),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 942988296821016409),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 1120421751953548293),
-            name: 'titulo',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 4325342779155185117),
-            name: 'data',
-            type: 10,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 2752899523737138671),
-            name: 'valor',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 1966628099772806142),
-            name: 'tipoMovimentacao',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(8, 347357702808483964),
-            name: 'codigoCategoria',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(9, 767701875936475357),
-            name: 'observacao',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(11, 7734183961005732622),
-            name: 'status',
-            type: 1,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[]),
+    id: const obx_int.IdUid(2, 5638960901270906135),
+    name: 'MovimentacaoEntity',
+    lastPropertyId: const obx_int.IdUid(11, 7734183961005732622),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 942988296821016409),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 1120421751953548293),
+        name: 'titulo',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 4325342779155185117),
+        name: 'data',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 2752899523737138671),
+        name: 'valor',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 1966628099772806142),
+        name: 'tipoMovimentacao',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 347357702808483964),
+        name: 'codigoCategoria',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 767701875936475357),
+        name: 'observacao',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 7734183961005732622),
+        name: 'status',
+        type: 1,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(3, 8734934441128175638),
-      name: 'PerfilEntity',
-      lastPropertyId: const obx_int.IdUid(6, 7175241245634489750),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 4781995478562075148),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 5466082542344047026),
-            name: 'nome',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 5889038804277956549),
-            name: 'valor',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 2595449339865912782),
-            name: 'dataNascimento',
-            type: 10,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 7175241245634489750),
-            name: 'pathImagem',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[])
+    id: const obx_int.IdUid(3, 8734934441128175638),
+    name: 'PerfilEntity',
+    lastPropertyId: const obx_int.IdUid(6, 7175241245634489750),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 4781995478562075148),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 5466082542344047026),
+        name: 'nome',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 5889038804277956549),
+        name: 'valor',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 2595449339865912782),
+        name: 'dataNascimento',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 7175241245634489750),
+        name: 'pathImagem',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -146,184 +166,235 @@ final _entities = <obx_int.ModelEntity>[
 /// For Flutter apps, also calls `loadObjectBoxLibraryAndroidCompat()` from
 /// the ObjectBox Flutter library to fix loading the native ObjectBox library
 /// on Android 6 and older.
-Future<obx.Store> openStore(
-    {String? directory,
-    int? maxDBSizeInKB,
-    int? maxDataSizeInKB,
-    int? fileMode,
-    int? maxReaders,
-    bool queriesCaseSensitiveDefault = true,
-    String? macosApplicationGroup}) async {
+Future<obx.Store> openStore({
+  String? directory,
+  int? maxDBSizeInKB,
+  int? maxDataSizeInKB,
+  int? fileMode,
+  int? maxReaders,
+  bool queriesCaseSensitiveDefault = true,
+  String? macosApplicationGroup,
+}) async {
   await loadObjectBoxLibraryAndroidCompat();
-  return obx.Store(getObjectBoxModel(),
-      directory: directory ?? (await defaultStoreDirectory()).path,
-      maxDBSizeInKB: maxDBSizeInKB,
-      maxDataSizeInKB: maxDataSizeInKB,
-      fileMode: fileMode,
-      maxReaders: maxReaders,
-      queriesCaseSensitiveDefault: queriesCaseSensitiveDefault,
-      macosApplicationGroup: macosApplicationGroup);
+  return obx.Store(
+    getObjectBoxModel(),
+    directory: directory ?? (await defaultStoreDirectory()).path,
+    maxDBSizeInKB: maxDBSizeInKB,
+    maxDataSizeInKB: maxDataSizeInKB,
+    fileMode: fileMode,
+    maxReaders: maxReaders,
+    queriesCaseSensitiveDefault: queriesCaseSensitiveDefault,
+    macosApplicationGroup: macosApplicationGroup,
+  );
 }
 
 /// Returns the ObjectBox model definition for this project for use with
 /// [obx.Store.new].
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
-      entities: _entities,
-      lastEntityId: const obx_int.IdUid(3, 8734934441128175638),
-      lastIndexId: const obx_int.IdUid(0, 0),
-      lastRelationId: const obx_int.IdUid(0, 0),
-      lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [],
-      retiredIndexUids: const [],
-      retiredPropertyUids: const [
-        4908253159636796636,
-        2266018337434374750,
-        4548955686815168812,
-        2257943860782797009
-      ],
-      retiredRelationUids: const [],
-      modelVersion: 5,
-      modelVersionParserMinimum: 5,
-      version: 1);
+    entities: _entities,
+    lastEntityId: const obx_int.IdUid(3, 8734934441128175638),
+    lastIndexId: const obx_int.IdUid(0, 0),
+    lastRelationId: const obx_int.IdUid(0, 0),
+    lastSequenceId: const obx_int.IdUid(0, 0),
+    retiredEntityUids: const [],
+    retiredIndexUids: const [],
+    retiredPropertyUids: const [
+      4908253159636796636,
+      2266018337434374750,
+      4548955686815168812,
+      2257943860782797009,
+    ],
+    retiredRelationUids: const [],
+    modelVersion: 5,
+    modelVersionParserMinimum: 5,
+    version: 1,
+  );
 
   final bindings = <Type, obx_int.EntityDefinition>{
     UserPreferencesEntity: obx_int.EntityDefinition<UserPreferencesEntity>(
-        model: _entities[0],
-        toOneRelations: (UserPreferencesEntity object) => [],
-        toManyRelations: (UserPreferencesEntity object) => {},
-        getId: (UserPreferencesEntity object) => object.id,
-        setId: (UserPreferencesEntity object, int id) {
-          object.id = id;
-        },
-        objectToFB: (UserPreferencesEntity object, fb.Builder fbb) {
-          final descricaoOffset = fbb.writeString(object.descricao);
-          final valorOffset = fbb.writeString(object.valor);
-          fbb.startTable(5);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, descricaoOffset);
-          fbb.addOffset(2, valorOffset);
-          fbb.addInt64(3, object.dataAlteracao.millisecondsSinceEpoch);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final idParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final descricaoParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 6, '');
-          final valorParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 8, '');
-          final dataAlteracaoParam = DateTime.fromMillisecondsSinceEpoch(
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0));
-          final object = UserPreferencesEntity(
-              id: idParam,
-              descricao: descricaoParam,
-              valor: valorParam,
-              dataAlteracao: dataAlteracaoParam);
+      model: _entities[0],
+      toOneRelations: (UserPreferencesEntity object) => [],
+      toManyRelations: (UserPreferencesEntity object) => {},
+      getId: (UserPreferencesEntity object) => object.id,
+      setId: (UserPreferencesEntity object, int id) {
+        object.id = id;
+      },
+      objectToFB: (UserPreferencesEntity object, fb.Builder fbb) {
+        final descricaoOffset = fbb.writeString(object.descricao);
+        final valorOffset = fbb.writeString(object.valor);
+        fbb.startTable(5);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, descricaoOffset);
+        fbb.addOffset(2, valorOffset);
+        fbb.addInt64(3, object.dataAlteracao.millisecondsSinceEpoch);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final descricaoParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final valorParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final dataAlteracaoParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
+        );
+        final object = UserPreferencesEntity(
+          id: idParam,
+          descricao: descricaoParam,
+          valor: valorParam,
+          dataAlteracao: dataAlteracaoParam,
+        );
 
-          return object;
-        }),
+        return object;
+      },
+    ),
     MovimentacaoEntity: obx_int.EntityDefinition<MovimentacaoEntity>(
-        model: _entities[1],
-        toOneRelations: (MovimentacaoEntity object) => [],
-        toManyRelations: (MovimentacaoEntity object) => {},
-        getId: (MovimentacaoEntity object) => object.id,
-        setId: (MovimentacaoEntity object, int id) {
-          object.id = id;
-        },
-        objectToFB: (MovimentacaoEntity object, fb.Builder fbb) {
-          final tituloOffset = fbb.writeString(object.titulo);
-          final observacaoOffset = fbb.writeString(object.observacao);
-          fbb.startTable(12);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, tituloOffset);
-          fbb.addInt64(2, object.data.millisecondsSinceEpoch);
-          fbb.addFloat64(5, object.valor);
-          fbb.addInt64(6, object.tipoMovimentacao);
-          fbb.addInt64(7, object.codigoCategoria);
-          fbb.addOffset(8, observacaoOffset);
-          fbb.addBool(10, object.status);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final tituloParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 6, '');
-          final dataParam = DateTime.fromMillisecondsSinceEpoch(
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
-          final tipoMovimentacaoParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
-          final codigoCategoriaParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
-          final idParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final valorParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0);
-          final observacaoParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 20, '');
-          final statusParam =
-              const fb.BoolReader().vTableGet(buffer, rootOffset, 24, false);
-          final object = MovimentacaoEntity(
-              titulo: tituloParam,
-              data: dataParam,
-              tipoMovimentacao: tipoMovimentacaoParam,
-              codigoCategoria: codigoCategoriaParam,
-              id: idParam,
-              valor: valorParam,
-              observacao: observacaoParam,
-              status: statusParam);
+      model: _entities[1],
+      toOneRelations: (MovimentacaoEntity object) => [],
+      toManyRelations: (MovimentacaoEntity object) => {},
+      getId: (MovimentacaoEntity object) => object.id,
+      setId: (MovimentacaoEntity object, int id) {
+        object.id = id;
+      },
+      objectToFB: (MovimentacaoEntity object, fb.Builder fbb) {
+        final tituloOffset = fbb.writeString(object.titulo);
+        final observacaoOffset = fbb.writeString(object.observacao);
+        fbb.startTable(12);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, tituloOffset);
+        fbb.addInt64(2, object.data.millisecondsSinceEpoch);
+        fbb.addFloat64(5, object.valor);
+        fbb.addInt64(6, object.tipoMovimentacao);
+        fbb.addInt64(7, object.codigoCategoria);
+        fbb.addOffset(8, observacaoOffset);
+        fbb.addBool(10, object.status);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final tituloParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final dataParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
+        );
+        final tipoMovimentacaoParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          16,
+          0,
+        );
+        final codigoCategoriaParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          18,
+          0,
+        );
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final valorParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          14,
+          0,
+        );
+        final observacaoParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 20, '');
+        final statusParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          24,
+          false,
+        );
+        final object = MovimentacaoEntity(
+          titulo: tituloParam,
+          data: dataParam,
+          tipoMovimentacao: tipoMovimentacaoParam,
+          codigoCategoria: codigoCategoriaParam,
+          id: idParam,
+          valor: valorParam,
+          observacao: observacaoParam,
+          status: statusParam,
+        );
 
-          return object;
-        }),
+        return object;
+      },
+    ),
     PerfilEntity: obx_int.EntityDefinition<PerfilEntity>(
-        model: _entities[2],
-        toOneRelations: (PerfilEntity object) => [],
-        toManyRelations: (PerfilEntity object) => {},
-        getId: (PerfilEntity object) => object.id,
-        setId: (PerfilEntity object, int id) {
-          object.id = id;
-        },
-        objectToFB: (PerfilEntity object, fb.Builder fbb) {
-          final nomeOffset = fbb.writeString(object.nome);
-          final pathImagemOffset = object.pathImagem == null
-              ? null
-              : fbb.writeString(object.pathImagem!);
-          fbb.startTable(7);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nomeOffset);
-          fbb.addFloat64(2, object.valor);
-          fbb.addInt64(4, object.dataNascimento.millisecondsSinceEpoch);
-          fbb.addOffset(5, pathImagemOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final idParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final nomeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 6, '');
-          final dataNascimentoParam = DateTime.fromMillisecondsSinceEpoch(
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0));
-          final valorParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
-          final pathImagemParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 14);
-          final object = PerfilEntity(
-              id: idParam,
-              nome: nomeParam,
-              dataNascimento: dataNascimentoParam,
-              valor: valorParam,
-              pathImagem: pathImagemParam);
+      model: _entities[2],
+      toOneRelations: (PerfilEntity object) => [],
+      toManyRelations: (PerfilEntity object) => {},
+      getId: (PerfilEntity object) => object.id,
+      setId: (PerfilEntity object, int id) {
+        object.id = id;
+      },
+      objectToFB: (PerfilEntity object, fb.Builder fbb) {
+        final nomeOffset = fbb.writeString(object.nome);
+        final pathImagemOffset = object.pathImagem == null
+            ? null
+            : fbb.writeString(object.pathImagem!);
+        fbb.startTable(7);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, nomeOffset);
+        fbb.addFloat64(2, object.valor);
+        fbb.addInt64(4, object.dataNascimento.millisecondsSinceEpoch);
+        fbb.addOffset(5, pathImagemOffset);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final nomeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final dataNascimentoParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+        );
+        final valorParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          8,
+          0,
+        );
+        final pathImagemParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 14);
+        final object = PerfilEntity(
+          id: idParam,
+          nome: nomeParam,
+          dataNascimento: dataNascimentoParam,
+          valor: valorParam,
+          pathImagem: pathImagemParam,
+        );
 
-          return object;
-        })
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -333,75 +404,92 @@ obx_int.ModelDefinition getObjectBoxModel() {
 class UserPreferencesEntity_ {
   /// See [UserPreferencesEntity.id].
   static final id = obx.QueryIntegerProperty<UserPreferencesEntity>(
-      _entities[0].properties[0]);
+    _entities[0].properties[0],
+  );
 
   /// See [UserPreferencesEntity.descricao].
   static final descricao = obx.QueryStringProperty<UserPreferencesEntity>(
-      _entities[0].properties[1]);
+    _entities[0].properties[1],
+  );
 
   /// See [UserPreferencesEntity.valor].
   static final valor = obx.QueryStringProperty<UserPreferencesEntity>(
-      _entities[0].properties[2]);
+    _entities[0].properties[2],
+  );
 
   /// See [UserPreferencesEntity.dataAlteracao].
-  static final dataAlteracao =
-      obx.QueryDateProperty<UserPreferencesEntity>(_entities[0].properties[3]);
+  static final dataAlteracao = obx.QueryDateProperty<UserPreferencesEntity>(
+    _entities[0].properties[3],
+  );
 }
 
 /// [MovimentacaoEntity] entity fields to define ObjectBox queries.
 class MovimentacaoEntity_ {
   /// See [MovimentacaoEntity.id].
-  static final id =
-      obx.QueryIntegerProperty<MovimentacaoEntity>(_entities[1].properties[0]);
+  static final id = obx.QueryIntegerProperty<MovimentacaoEntity>(
+    _entities[1].properties[0],
+  );
 
   /// See [MovimentacaoEntity.titulo].
-  static final titulo =
-      obx.QueryStringProperty<MovimentacaoEntity>(_entities[1].properties[1]);
+  static final titulo = obx.QueryStringProperty<MovimentacaoEntity>(
+    _entities[1].properties[1],
+  );
 
   /// See [MovimentacaoEntity.data].
-  static final data =
-      obx.QueryDateProperty<MovimentacaoEntity>(_entities[1].properties[2]);
+  static final data = obx.QueryDateProperty<MovimentacaoEntity>(
+    _entities[1].properties[2],
+  );
 
   /// See [MovimentacaoEntity.valor].
-  static final valor =
-      obx.QueryDoubleProperty<MovimentacaoEntity>(_entities[1].properties[3]);
+  static final valor = obx.QueryDoubleProperty<MovimentacaoEntity>(
+    _entities[1].properties[3],
+  );
 
   /// See [MovimentacaoEntity.tipoMovimentacao].
-  static final tipoMovimentacao =
-      obx.QueryIntegerProperty<MovimentacaoEntity>(_entities[1].properties[4]);
+  static final tipoMovimentacao = obx.QueryIntegerProperty<MovimentacaoEntity>(
+    _entities[1].properties[4],
+  );
 
   /// See [MovimentacaoEntity.codigoCategoria].
-  static final codigoCategoria =
-      obx.QueryIntegerProperty<MovimentacaoEntity>(_entities[1].properties[5]);
+  static final codigoCategoria = obx.QueryIntegerProperty<MovimentacaoEntity>(
+    _entities[1].properties[5],
+  );
 
   /// See [MovimentacaoEntity.observacao].
-  static final observacao =
-      obx.QueryStringProperty<MovimentacaoEntity>(_entities[1].properties[6]);
+  static final observacao = obx.QueryStringProperty<MovimentacaoEntity>(
+    _entities[1].properties[6],
+  );
 
   /// See [MovimentacaoEntity.status].
-  static final status =
-      obx.QueryBooleanProperty<MovimentacaoEntity>(_entities[1].properties[7]);
+  static final status = obx.QueryBooleanProperty<MovimentacaoEntity>(
+    _entities[1].properties[7],
+  );
 }
 
 /// [PerfilEntity] entity fields to define ObjectBox queries.
 class PerfilEntity_ {
   /// See [PerfilEntity.id].
-  static final id =
-      obx.QueryIntegerProperty<PerfilEntity>(_entities[2].properties[0]);
+  static final id = obx.QueryIntegerProperty<PerfilEntity>(
+    _entities[2].properties[0],
+  );
 
   /// See [PerfilEntity.nome].
-  static final nome =
-      obx.QueryStringProperty<PerfilEntity>(_entities[2].properties[1]);
+  static final nome = obx.QueryStringProperty<PerfilEntity>(
+    _entities[2].properties[1],
+  );
 
   /// See [PerfilEntity.valor].
-  static final valor =
-      obx.QueryDoubleProperty<PerfilEntity>(_entities[2].properties[2]);
+  static final valor = obx.QueryDoubleProperty<PerfilEntity>(
+    _entities[2].properties[2],
+  );
 
   /// See [PerfilEntity.dataNascimento].
-  static final dataNascimento =
-      obx.QueryDateProperty<PerfilEntity>(_entities[2].properties[3]);
+  static final dataNascimento = obx.QueryDateProperty<PerfilEntity>(
+    _entities[2].properties[3],
+  );
 
   /// See [PerfilEntity.pathImagem].
-  static final pathImagem =
-      obx.QueryStringProperty<PerfilEntity>(_entities[2].properties[4]);
+  static final pathImagem = obx.QueryStringProperty<PerfilEntity>(
+    _entities[2].properties[4],
+  );
 }
