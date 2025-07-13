@@ -23,7 +23,7 @@ final class StartModule with DDIModule, PreDestroy {
         switch (themeMode) {
           AdaptiveThemeMode.system => WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark,
           AdaptiveThemeMode.light => false,
-          AdaptiveThemeMode.dark => true
+          AdaptiveThemeMode.dark => true,
         },
         qualifier: Qualifier.dark_mode,
       ),
@@ -31,9 +31,10 @@ final class StartModule with DDIModule, PreDestroy {
       application(PageController.new),
       register<ErrorModuleInterface>(
         factory: DependentFactory(
-            builder: (AsyncSnapshot snapshot) {
-          return CustomErrorModule(snapshot);
-        }.builder),
+          builder: (AsyncSnapshot snapshot) {
+            return CustomErrorModule(snapshot);
+          }.builder,
+        ),
       ),
       register<LoaderModuleInterface>(
         factory: DependentFactory(

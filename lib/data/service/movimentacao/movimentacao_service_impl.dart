@@ -9,15 +9,13 @@ import 'package:flutter_ddi/flutter_ddi.dart';
 class MovimentacaoServiceImpl implements MovimentacaoService {
   MovimentacaoServiceImpl();
 
-  late final Box<MovimentacaoEntity> _entity =
-      ddi.get<Database>().box<MovimentacaoEntity>();
+  late final Box<MovimentacaoEntity> _entity = ddi.get<Database>().box<MovimentacaoEntity>();
 
   @override
   Stream<Map<String, List<MovimentacaoModel>>> filter() {
     final DateTime now = DateTime.now();
     final Stream<Query<MovimentacaoEntity>> query = _entity
-        .query(MovimentacaoEntity_.data
-            .greaterOrEqualDate(now.subtractMonths(11).firstDayOfMonth))
+        .query(MovimentacaoEntity_.data.greaterOrEqualDate(now.subtractMonths(11).firstDayOfMonth))
         .order(MovimentacaoEntity_.data)
         .order(MovimentacaoEntity_.titulo)
         .watch(triggerImmediately: true);
@@ -28,16 +26,12 @@ class MovimentacaoServiceImpl implements MovimentacaoService {
       final Map<String, List<MovimentacaoModel>> groupedData = {};
       for (var item in itens) {
         // Extrair o nome do mês da data
-        final String keyName =
-            '${item.data.getFormattedMonth()}/${item.data.year}';
+        final String keyName = '${item.data.getFormattedMonth()}/${item.data.year}';
         // Verificar se já existe uma lista para esse mês, senão criar uma nova
         if (groupedData.containsKey(keyName)) {
-          groupedData[keyName]!
-              .add(MovimentacaoModel.fromMovimentacaoEntity(item));
+          groupedData[keyName]!.add(MovimentacaoModel.fromMovimentacaoEntity(item));
         } else {
-          groupedData[keyName] = [
-            MovimentacaoModel.fromMovimentacaoEntity(item)
-          ];
+          groupedData[keyName] = [MovimentacaoModel.fromMovimentacaoEntity(item)];
         }
       }
       return groupedData;
@@ -45,8 +39,7 @@ class MovimentacaoServiceImpl implements MovimentacaoService {
   }
 
   @override
-  int salvar(MovimentacaoEntity movimentacaoEntity) =>
-      _entity.put(movimentacaoEntity);
+  int salvar(MovimentacaoEntity movimentacaoEntity) => _entity.put(movimentacaoEntity);
 
   @override
   bool remover(int id) => _entity.remove(id);

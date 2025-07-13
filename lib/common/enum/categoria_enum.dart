@@ -39,7 +39,9 @@ enum CategoriaEnum {
   final int id;
   final String icone;
 
-  static final Map<int, CategoriaEnum> _findById = Map.fromEntries(CategoriaEnum.values.map((value) => MapEntry(value.id, value)));
+  static final Map<int, CategoriaEnum> _findById = Map.fromEntries(
+    CategoriaEnum.values.map((value) => MapEntry(value.id, value)),
+  );
 
   static CategoriaEnum? getById(int value) => _findById[value];
 }

@@ -39,8 +39,12 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
       valueController.text = Moeda.format(valor: widget.movimentacaoModel!.valor, simbolo: 'R\$', decimalDigits: 2);
       noteController.text = widget.movimentacaoModel!.observacao ?? '';
       ddi.get<DataMovimentacaoController>().alterarDataMovimentacao(widget.movimentacaoModel!.data);
-      ddi.get<CategoriaController>().selecionarCategoria(CategoriaEnum.getById(widget.movimentacaoModel!.codigoCategoria));
-      ddi.get<TipoMovimentacaoController>().selecionarTipoMovimentacao(TipoMovimentacaoEnum.getById(widget.movimentacaoModel!.tipoMovimentacao));
+      ddi.get<CategoriaController>().selecionarCategoria(
+        CategoriaEnum.getById(widget.movimentacaoModel!.codigoCategoria),
+      );
+      ddi.get<TipoMovimentacaoController>().selecionarTipoMovimentacao(
+        TipoMovimentacaoEnum.getById(widget.movimentacaoModel!.tipoMovimentacao),
+      );
       ddi.get<StatusPagamentoController>().alterarStatus(widget.movimentacaoModel?.status ?? false);
     } else {
       valueController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);

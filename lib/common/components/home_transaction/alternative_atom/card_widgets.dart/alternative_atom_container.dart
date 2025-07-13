@@ -27,12 +27,10 @@ class AlternativeAtomContainer extends StatefulWidget {
   final String nomeCategoria;
 
   @override
-  State<AlternativeAtomContainer> createState() =>
-      _AlternativeAtomContainerState();
+  State<AlternativeAtomContainer> createState() => _AlternativeAtomContainerState();
 }
 
-class _AlternativeAtomContainerState extends State<AlternativeAtomContainer>
-    with SingleTickerProviderStateMixin {
+class _AlternativeAtomContainerState extends State<AlternativeAtomContainer> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _pulseAnimation;
 

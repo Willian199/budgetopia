@@ -38,7 +38,7 @@ final class ImageCrop {
         IOSUiSettings(
           cropStyle: CropStyle.circle,
           minimumAspectRatio: 1.0,
-        )
+        ),
       ],
     );
 

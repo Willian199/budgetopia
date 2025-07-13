@@ -17,8 +17,9 @@ class _UserImageState extends ListenableState<UserImage, UserImageController> {
     return CircleAvatar(
       radius: 50,
       backgroundColor: Colors.grey[200],
-      backgroundImage:
-          listenable.pathImagem != null ? FileImage(File(listenable.pathImagem!)) as ImageProvider : const AssetImage('assets/icons/user.png'),
+      backgroundImage: listenable.pathImagem != null
+          ? FileImage(File(listenable.pathImagem!)) as ImageProvider
+          : const AssetImage('assets/icons/user.png'),
     );
   }
 }

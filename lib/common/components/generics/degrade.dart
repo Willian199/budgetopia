@@ -6,7 +6,11 @@ class Degrade {
   ///
   /// @return BoxDecoration()
   ///
-  static BoxDecoration efeitoDegrade({List<Color>? cores, Alignment begin = Alignment.topCenter, Alignment end = Alignment.bottomCenter}) {
+  static BoxDecoration efeitoDegrade({
+    List<Color>? cores,
+    Alignment begin = Alignment.topCenter,
+    Alignment end = Alignment.bottomCenter,
+  }) {
     cores ??= <Color>[Colors.blue[800]!, Colors.blueAccent[100]!];
 
     return BoxDecoration(

@@ -8,9 +8,7 @@ class AlternativeAtomStatusIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color statusColor = isCompleted
-        ? AtomPunkColorPalette.neonGreen
-        : Colors.redAccent;
+    final Color statusColor = isCompleted ? AtomPunkColorPalette.neonGreen : Colors.redAccent;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

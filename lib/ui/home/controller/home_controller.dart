@@ -11,7 +11,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDestroy {
-  HomeController() : super(HomeState(tabSelecionada: {TipoRegistroEnum.todos}, valorEntrada: 0, valorSaida: 0, valorSaldo: 0));
+  HomeController()
+    : super(HomeState(tabSelecionada: {TipoRegistroEnum.todos}, valorEntrada: 0, valorSaida: 0, valorSaldo: 0));
 
   late final HomeRepository _homeRepository = ddi();
   late final HomeCase _homeCase = ddi();
@@ -50,7 +51,10 @@ class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDes
           posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
         }
 
-        final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(posicaoSelecionada, value.tabSelecionada.first);
+        final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(
+          posicaoSelecionada,
+          value.tabSelecionada.first,
+        );
 
         for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
           if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {

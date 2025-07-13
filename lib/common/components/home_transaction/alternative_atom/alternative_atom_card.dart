@@ -25,8 +25,7 @@ class AlternativeAtomCard extends StatefulWidget {
   State<AlternativeAtomCard> createState() => _AlternativeAtomCardState();
 }
 
-class _AlternativeAtomCardState extends State<AlternativeAtomCard>
-    with SingleTickerProviderStateMixin {
+class _AlternativeAtomCardState extends State<AlternativeAtomCard> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -56,11 +55,8 @@ class _AlternativeAtomCardState extends State<AlternativeAtomCard>
     final tipoMovimentacao = TipoMovimentacaoEnum.getById(
       widget.transaction.tipoMovimentacao,
     );
-    final nomeCategoria =
-        CategoriaEnum.getById(widget.transaction.codigoCategoria)?.nome ?? '';
-    final Color accentColor = isEntrada
-        ? AtomPunkColorPalette.neonGreen
-        : Colors.redAccent;
+    final nomeCategoria = CategoriaEnum.getById(widget.transaction.codigoCategoria)?.nome ?? '';
+    final Color accentColor = isEntrada ? AtomPunkColorPalette.neonGreen : Colors.redAccent;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
@@ -79,8 +75,7 @@ class _AlternativeAtomCardState extends State<AlternativeAtomCard>
             MaterialPageRoute(
               builder: (context) => FlutterDDIBuilder(
                 module: MovimentacaoModule.new,
-                child: (_) =>
-                    MovimentacaoPage(movimentacaoModel: widget.transaction),
+                child: (_) => MovimentacaoPage(movimentacaoModel: widget.transaction),
               ),
             ),
           );

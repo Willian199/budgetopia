@@ -16,12 +16,14 @@ class HomeSelecaoMes<ModuleT extends DDIModule, CaseT extends UpdateInterface> e
   State<HomeSelecaoMes<ModuleT, CaseT>> createState() => _HomeSelecaoMesState<ModuleT, CaseT>();
 }
 
-class _HomeSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterface> extends State<HomeSelecaoMes<ModuleT, CaseT>>
+class _HomeSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterface>
+    extends State<HomeSelecaoMes<ModuleT, CaseT>>
     with SingleTickerProviderStateMixin {
   late final PageController _pageController;
 
-  late final SelecaoHorizontalController<CaseT> instance =
-      ddi.get<SelecaoHorizontalController<CaseT>>(qualifier: '$ModuleT${SelecaoHorizontalController<CaseT>}');
+  late final SelecaoHorizontalController<CaseT> instance = ddi.get<SelecaoHorizontalController<CaseT>>(
+    qualifier: '$ModuleT${SelecaoHorizontalController<CaseT>}',
+  );
 
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
@@ -220,7 +222,11 @@ class _HomeSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterf
                           _animationController.reverse();
                         });
                         final int pos = instance.value.posicao + 1;
-                        _pageController.animateToPage(pos, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+                        _pageController.animateToPage(
+                          pos,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
                       }
                     : null,
               ),

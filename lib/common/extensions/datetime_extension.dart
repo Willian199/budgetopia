@@ -48,7 +48,7 @@ extension DateTimeExtensions on DateTime {
       10 => 'Out',
       11 => 'Nov',
       12 => 'Dez',
-      _ => ''
+      _ => '',
     };
   }
 }

@@ -9,8 +9,7 @@
 import 'dart:typed_data';
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
-import 'package:objectbox/internal.dart'
-    as obx_int; // generated code can access "internal" functionality
+import 'package:objectbox/internal.dart' as obx_int; // generated code can access "internal" functionality
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
@@ -348,9 +347,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
       },
       objectToFB: (PerfilEntity object, fb.Builder fbb) {
         final nomeOffset = fbb.writeString(object.nome);
-        final pathImagemOffset = object.pathImagem == null
-            ? null
-            : fbb.writeString(object.pathImagem!);
+        final pathImagemOffset = object.pathImagem == null ? null : fbb.writeString(object.pathImagem!);
         fbb.startTable(7);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nomeOffset);

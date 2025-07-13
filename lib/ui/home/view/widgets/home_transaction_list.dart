@@ -34,8 +34,7 @@ class _HomeTransactionListState extends State<HomeTransactionList> {
     }
 
     // Ordenar as chaves (dias) em ordem decrescente
-    diasOrdenados = transacoesPorDia.keys.toList()
-      ..sort((a, b) => b.compareTo(a));
+    diasOrdenados = transacoesPorDia.keys.toList()..sort((a, b) => b.compareTo(a));
   }
 
   @override
@@ -52,8 +51,7 @@ class _HomeTransactionListState extends State<HomeTransactionList> {
         itemCount: diasOrdenados.length,
         itemBuilder: (context, index) {
           final int dia = diasOrdenados[index];
-          final List<MovimentacaoModel> transacoesDoDia =
-              transacoesPorDia[dia]!;
+          final List<MovimentacaoModel> transacoesDoDia = transacoesPorDia[dia]!;
           final String mes = transacoesDoDia.first.data.getFormattedMonth();
 
           return AlternativeAtomGroup(

@@ -13,7 +13,10 @@ class HomeModule with DDIModule {
   void onPostConstruct() {
     Future.wait([
       application(HomeCase.new),
-      application(SelecaoHorizontalController<HomeCase>.new, qualifier: '$HomeModule${SelecaoHorizontalController<HomeCase>}'),
+      application(
+        SelecaoHorizontalController<HomeCase>.new,
+        qualifier: '$HomeModule${SelecaoHorizontalController<HomeCase>}',
+      ),
       singleton(TimeLineOpacityController.new),
       register(
         factory: ApplicationFactory(builder: HomeController.new.builder),

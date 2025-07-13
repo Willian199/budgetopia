@@ -19,5 +19,6 @@ class PerfilServiceImpl implements PerfilService {
   PerfilEntity? get getFirst => _entity.get(1);
 
   @override
-  Stream<PerfilEntity?> get watchFirst => _entity.query(PerfilEntity_.id.equals(1)).watch(triggerImmediately: true).map((query) => query.findFirst());
+  Stream<PerfilEntity?> get watchFirst =>
+      _entity.query(PerfilEntity_.id.equals(1)).watch(triggerImmediately: true).map((query) => query.findFirst());
 }

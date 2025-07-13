@@ -40,7 +40,7 @@ final class LightTheme {
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: <TargetPlatform, PageTransitionsBuilder>{
         TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       },
     ),
     // To use the Playground font, add GoogleFonts package and uncomment
@@ -48,9 +48,7 @@ final class LightTheme {
   );
 
   static Color _getColorSegmentedButton(Set<WidgetState> states) {
-    const Set<WidgetState> interactiveStates = <WidgetState>{
-      WidgetState.selected
-    };
+    const Set<WidgetState> interactiveStates = <WidgetState>{WidgetState.selected};
     if (states.any(interactiveStates.contains)) {
       return _default.colorScheme.tertiary;
     }
@@ -58,9 +56,7 @@ final class LightTheme {
   }
 
   static Color _getColorSegmentedButtonIcon(Set<WidgetState> states) {
-    const Set<WidgetState> interactiveStates = <WidgetState>{
-      WidgetState.selected
-    };
+    const Set<WidgetState> interactiveStates = <WidgetState>{WidgetState.selected};
     if (states.any(interactiveStates.contains)) {
       return _default.colorScheme.onPrimary;
     }
@@ -70,24 +66,20 @@ final class LightTheme {
   static ThemeData getTheme() {
     return _default.copyWith(
       textTheme: _default.textTheme.copyWith(
-        bodySmall: _default.textTheme.bodySmall!
-            .copyWith(color: _default.colorScheme.onTertiaryContainer),
-        bodyMedium: _default.textTheme.bodyMedium!
-            .copyWith(color: _default.colorScheme.onTertiaryContainer),
-        bodyLarge: _default.textTheme.bodyLarge!
-            .copyWith(color: _default.colorScheme.onTertiaryContainer),
+        bodySmall: _default.textTheme.bodySmall!.copyWith(color: _default.colorScheme.onTertiaryContainer),
+        bodyMedium: _default.textTheme.bodyMedium!.copyWith(color: _default.colorScheme.onTertiaryContainer),
+        bodyLarge: _default.textTheme.bodyLarge!.copyWith(color: _default.colorScheme.onTertiaryContainer),
       ),
       segmentedButtonTheme: _default.segmentedButtonTheme.copyWith(
         style: ButtonStyle(
-          backgroundColor:
-              WidgetStateProperty.resolveWith(_getColorSegmentedButton),
-          iconColor:
-              WidgetStateProperty.resolveWith(_getColorSegmentedButtonIcon),
+          backgroundColor: WidgetStateProperty.resolveWith(_getColorSegmentedButton),
+          iconColor: WidgetStateProperty.resolveWith(_getColorSegmentedButtonIcon),
           animationDuration: const Duration(seconds: 2),
         ),
       ),
-      floatingActionButtonTheme: _default.floatingActionButtonTheme
-          .copyWith(backgroundColor: _default.colorScheme.tertiary),
+      floatingActionButtonTheme: _default.floatingActionButtonTheme.copyWith(
+        backgroundColor: _default.colorScheme.tertiary,
+      ),
     );
   }
 }

@@ -27,8 +27,7 @@ class AlternativeAtomGroup extends StatefulWidget {
   State<AlternativeAtomGroup> createState() => _AlternativeAtomGroupState();
 }
 
-class _AlternativeAtomGroupState extends State<AlternativeAtomGroup>
-    with SingleTickerProviderStateMixin {
+class _AlternativeAtomGroupState extends State<AlternativeAtomGroup> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late AlternativeAtomGroupNotifier _notifier;
 
@@ -111,8 +110,7 @@ class _AlternativeAtomGroupState extends State<AlternativeAtomGroup>
               }),
 
               // Connector to next group
-              if (!widget.isLast && _notifier.isExpanded)
-                const AlternativeAtomConnector(),
+              if (!widget.isLast && _notifier.isExpanded) const AlternativeAtomConnector(),
             ],
           ),
         ),

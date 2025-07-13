@@ -51,7 +51,7 @@ class _DrawerTileState extends State<DrawerTile> with DDIInject<PageController> 
                   fontSize: Double.VINTE,
                   color: itemColor,
                 ),
-              )
+              ),
             ],
           ),
         ),

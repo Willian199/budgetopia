@@ -10,7 +10,8 @@ class DefaultBackButton extends StatefulWidget {
   State<DefaultBackButton> createState() => DefaultBackButtonState();
 }
 
-class DefaultBackButtonState extends State<DefaultBackButton> with TickerProviderStateMixin, DDIInject<ZoomDrawerController> {
+class DefaultBackButtonState extends State<DefaultBackButton>
+    with TickerProviderStateMixin, DDIInject<ZoomDrawerController> {
   late AnimationController _animationController;
 
   @override

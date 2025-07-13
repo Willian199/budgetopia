@@ -42,8 +42,13 @@ class HomeRepositoryImpl implements HomeRepository {
     _registrosAbaMovimentacao = switch (tabSelecionada) {
       TipoRegistroEnum.todos => _movimentacoesMesSelecionado,
       TipoRegistroEnum.entrada =>
-        _movimentacoesMesSelecionado.where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id).toList(),
-      TipoRegistroEnum.saida => _movimentacoesMesSelecionado.where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.saida.id).toList(),
+        _movimentacoesMesSelecionado
+            .where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id)
+            .toList(),
+      TipoRegistroEnum.saida =>
+        _movimentacoesMesSelecionado
+            .where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.saida.id)
+            .toList(),
     };
   }
 }

@@ -52,7 +52,10 @@ class GradientBoxShadowPainter extends CustomPainter {
 
     if (canvasRRect != null) {
       // Desenha o gradiente
-      canvas.drawRRect(canvasRRect.inflate(spreadRadius).shift(Offset(boxShadow.offset.dx, boxShadow.offset.dy)), paint);
+      canvas.drawRRect(
+        canvasRRect.inflate(spreadRadius).shift(Offset(boxShadow.offset.dx, boxShadow.offset.dy)),
+        paint,
+      );
     } else {
       // Desenha o gradiente
       canvas.drawRect(canvasRect.inflate(spreadRadius).shift(Offset(boxShadow.offset.dx, boxShadow.offset.dy)), paint);

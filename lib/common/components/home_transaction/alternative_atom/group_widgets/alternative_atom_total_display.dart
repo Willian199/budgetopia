@@ -10,9 +10,7 @@ class AtompunkTotalDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isPositive = totalValue >= 0;
-    final Color valueColor = isPositive
-        ? AtomPunkColorPalette.neonGreen
-        : Colors.redAccent;
+    final Color valueColor = isPositive ? AtomPunkColorPalette.neonGreen : Colors.redAccent;
     final formattedValue = Moeda.format(valor: totalValue.abs());
 
     return Container(

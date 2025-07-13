@@ -108,7 +108,7 @@ class _DetalhamentoPageState extends ListenableState<DetalhamentoPage, Detalhame
                               color: secondaryColor.withAlpha(51),
                               blurRadius: 10,
                               spreadRadius: 1,
-                            )
+                            ),
                           ],
                         ),
                         child: const GraficoDadosLinha(),

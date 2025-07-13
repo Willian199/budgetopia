@@ -8,10 +8,10 @@ class DecimalInputFormatter extends TextInputFormatter {
     this.symbol = 'R\$',
     this.allowSymbolAtStart = true,
   }) : _numberFormat = NumberFormat.currency(
-          locale: 'pt_BR',
-          symbol: symbol,
-          decimalDigits: decimalPlaces,
-        );
+         locale: 'pt_BR',
+         symbol: symbol,
+         decimalDigits: decimalPlaces,
+       );
 
   final int decimalPlaces;
   final bool allowNegative;
@@ -68,8 +68,8 @@ class DecimalInputFormatter extends TextInputFormatter {
         addPosition = parts[1].length > decimalPlaces
             ? 1
             : parts[1].length < decimalPlaces
-                ? parts[1].length - decimalPlaces
-                : 0;
+            ? parts[1].length - decimalPlaces
+            : 0;
 
         final String decimalPart = parts[1].padRight(decimalPlaces, '0').substring(0, decimalPlaces);
         value = '${parts[0]}.$decimalPart';
@@ -96,7 +96,10 @@ class DecimalInputFormatter extends TextInputFormatter {
     }
 
     // Calculate the new cursor position
-    int cursorPosition = (newValue.selection.baseOffset - (newValue.text.length - formattedValue.length)).clamp(0, formattedValue.length);
+    int cursorPosition = (newValue.selection.baseOffset - (newValue.text.length - formattedValue.length)).clamp(
+      0,
+      formattedValue.length,
+    );
 
     cursorPosition += addPosition;
 

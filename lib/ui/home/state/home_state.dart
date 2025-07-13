@@ -2,7 +2,12 @@
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 
 class HomeState {
-  HomeState({required this.tabSelecionada, required this.valorEntrada, required this.valorSaida, required this.valorSaldo});
+  HomeState({
+    required this.tabSelecionada,
+    required this.valorEntrada,
+    required this.valorSaida,
+    required this.valorSaldo,
+  });
 
   final Set<TipoRegistroEnum> tabSelecionada;
 

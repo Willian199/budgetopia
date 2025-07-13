@@ -9,7 +9,9 @@ enum TipoMovimentacaoEnum {
   final int id;
   final String icone;
 
-  static final Map<int, TipoMovimentacaoEnum> _findById = Map.fromEntries(TipoMovimentacaoEnum.values.map((value) => MapEntry(value.id, value)));
+  static final Map<int, TipoMovimentacaoEnum> _findById = Map.fromEntries(
+    TipoMovimentacaoEnum.values.map((value) => MapEntry(value.id, value)),
+  );
 
   static TipoMovimentacaoEnum? getById(int value) => _findById[value];
 }

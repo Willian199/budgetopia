@@ -15,9 +15,7 @@ class AlternativeAtomValueDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedValue = Moeda.format(valor: value);
-    final Color indicatorColor = isEntrada
-        ? AtomPunkColorPalette.neonGreen
-        : Colors.redAccent;
+    final Color indicatorColor = isEntrada ? AtomPunkColorPalette.neonGreen : Colors.redAccent;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),

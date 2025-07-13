@@ -9,6 +9,10 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:lints/recommended.yaml
 
+formatter:
+  page_width: 120
+  trailing_commas: preserve
+
 analyzer:
   exclude: [build/**]
   language:

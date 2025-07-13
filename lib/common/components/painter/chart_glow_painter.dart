@@ -77,5 +77,6 @@ class ChartGlowPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant ChartGlowPainter oldDelegate) => oldDelegate.selectedIndex != selectedIndex || oldDelegate.color != color;
+  bool shouldRepaint(covariant ChartGlowPainter oldDelegate) =>
+      oldDelegate.selectedIndex != selectedIndex || oldDelegate.color != color;
 }

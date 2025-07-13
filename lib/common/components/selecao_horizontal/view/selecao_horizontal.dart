@@ -14,12 +14,15 @@ class HorizontalSelecaoMes<ModuleT extends DDIModule, CaseT extends UpdateInterf
   State<HorizontalSelecaoMes> createState() => _HorizontalSelecaoMesState<ModuleT, CaseT>();
 }
 
-class _HorizontalSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterface> extends State<HorizontalSelecaoMes> {
+class _HorizontalSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterface>
+    extends State<HorizontalSelecaoMes> {
   late final PageController _pageController;
 
   final Completer<void> complete = Completer();
 
-  final SelecaoHorizontalController<CaseT> instance = ddi.get(qualifier: '$ModuleT${SelecaoHorizontalController<CaseT>}');
+  final SelecaoHorizontalController<CaseT> instance = ddi.get(
+    qualifier: '$ModuleT${SelecaoHorizontalController<CaseT>}',
+  );
   @override
   void initState() {
     super.initState();
@@ -113,10 +116,17 @@ class _HorizontalSelecaoMesState<ModuleT extends DDIModule, CaseT extends Update
                 icon: const Icon(Icons.arrow_forward),
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
-                onPressed: (instance.value.posicao) < (instance.value.itens.length) - 1 // Altere o valor máximo conforme necessário
+                onPressed:
+                    (instance.value.posicao) <
+                        (instance.value.itens.length) -
+                            1 // Altere o valor máximo conforme necessário
                     ? () {
                         final int pos = instance.value.posicao + 1;
-                        _pageController.animateToPage(pos, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+                        _pageController.animateToPage(
+                          pos,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
                       }
                     : null,
               ),
