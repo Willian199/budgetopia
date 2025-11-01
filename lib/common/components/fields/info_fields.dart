@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class InfoFields extends StatelessWidget {
   const InfoFields({
-    required this.context,
     required this.label,
     required this.icon,
     required this.controller,
@@ -20,7 +19,6 @@ class InfoFields extends StatelessWidget {
     super.key,
   });
 
-  final BuildContext context;
   final String label;
   final IconData icon;
   final TextEditingController controller;

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 final class DarkTheme {
   static final ThemeData _default = FlexThemeData.dark(
     appBarBackground: const Color(0xFF003824),
+    surface: const Color(0xFF002215),
     colors: const FlexSchemeColor(
       primary: Color(0xff629f80),
       primaryContainer: Color(0xff274033),

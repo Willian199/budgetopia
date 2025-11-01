@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
-class DefaultBackButton extends StatefulWidget {
-  const DefaultBackButton({super.key});
+class DefaultMenuBackButton extends StatefulWidget {
+  const DefaultMenuBackButton({super.key});
 
   @override
-  State<DefaultBackButton> createState() => DefaultBackButtonState();
+  State<DefaultMenuBackButton> createState() => DefaultMenuBackButtonState();
 }
 
-class DefaultBackButtonState extends State<DefaultBackButton>
+class DefaultMenuBackButtonState extends State<DefaultMenuBackButton>
     with TickerProviderStateMixin, DDIInject<ZoomDrawerController> {
   late AnimationController _animationController;
 

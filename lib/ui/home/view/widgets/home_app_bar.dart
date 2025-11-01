@@ -1,7 +1,7 @@
 // cyberpunk_app_bar.dart
 import 'package:budgetopia/common/components/button/container_back_button.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
-import 'package:budgetopia/ui/home/view/widgets/home_cricle_avatar.dart';
+import 'package:budgetopia/ui/home/view/widgets/home_avatar.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -54,7 +54,7 @@ class HomeAppBar extends StatelessWidget {
             ),
 
             // Avatar com badge de notificação
-            CyberpunkAvatar(
+            HomeAvatar(
               tertiaryColor: tertiaryColor,
               notificationCount: notificationCount,
             ),

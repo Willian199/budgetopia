@@ -17,37 +17,46 @@ class DataNascimentoField extends StatefulWidget {
   State<DataNascimentoField> createState() => _DataNascimentoFieldState();
 }
 
-class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, DataNascimentoController> {
+class _DataNascimentoFieldState extends State<DataNascimentoField> {
+  late final DataNascimentoController _dataNascimentoController = ddi.get<DataNascimentoController>();
+
+  late final _dateTextController = TextEditingController(
+    text: _dataNascimentoController.value.format(),
+  );
+
   @override
   void initState() {
     super.initState();
-    widget.focusNode.addListener(openDataFocus);
+    widget.focusNode.addListener(_openDataFocus);
+    _dataNascimentoController.addListener(_refreshTextField);
   }
 
   @override
   void dispose() {
-    widget.focusNode.removeListener(openDataFocus);
+    widget.focusNode.removeListener(_openDataFocus);
+    _dataNascimentoController.removeListener(_refreshTextField);
     super.dispose();
   }
 
-  void openDataFocus() async {
+  void _openDataFocus() async {
     if (widget.focusNode.hasFocus) {
       context.closeKeyboard();
-      await listenable.selecionarDataNascimento();
+      await _dataNascimentoController.selecionarDataNascimento();
       widget.nextFocus.requestFocus();
     }
+  }
+
+  void _refreshTextField() {
+    _dateTextController.text = _dataNascimentoController.value.format();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = AdaptiveTheme.of(context).theme;
-    final isDarkMode = theme.brightness == Brightness.dark;
 
     // Theme colors
     final primaryColor = theme.colorScheme.primary;
-    final backgroundColor = isDarkMode
-        ? const Color(0xFF002215) // Dark theme background
-        : const Color(0xFFebffe5); // Light theme background
+    final backgroundColor = theme.colorScheme.surface;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,14 +89,12 @@ class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, Dat
 
         // Date input field
         TextFormField(
-          controller: TextEditingController(
-            text: (listenable.value).format(),
-          ),
+          controller: _dateTextController,
           focusNode: widget.focusNode,
           readOnly: true,
           onTap: () async {
             context.closeKeyboard();
-            await listenable.selecionarDataNascimento();
+            await _dataNascimentoController.selecionarDataNascimento();
             widget.nextFocus.requestFocus();
           },
           onEditingComplete: widget.nextFocus.requestFocus,

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 final class LightTheme {
   static final ThemeData _default = FlexThemeData.light(
     appBarBackground: const Color(0xFFB5F2B0),
+    surface: const Color(0xFFebffe5),
     //scaffoldBackground: const Color(0xff008dbb),
     scheme: FlexScheme.jungle,
     surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,

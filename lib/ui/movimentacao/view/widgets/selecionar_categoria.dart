@@ -17,7 +17,7 @@ class _SelecionarCategoriaState extends ListenableState<SelecionarCategoria, Cat
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<CategoriaEnum>(
-      value: listenable.value,
+      initialValue: listenable.value,
       items: CategoriaEnum.values.map((CategoriaEnum category) {
         return DropdownMenuItem(
           value: category,

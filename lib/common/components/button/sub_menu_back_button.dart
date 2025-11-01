@@ -1,18 +1,19 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:budgetopia/common/components/button/default_menu_back_button.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ContainerBackButton extends StatelessWidget {
-  const ContainerBackButton({super.key});
+class SubMenuBackButton extends StatelessWidget {
+  const SubMenuBackButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = AdaptiveTheme.of(context).theme;
 
+    // Cores do tema
     final tertiaryColor = theme.colorScheme.tertiary;
     return Container(
-      height: 50,
-      width: 50,
+      height: 40,
+      width: 40,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
@@ -31,7 +32,22 @@ class ContainerBackButton extends StatelessWidget {
           ),
         ],
       ),
-      child: const DefaultMenuBackButton(),
+      child: SizedBox(
+        height: 30,
+        width: 30,
+        child: IconButton(
+          style: ElevatedButton.styleFrom(elevation: 0, backgroundColor: Colors.transparent),
+          onPressed: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+            Navigator.pop(context);
+          },
+          icon: FaIcon(
+            FontAwesomeIcons.arrowLeft,
+            color: theme.colorScheme.onTertiaryContainer,
+            size: 20,
+          ),
+        ),
+      ),
     );
   }
 }

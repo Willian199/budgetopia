@@ -13,15 +13,14 @@ class SobreCorpo extends StatelessWidget {
     final primaryColor = theme.colorScheme.primary;
     final secondaryColor = theme.colorScheme.secondary;
     final tertiaryColor = theme.colorScheme.tertiary;
-    final backgroundColor = isDarkMode
-        ? const Color(0xFF002215) // Dark theme inputDecoratorFillColor
-        : const Color(0xFFebffe5); // Light theme inputDecoratorFillColor
+    final backgroundColor = theme.colorScheme.surface;
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(24, 30, 24, 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 30,
         children: [
           // Logo with glowing effect
           Center(
@@ -70,9 +69,7 @@ class SobreCorpo extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 40),
 
-          // Main description with futuristic container
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
@@ -115,9 +112,7 @@ class SobreCorpo extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 30),
 
-          // Cyberpunk-style status section
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             decoration: BoxDecoration(
@@ -170,9 +165,7 @@ class SobreCorpo extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 40),
 
-          // Version info with cyber styling
           Center(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -187,6 +180,7 @@ class SobreCorpo extends StatelessWidget {
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
+                spacing: 8,
                 children: [
                   Text(
                     'v 1.0.0',
@@ -197,7 +191,6 @@ class SobreCorpo extends StatelessWidget {
                       color: secondaryColor,
                     ),
                   ),
-                  const SizedBox(width: 8),
                   Container(
                     width: 8,
                     height: 8,
@@ -213,7 +206,6 @@ class SobreCorpo extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 8),
                   Text(
                     'ONLINE',
                     style: TextStyle(

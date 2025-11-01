@@ -16,7 +16,7 @@ class _TipoMovimentacaoState extends ListenableState<TipoMovimentacao, TipoMovim
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<TipoMovimentacaoEnum>(
-      value: listenable.value,
+      initialValue: listenable.value,
       items: listenable.listarTiposMovimentacao.map((TipoMovimentacaoEnum item) {
         return DropdownMenuItem(
           value: item,

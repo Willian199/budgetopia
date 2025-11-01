@@ -5,7 +5,7 @@ import 'package:budgetopia/config/banco/entity/perfil_entity.dart';
 import 'package:budgetopia/data/repository/perfil/perfil_repository.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class PerfilCase with PostConstruct {
+final class PerfilCase with PostConstruct {
   PerfilEntity? _registroSalvo;
   PerfilEntity? get registroSalvo => _registroSalvo;
 

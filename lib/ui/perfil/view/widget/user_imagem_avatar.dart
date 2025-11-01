@@ -5,14 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:image_picker/image_picker.dart';
 
-class UserImagemAvatar extends StatefulWidget {
+class UserImagemAvatar extends StatelessWidget {
   const UserImagemAvatar({super.key});
 
-  @override
-  State<UserImagemAvatar> createState() => _UserImagemAvatarState();
-}
-
-class _UserImagemAvatarState extends State<UserImagemAvatar> with DDIInject<UserImageController> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -27,7 +22,7 @@ class _UserImagemAvatarState extends State<UserImagemAvatar> with DDIInject<User
                     leading: const Icon(Icons.photo_library),
                     title: const Text(Strings.GALERIA),
                     onTap: () {
-                      instance.selecionarImagem(ImageSource.gallery);
+                      ddi.get<UserImageController>().selecionarImagem(ImageSource.gallery);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -35,7 +30,7 @@ class _UserImagemAvatarState extends State<UserImagemAvatar> with DDIInject<User
                     leading: const Icon(Icons.photo_camera),
                     title: const Text(Strings.CAMERA),
                     onTap: () {
-                      instance.selecionarImagem(ImageSource.camera);
+                      ddi.get<UserImageController>().selecionarImagem(ImageSource.camera);
                       Navigator.of(context).pop();
                     },
                   ),

@@ -2,8 +2,8 @@ import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_notification_badge.dart';
 import 'package:flutter/material.dart';
 
-class CyberpunkAvatar extends StatelessWidget {
-  const CyberpunkAvatar({
+class HomeAvatar extends StatelessWidget {
+  const HomeAvatar({
     required this.tertiaryColor,
     required this.notificationCount,
     super.key,

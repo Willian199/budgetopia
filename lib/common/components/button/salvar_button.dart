@@ -1,18 +1,29 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:budgetopia/common/components/button/default_menu_back_button.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ContainerBackButton extends StatelessWidget {
-  const ContainerBackButton({super.key});
+class SalvarButton extends StatelessWidget {
+  const SalvarButton({
+    this.height = 50,
+    this.width = 50,
+    this.onPressed,
+    super.key,
+  });
+  final double height;
+  final double width;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     final theme = AdaptiveTheme.of(context).theme;
 
+    // Cores do tema
+    final primaryColor = theme.colorScheme.primary;
     final tertiaryColor = theme.colorScheme.tertiary;
+
     return Container(
-      height: 50,
-      width: 50,
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
@@ -31,7 +42,14 @@ class ContainerBackButton extends StatelessWidget {
           ),
         ],
       ),
-      child: const DefaultMenuBackButton(),
+      child: IconButton(
+        icon: FaIcon(
+          FontAwesomeIcons.floppyDisk,
+          color: primaryColor,
+          size: 20,
+        ),
+        onPressed: onPressed,
+      ),
     );
   }
 }

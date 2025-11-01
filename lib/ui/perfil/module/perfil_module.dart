@@ -9,9 +9,7 @@ final class PerfilModule with DDIModule {
   FutureOr<void> onPostConstruct() {
     Future.wait([
       application(DataNascimentoController.new),
-      register(
-        factory: ApplicationFactory(builder: PerfilCase.new.builder),
-      ),
+      application(PerfilCase.new),
     ]);
   }
 }

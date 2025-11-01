@@ -3,6 +3,7 @@ class Strings {
   static const String APP_NAME = "Budgetopia";
   static const String DETALHES = 'Detalhes';
   static const String PERFIL = 'Perfil';
+  static const String MOVIMENTACAO = 'Movimentação';
   static const String HOME = 'Home';
   static const String SOBRE = 'Sobre';
   static const String GALERIA = 'Galeria';
@@ -20,6 +21,9 @@ class Strings {
   static const String NOME = 'Nome';
   static const String OBJETIVO_SALDO_MENSAL = 'Objetivo Saldo Mensal';
   static const String DATA_NASCIMENTO = 'Data de Nascimento';
+  static const String TITULO = 'Título';
+  static const String VALOR = 'Valor';
+  static const String DATA = 'Data';
 
   // Ações
   static const String OK = 'OK';
