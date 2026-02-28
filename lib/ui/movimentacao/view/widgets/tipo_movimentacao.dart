@@ -1,5 +1,5 @@
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
-import 'package:budgetopia/ui/movimentacao/controller/tipo_movimentacao_controller.dart';
+import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
@@ -12,12 +12,12 @@ class TipoMovimentacao extends StatefulWidget {
   State<TipoMovimentacao> createState() => _TipoMovimentacaoState();
 }
 
-class _TipoMovimentacaoState extends ListenableState<TipoMovimentacao, TipoMovimentacaoController> {
+class _TipoMovimentacaoState extends State<TipoMovimentacao> with DDIInject<MovimentacaoController> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<TipoMovimentacaoEnum>(
-      initialValue: listenable.value,
-      items: listenable.listarTiposMovimentacao.map((TipoMovimentacaoEnum item) {
+      initialValue: instance.tipoMovimentacao.value,
+      items: TipoMovimentacaoEnum.values.map((TipoMovimentacaoEnum item) {
         return DropdownMenuItem(
           value: item,
           child: Row(
@@ -34,7 +34,7 @@ class _TipoMovimentacaoState extends ListenableState<TipoMovimentacao, TipoMovim
         );
       }).toList(),
       onChanged: (value) {
-        listenable.selecionarTipoMovimentacao(value);
+        instance.selecionarTipoMovimentacao(value);
         widget.nextFocusNode.requestFocus();
       },
       focusNode: widget.focusNode,

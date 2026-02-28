@@ -51,7 +51,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
       final bool status = instance.salvar(
         nome: nomeController.text.trim(),
         valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: 'R\$').toDouble(),
-        dataNascimento: dataNascimentoController.value.data,
+        dataNascimento: dataNascimentoController.value,
         pathImagem: userImageController.pathImagem,
       );
 

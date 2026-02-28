@@ -2,7 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
-import 'package:budgetopia/ui/movimentacao/controller/data_movimentacao_controller.dart';
+import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,7 +17,7 @@ class DataMovimentacao extends StatefulWidget {
   State<DataMovimentacao> createState() => _DataMovimentacaoState();
 }
 
-class _DataMovimentacaoState extends ListenableState<DataMovimentacao, DataMovimentacaoController> {
+class _DataMovimentacaoState extends State<DataMovimentacao> with DDIInject<MovimentacaoController> {
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,7 @@ class _DataMovimentacaoState extends ListenableState<DataMovimentacao, DataMovim
   void openDataFocus() async {
     if (widget.focusNode.hasFocus) {
       context.closeKeyboard();
-      await listenable.selecionarDataMovimentacao();
+      await instance.selecionarDataMovimentacao();
       widget.nextFocus.requestFocus();
     }
   }
@@ -77,60 +77,65 @@ class _DataMovimentacaoState extends ListenableState<DataMovimentacao, DataMovim
             ],
           ),
         ),
-        TextFormField(
-          controller: TextEditingController(
-            text: listenable.value.format(),
-          ),
-          focusNode: widget.focusNode,
-          onTap: () async {
-            context.closeKeyboard();
-            await listenable.selecionarDataMovimentacao();
-            widget.nextFocus.requestFocus();
-          },
-          onEditingComplete: widget.nextFocus.requestFocus,
-          textInputAction: TextInputAction.next,
-          readOnly: true,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: primaryColor.withAlpha(77),
-                width: 1.5,
+        ValueListenableBuilder(
+          valueListenable: instance.data,
+          builder: (context, value, child) {
+            return TextFormField(
+              controller: TextEditingController(
+                text: instance.data.value.format(),
               ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: primaryColor.withAlpha(77),
-                width: 1.5,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 1.5,
-              ),
-            ),
-            filled: true,
-            fillColor: backgroundColor.withAlpha(200),
-            prefixIcon: Container(
-              width: 50,
-              padding: const EdgeInsets.only(left: 6),
-              child: Center(
-                child: FaIcon(
-                  FontAwesomeIcons.calendarCheck,
-                  size: 20,
-                  color: primaryColor,
+              focusNode: widget.focusNode,
+              onTap: () async {
+                context.closeKeyboard();
+                await instance.selecionarDataMovimentacao();
+                widget.nextFocus.requestFocus();
+              },
+              onEditingComplete: widget.nextFocus.requestFocus,
+              textInputAction: TextInputAction.next,
+              readOnly: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                    color: primaryColor.withAlpha(77),
+                    width: 1.5,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                    color: primaryColor.withAlpha(77),
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                    color: primaryColor,
+                    width: 1.5,
+                  ),
+                ),
+                filled: true,
+                fillColor: backgroundColor.withAlpha(200),
+                prefixIcon: Container(
+                  width: 50,
+                  padding: const EdgeInsets.only(left: 6),
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.calendarCheck,
+                      size: 20,
+                      color: primaryColor,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          style: TextStyle(
-            fontSize: 16,
-            color: primaryColor.withAlpha(230),
-            fontWeight: FontWeight.w500,
-          ),
+              style: TextStyle(
+                fontSize: 16,
+                color: primaryColor.withAlpha(230),
+                fontWeight: FontWeight.w500,
+              ),
+            );
+          },
         ),
       ],
     );

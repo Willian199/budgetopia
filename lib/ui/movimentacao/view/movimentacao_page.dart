@@ -1,28 +1,23 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/button/salvar_button.dart';
 import 'package:budgetopia/common/components/button/sub_menu_back_button.dart';
+import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:budgetopia/common/components/generics/app_scaffold.dart';
 import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
-import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
-
 import 'package:budgetopia/common/components/generics/page_title.dart';
+import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
-import 'package:budgetopia/ui/movimentacao/case/movimentacao_case.dart';
-import 'package:budgetopia/ui/movimentacao/controller/categoria_controller.dart';
-import 'package:budgetopia/ui/movimentacao/controller/data_movimentacao_controller.dart';
-import 'package:budgetopia/ui/movimentacao/controller/status_pagamento_controller.dart';
-import 'package:budgetopia/ui/movimentacao/controller/tipo_movimentacao_controller.dart';
+import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:budgetopia/ui/movimentacao/mixin/movimentacao_page_mixin.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/data_movimentacao.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/selecionar_categoria.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/status_pagamento.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/tipo_movimentacao.dart';
-import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -35,7 +30,8 @@ class MovimentacaoPage extends StatefulWidget {
   _MovimentacaoPageState createState() => _MovimentacaoPageState();
 }
 
-class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPageMixin {
+class _MovimentacaoPageState extends State<MovimentacaoPage>
+    with MovimentacaoPageMixin, DDIInject<MovimentacaoController> {
   @override
   void initState() {
     super.initState();
@@ -44,14 +40,14 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
       titleController.text = widget.movimentacaoModel!.titulo;
       valueController.text = Moeda.format(valor: widget.movimentacaoModel!.valor, simbolo: 'R\$', decimalDigits: 2);
       noteController.text = widget.movimentacaoModel!.observacao ?? '';
-      ddi.get<DataMovimentacaoController>().alterarDataMovimentacao(widget.movimentacaoModel!.data);
-      ddi.get<CategoriaController>().selecionarCategoria(
+      instance.alterarData(widget.movimentacaoModel!.data);
+      instance.selecionarCategoria(
         CategoriaEnum.getById(widget.movimentacaoModel!.codigoCategoria),
       );
-      ddi.get<TipoMovimentacaoController>().selecionarTipoMovimentacao(
+      instance.selecionarTipoMovimentacao(
         TipoMovimentacaoEnum.getById(widget.movimentacaoModel!.tipoMovimentacao),
       );
-      ddi.get<StatusPagamentoController>().alterarStatus(widget.movimentacaoModel?.status ?? false);
+      instance.alterarStatus(widget.movimentacaoModel?.status ?? false);
     } else {
       valueController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);
     }
@@ -106,7 +102,7 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
                   size: 20,
                 ),
                 onPressed: () {
-                  final MovimentacaoCase controller = ddi.get();
+                  final MovimentacaoController controller = ddi.get();
                   if (controller.remover(widget.movimentacaoModel!.id)) {
                     Navigator.pop(context);
 
@@ -126,7 +122,7 @@ class _MovimentacaoPageState extends State<MovimentacaoPage> with MovimentacaoPa
               if ((formKey.currentState?.validate() ?? false) && valor > 0) {
                 context.closeKeyboard();
 
-                final MovimentacaoCase salvar = ddi.get();
+                final MovimentacaoController salvar = ddi.get();
 
                 final bool status = salvar.salvar(
                   id: widget.movimentacaoModel?.id ?? 0,

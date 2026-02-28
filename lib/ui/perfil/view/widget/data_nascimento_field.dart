@@ -19,7 +19,7 @@ class DataNascimentoField extends StatefulWidget {
 
 class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, DataNascimentoController> {
   late final _dateTextController = TextEditingController(
-    text: super.listenable.value.data.format(),
+    text: super.listenable.value.format(),
   );
 
   @override
@@ -45,7 +45,7 @@ class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, Dat
   }
 
   void _refreshTextField() {
-    _dateTextController.text = super.listenable.value.data.format();
+    _dateTextController.text = super.listenable.value.format();
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:budgetopia/common/enum/categoria_enum.dart';
-import 'package:budgetopia/ui/movimentacao/controller/categoria_controller.dart';
+import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
@@ -13,11 +14,11 @@ class SelecionarCategoria extends StatefulWidget {
   State<SelecionarCategoria> createState() => _SelecionarCategoriaState();
 }
 
-class _SelecionarCategoriaState extends ListenableState<SelecionarCategoria, CategoriaController> {
+class _SelecionarCategoriaState extends State<SelecionarCategoria> with DDIInject<MovimentacaoController> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<CategoriaEnum>(
-      initialValue: listenable.value,
+      initialValue: instance.categoria.value,
       items: CategoriaEnum.values.map((CategoriaEnum category) {
         return DropdownMenuItem(
           value: category,
@@ -35,7 +36,7 @@ class _SelecionarCategoriaState extends ListenableState<SelecionarCategoria, Cat
         );
       }).toList(),
       onChanged: (value) {
-        listenable.selecionarCategoria(value);
+        instance.selecionarCategoria(value);
         widget.nextFocusNode.requestFocus();
       },
       focusNode: widget.focusNode,
