@@ -17,37 +17,35 @@ class DataNascimentoField extends StatefulWidget {
   State<DataNascimentoField> createState() => _DataNascimentoFieldState();
 }
 
-class _DataNascimentoFieldState extends State<DataNascimentoField> {
-  late final DataNascimentoController _dataNascimentoController = ddi.get<DataNascimentoController>();
-
+class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, DataNascimentoController> {
   late final _dateTextController = TextEditingController(
-    text: _dataNascimentoController.value.format(),
+    text: super.listenable.value.data.format(),
   );
 
   @override
   void initState() {
     super.initState();
     widget.focusNode.addListener(_openDataFocus);
-    _dataNascimentoController.addListener(_refreshTextField);
+    super.listenable.addListener(_refreshTextField);
   }
 
   @override
   void dispose() {
     widget.focusNode.removeListener(_openDataFocus);
-    _dataNascimentoController.removeListener(_refreshTextField);
+    super.listenable.removeListener(_refreshTextField);
     super.dispose();
   }
 
   void _openDataFocus() async {
     if (widget.focusNode.hasFocus) {
       context.closeKeyboard();
-      await _dataNascimentoController.selecionarDataNascimento();
+      await super.listenable.selecionarDataNascimento();
       widget.nextFocus.requestFocus();
     }
   }
 
   void _refreshTextField() {
-    _dateTextController.text = _dataNascimentoController.value.format();
+    _dateTextController.text = super.listenable.value.data.format();
   }
 
   @override
@@ -94,7 +92,7 @@ class _DataNascimentoFieldState extends State<DataNascimentoField> {
           readOnly: true,
           onTap: () async {
             context.closeKeyboard();
-            await _dataNascimentoController.selecionarDataNascimento();
+            await super.listenable.selecionarDataNascimento();
             widget.nextFocus.requestFocus();
           },
           onEditingComplete: widget.nextFocus.requestFocus,

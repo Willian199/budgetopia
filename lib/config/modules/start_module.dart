@@ -30,14 +30,14 @@ final class StartModule with DDIModule, PreDestroy {
       application(ZoomDrawerController.new),
       application(PageController.new),
       register<ErrorModuleInterface>(
-        factory: DependentFactory(
+        factory: WidgetFactory(
           builder: (AsyncSnapshot snapshot) {
             return CustomErrorModule(snapshot);
           }.builder,
         ),
       ),
       register<LoaderModuleInterface>(
-        factory: DependentFactory(
+        factory: WidgetFactory(
           builder: CustomLoaderModule.new.builder,
         ),
       ),

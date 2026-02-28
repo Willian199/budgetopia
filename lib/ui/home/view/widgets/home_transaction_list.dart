@@ -1,4 +1,4 @@
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/alternative_atom_group.dart';
+import 'package:budgetopia/common/components/home_transaction/cyberpunk_day_group.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
@@ -65,7 +65,7 @@ class _HomeTransactionListState extends State<HomeTransactionList> {
           final List<MovimentacaoModel> transacoesDoDia = transacoesPorDia[dia]!;
           final String mes = transacoesDoDia.first.data.getFormattedMonth();
 
-          return AlternativeAtomGroup(
+          return CyberpunkDayGroup(
             day: dia,
             month: mes,
             transactions: transacoesDoDia,

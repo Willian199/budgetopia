@@ -19,25 +19,24 @@ dependencies:
 
   another_flushbar: ^1.12.32                        #Notificações na parte inferior
   adaptive_theme: ^3.7.2                            #Alterar o tema do aplicativo
-  animations: ^2.1.0                                #Efeitos de animações prontos
+  animations: ^2.1.1                                #Efeitos de animações prontos
   animated_list_plus: ^0.5.2
   fl_chart: ^1.1.1                                  #Gráficos
-  flex_color_scheme:  ^8.3.1                        #Controla o tema do aplicativo
+  flex_color_scheme:  ^8.4.0                        #Controla o tema do aplicativo
   flutter_native_splash: ^2.4.7
   flutter_zoom_drawer: ^3.2.0                       #Drawer
   font_awesome_flutter: ^10.12.0                    #Mais ícones
   intl: ^0.20.2
-  image_picker: ^1.2.0
+  image_picker: ^1.2.1
   image_cropper: ^11.0.0
   lottie: ^3.3.2                                    #Animações
-  objectbox: ^5.0.1                                 #Armazenamento de dados
-  objectbox_flutter_libs: ^5.0.1                    #Armazenamento de dados
+  objectbox: ^5.2.0                                 #Armazenamento de dados
+  objectbox_flutter_libs: ^5.2.0                    #Armazenamento de dados
   path_provider: ^2.1.5
   path: ^1.9.1
   permission_handler: ^12.0.1
   rflutter_alert: ^2.0.7
-  flutter_ddi: 
-    path: ../flutter_ddi
+  flutter_ddi: ^0.11.1
 
   meta: any
 dev_dependencies:
@@ -46,10 +45,10 @@ dev_dependencies:
 
 
   flutter_lints: ^6.0.0
-  build_runner: ^2.10.1
+  build_runner: ^2.11.1
 
   #flutter_launcher_icons: "^0.13.1"
-  objectbox_generator: ^5.0.1
+  objectbox_generator: ^5.2.0
 
 objectbox:
   # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).

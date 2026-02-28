@@ -1,12 +1,11 @@
 import 'package:budgetopia/common/components/date_picker/cyber_date_pickert.dart';
-import 'package:budgetopia/ui/perfil/case/salvar_perfil_case.dart';
 import 'package:budgetopia/ui/perfil/state/data_nascimento_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
+/// Controller apenas do estado da data de nascimento (UI). Não depende de outros controllers.
 final class DataNascimentoController extends ValueNotifier<DataNascimentoState> {
   DataNascimentoController() : super(DataNascimentoState(DateTime(2006)));
-  late final PerfilCase _perfilCase = ddi();
 
   bool _isOpen = false;
 
@@ -22,12 +21,11 @@ final class DataNascimentoController extends ValueNotifier<DataNascimentoState> 
     await showDialog(
       context: ddi.get<GlobalKey<NavigatorState>>().currentContext!,
       builder: (context) => CyberDatePicker(
-        initialDate: _perfilCase.dataNascimento,
+        initialDate: value.data,
         firstDate: start,
         lastDate: DateTime.now(),
         onDateSelected: (picked) {
-          if (picked != _perfilCase.dataNascimento) {
-            _perfilCase.dataNascimento = picked;
+          if (picked != value.data) {
             value = DataNascimentoState(picked);
           }
         },
@@ -38,7 +36,6 @@ final class DataNascimentoController extends ValueNotifier<DataNascimentoState> 
   }
 
   void alterarDataNascimento(DateTime data) {
-    _perfilCase.dataNascimento = data;
     value = DataNascimentoState(data);
   }
 }

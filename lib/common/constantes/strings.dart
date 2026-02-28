@@ -39,4 +39,8 @@ class Strings {
   static const String TOTAL_ENTRADAS = 'Total de entradas:';
   static const String INFORME_NOME = 'Por favor, informe o seu nome';
   static const String INFORME_VALOR = 'Por favor, insira um valor';
+
+  // Perfil
+  static const String DADOS_DO_USUARIO = 'DADOS DO USUÁRIO';
+  static const String PREENCHA_DADOS_PERFIL = 'Preencha seus dados para personalizar seu perfil';
 }

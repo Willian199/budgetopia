@@ -67,7 +67,9 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
   void _changeDateValue(double dragAmount) {
     final int change = dragAmount > 20 ? -1 : (dragAmount < -20 ? 1 : 0);
 
-    if (change == 0) return;
+    if (change == 0) {
+      return;
+    }
 
     // Resetar o valor do drag após aplicar a mudança
     _horizontalDragAmount = 0;

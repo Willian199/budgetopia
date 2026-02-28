@@ -1,3 +1,5 @@
+// ignore_for_file: experimental_member_use
+
 import 'package:budgetopia/config/banco/generated/objectbox.g.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:meta/meta.dart';

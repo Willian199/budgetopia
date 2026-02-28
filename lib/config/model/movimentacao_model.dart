@@ -37,7 +37,9 @@ class MovimentacaoModel {
 
   @override
   bool operator ==(covariant MovimentacaoModel other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
     return other.titulo == titulo &&
         other.valor == valor &&

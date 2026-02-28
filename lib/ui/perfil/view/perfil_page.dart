@@ -7,8 +7,9 @@ import 'package:budgetopia/common/components/input_formatters/decimal_input_form
 import 'package:budgetopia/common/components/generics/page_title.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
-import 'package:budgetopia/ui/perfil/case/salvar_perfil_case.dart';
+import 'package:budgetopia/common/components/user_imagem/controller/user_image_controller.dart';
 import 'package:budgetopia/ui/perfil/controller/data_nascimento_controller.dart';
+import 'package:budgetopia/ui/perfil/controller/perfil_controller.dart';
 import 'package:budgetopia/ui/perfil/mixin/perfil_page_mixin.dart';
 import 'package:budgetopia/ui/perfil/view/widget/data_nascimento_field.dart';
 import 'package:budgetopia/common/components/fields/info_fields.dart';
@@ -25,7 +26,7 @@ class PerfilPage extends StatefulWidget {
   State<PerfilPage> createState() => _PerfilPageState();
 }
 
-class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<PerfilCase> {
+class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject<PerfilController> {
   @override
   void initState() {
     super.initState();
@@ -45,9 +46,13 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
     if (formKey.currentState?.validate() ?? false) {
       FocusManager.instance.primaryFocus?.unfocus();
 
+      final dataNascimentoController = ddi.get<DataNascimentoController>();
+      final userImageController = ddi.get<UserImageController>();
       final bool status = instance.salvar(
         nome: nomeController.text.trim(),
         valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: 'R\$').toDouble(),
+        dataNascimento: dataNascimentoController.value.data,
+        pathImagem: userImageController.pathImagem,
       );
 
       if (!status) {

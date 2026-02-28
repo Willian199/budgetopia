@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 
 class InfoUsuario extends StatelessWidget {
@@ -45,7 +46,7 @@ class InfoUsuario extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "DADOS DO USUÁRIO",
+                  Strings.DADOS_DO_USUARIO,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -55,7 +56,7 @@ class InfoUsuario extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Preencha seus dados para personalizar seu perfil",
+                  Strings.PREENCHA_DADOS_PERFIL,
                   style: TextStyle(
                     fontSize: 12,
                     color: theme.textTheme.bodyMedium?.color,

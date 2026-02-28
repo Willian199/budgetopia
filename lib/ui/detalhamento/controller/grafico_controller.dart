@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.dart';
 import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository_impl.dart';
+import 'package:budgetopia/data/repository/perfil/perfil_repository.dart';
 import 'package:budgetopia/ui/detalhamento/state/grafico_state.dart';
-import 'package:budgetopia/ui/perfil/case/salvar_perfil_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class GraficoController extends ValueNotifier<GraficoState> with PostConstruct, PreDestroy {
   GraficoController() : super(GraficoState());
   late final MovimentacaoRepository _movimentacaoRepository = ddi();
-  late final PerfilCase _perfilController = ddi();
+  late final PerfilRepository _perfilRepository = ddi();
 
   late StreamSubscription<MovimentacaoDados> _refer;
 
-  double get valorSaldoObjetivo => _perfilController.registroSalvo?.valor ?? 0;
+  double get _valorSaldoObjetivo => _perfilRepository.getFirst?.valor ?? 0;
 
   @override
   FutureOr<void> onPostConstruct() {
@@ -25,7 +25,7 @@ class GraficoController extends ValueNotifier<GraficoState> with PostConstruct, 
         saidas: grafico.saidas,
         entradas: grafico.entradas,
         saldo: grafico.saldo,
-        valorSaldoObjetivo: _perfilController.registroSalvo?.valor ?? 0,
+        valorSaldoObjetivo: _valorSaldoObjetivo,
       );
     });
   }
