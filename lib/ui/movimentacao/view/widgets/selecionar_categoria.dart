@@ -1,6 +1,6 @@
+import 'package:budgetopia/common/components/combo_box/cyber_combo_box.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
@@ -15,40 +15,35 @@ class SelecionarCategoria extends StatefulWidget {
 }
 
 class _SelecionarCategoriaState extends State<SelecionarCategoria> with DDIInject<MovimentacaoController> {
+  late final List<CyberComboBoxOption<CategoriaEnum>> _options;
+
+  @override
+  void initState() {
+    super.initState();
+    _options = CategoriaEnum.values
+        .map(
+          (category) => CyberComboBoxOption<CategoriaEnum>(
+            value: category,
+            label: category.nome,
+            icon: Image.asset(
+              'assets/icons/${category.icone}',
+              width: 24,
+              height: 24,
+            ),
+          ),
+        )
+        .toList(growable: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<CategoriaEnum>(
-      initialValue: instance.categoria.value,
-      items: CategoriaEnum.values.map((CategoriaEnum category) {
-        return DropdownMenuItem(
-          value: category,
-          child: Row(
-            children: [
-              Image.asset(
-                'assets/icons/${category.icone}',
-                width: 24,
-                height: 24,
-              ),
-              const SizedBox(width: 8),
-              Text(category.nome),
-            ],
-          ),
-        );
-      }).toList(),
-      onChanged: (value) {
-        instance.selecionarCategoria(value);
-        widget.nextFocusNode.requestFocus();
-      },
+    return CyberComboBoxField<CategoriaEnum>(
+      label: 'Categoria',
+      options: _options,
+      valueListenable: instance.categoria,
       focusNode: widget.focusNode,
-      decoration: const InputDecoration(
-        label: Text('Categoria'),
-        contentPadding: EdgeInsets.only(
-          top: 20,
-          bottom: 20,
-          right: 20,
-        ),
-        border: OutlineInputBorder(),
-      ),
+      onChanged: instance.selecionarCategoria,
+      onSubmitted: widget.nextFocusNode.requestFocus,
     );
   }
 }

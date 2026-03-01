@@ -7,7 +7,6 @@ extension CyberDatePickerTheme on BuildContext {
   Color get primaryColor => isDark ? theme.colorScheme.secondaryContainer : theme.colorScheme.primary;
   Color get accentColor => theme.colorScheme.secondary;
   Color get backgroundColor => theme.colorScheme.onPrimary;
-  Color get secondaryBackgroundColor => theme.colorScheme.onTertiary;
 
   // Text styles
   TextStyle valueTextStyle({
@@ -60,19 +59,6 @@ extension CyberDatePickerTheme on BuildContext {
   }
 
   // Decorations
-  BoxDecoration backgroundDecoration() {
-    return BoxDecoration(
-      gradient: LinearGradient(
-        colors: [
-          backgroundColor,
-          secondaryBackgroundColor.withValues(alpha: 0.8),
-        ],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-    );
-  }
-
   BoxDecoration componentButtonDecoration({
     required bool isActive,
   }) {

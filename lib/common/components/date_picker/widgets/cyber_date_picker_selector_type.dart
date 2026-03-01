@@ -1,45 +1,48 @@
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_models.dart';
-import 'package:budgetopia/common/components/date_picker/cyber_date_picker_theme.dart';
+import 'package:budgetopia/common/components/date_picker/widgets/cyber_date_picker_component_button.dart';
 import 'package:flutter/material.dart';
 
 /// Component selector buttons (Day/Month/Year)
+///
+/// Provides a row of toggle buttons for selecting which date component
+/// (day, month, or year) the user wants to adjust.
 class CyberDatePickerSelectorType extends StatelessWidget {
+  /// Creates a [CyberDatePickerSelectorType].
   const CyberDatePickerSelectorType({
     required this.activeComponent,
     required this.onComponentSelected,
     super.key,
   });
+
+  /// The currently selected component.
   final CyberDateComponent activeComponent;
-  final Function(CyberDateComponent) onComponentSelected;
+
+  /// Callback when a component button is tapped.
+  final ValueChanged<CyberDateComponent> onComponentSelected;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildComponentButton(context, 'DIA', CyberDateComponent.day),
-        const SizedBox(width: 15),
-        _buildComponentButton(context, 'MÊS', CyberDateComponent.month),
-        const SizedBox(width: 15),
-        _buildComponentButton(context, 'ANO', CyberDateComponent.year),
-      ],
-    );
-  }
-
-  Widget _buildComponentButton(BuildContext context, String label, CyberDateComponent component) {
-    final isActive = activeComponent == component;
-
-    return GestureDetector(
-      onTap: () => onComponentSelected(component),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: context.componentButtonDecoration(isActive: isActive),
-        child: Text(
-          label,
-          style: context.componentButtonTextStyle(isActive: isActive),
+        CyberDatePickerComponentButton(
+          label: 'DIA',
+          isActive: activeComponent == CyberDateComponent.day,
+          onTap: () => onComponentSelected(CyberDateComponent.day),
         ),
-      ),
+        const SizedBox(width: 15),
+        CyberDatePickerComponentButton(
+          label: 'MES',
+          isActive: activeComponent == CyberDateComponent.month,
+          onTap: () => onComponentSelected(CyberDateComponent.month),
+        ),
+        const SizedBox(width: 15),
+        CyberDatePickerComponentButton(
+          label: 'ANO',
+          isActive: activeComponent == CyberDateComponent.year,
+          onTap: () => onComponentSelected(CyberDateComponent.year),
+        ),
+      ],
     );
   }
 }

@@ -20,6 +20,7 @@ class DataMovimentacao extends StatefulWidget {
 
 class _DataMovimentacaoState extends State<DataMovimentacao> with DDIInject<MovimentacaoController> {
   final TextEditingController _dataController = TextEditingController();
+  bool _isSelectingDate = false;
 
   @override
   void initState() {
@@ -37,15 +38,32 @@ class _DataMovimentacaoState extends State<DataMovimentacao> with DDIInject<Movi
   }
 
   void _openDataFocus() async {
-    if (widget.focusNode.hasFocus) {
-      context.closeKeyboard();
-      await instance.selecionarDataMovimentacao();
-      widget.nextFocus.requestFocus();
+    if (!widget.focusNode.hasFocus) {
+      return;
     }
+    await _openDatePicker();
   }
 
   void _definirData() {
     _dataController.text = instance.data.value.format();
+  }
+
+  Future<void> _openDatePicker() async {
+    if (_isSelectingDate) {
+      return;
+    }
+
+    _isSelectingDate = true;
+    context.closeKeyboard();
+    final bool hasSelected = await instance.selecionarDataMovimentacao();
+    _isSelectingDate = false;
+
+    if (!mounted) {
+      return;
+    }
+    if (hasSelected) {
+      widget.nextFocus.requestFocus();
+    }
   }
 
   @override
@@ -70,9 +88,11 @@ class _DataMovimentacaoState extends State<DataMovimentacao> with DDIInject<Movi
       nextFocus: widget.nextFocus,
       onTap: () async {
         _dataController.selection = const TextSelection(baseOffset: 0, extentOffset: 0);
-        context.closeKeyboard();
-        await instance.selecionarDataMovimentacao();
-        widget.nextFocus.requestFocus();
+        if (!widget.focusNode.hasFocus) {
+          widget.focusNode.requestFocus();
+          return;
+        }
+        await _openDatePicker();
       },
       onEditingComplete: widget.nextFocus.requestFocus,
       readOnly: true,

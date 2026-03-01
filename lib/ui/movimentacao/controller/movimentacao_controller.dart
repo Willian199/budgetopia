@@ -29,7 +29,7 @@ final class MovimentacaoController {
   late final MovimentacaoRepository _repository = ddi();
 
   /// Abre o date picker e atualiza [data] ao selecionar.
-  Future<void> selecionarDataMovimentacao() async {
+  Future<bool> selecionarDataMovimentacao() async {
     final DateTime start = DateTime(2024);
     final DateTime? picked = await showDatePicker(
       context: ddi.get<GlobalKey<NavigatorState>>().currentContext!,
@@ -41,7 +41,10 @@ final class MovimentacaoController {
 
     if (picked != null && picked != data.value) {
       data.value = picked.isBefore(start) ? start : picked;
+      return true;
     }
+
+    return false;
   }
 
   void alterarData(DateTime value) {

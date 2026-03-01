@@ -1,4 +1,3 @@
-// Modelo para o Selector do DatePicker
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_models.dart';
 import 'package:flutter/material.dart';
 
@@ -10,47 +9,43 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
     this.firstDate,
     this.lastDate,
   });
-  // Estado
+
   final DateTime selectedDate;
   final CyberDateComponent activeComponent;
   final DateTime? firstDate;
   final DateTime? lastDate;
-  final Function(DateTime) onDateChanged;
+  final ValueChanged<DateTime> onDateChanged;
 
-  // Para horizontal drag
   double _horizontalDragAmount = 0.0;
 
-  // Getter para o valor do drag horizontal
   double get horizontalDragAmount => _horizontalDragAmount;
 
-  // Método para iniciar o drag
+  static DateTime _toDateOnly(DateTime date) => DateTime(date.year, date.month, date.day);
+
+  DateTime? get _normalizedFirstDate => firstDate == null ? null : _toDateOnly(firstDate!);
+  DateTime? get _normalizedLastDate => lastDate == null ? null : _toDateOnly(lastDate!);
+
   void onDragStart() {
     _horizontalDragAmount = 0;
     notifyListeners();
   }
 
-  // Método para atualizar o valor de drag
   void onDragUpdate(DragUpdateDetails details) {
     _horizontalDragAmount += details.delta.dx;
     notifyListeners();
-
-    // Chama o método para mudar a data baseado no valor de drag
     _changeDateValue(_horizontalDragAmount);
   }
 
-  // Método para finalizar o drag
   void onDragEnd() {
     _horizontalDragAmount = 0;
     notifyListeners();
   }
 
-  // Normalizar data sem aplicar restrições (para visualização de valores adjacentes)
   DateTime _normalizeDate(DateTime baseDate, {int dayChange = 0, int monthChange = 0, int yearChange = 0}) {
-    int newYear = baseDate.year + yearChange;
-    int newMonth = baseDate.month + monthChange;
-    int newDay = baseDate.day + dayChange;
+    var newYear = baseDate.year + yearChange;
+    var newMonth = baseDate.month + monthChange;
+    var newDay = baseDate.day + dayChange;
 
-    // Normalizar mês
     while (newMonth > 12) {
       newMonth -= 12;
       newYear++;
@@ -60,12 +55,10 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
       newYear--;
     }
 
-    // Normalizar dia - garantir que seja válido para o mês/ano
     while (true) {
       final daysInMonth = DateTime(newYear, newMonth + 1, 0).day;
 
       if (newDay > daysInMonth) {
-        // Dia excede o mês, vai para próximo mês
         newDay -= daysInMonth;
         newMonth++;
         if (newMonth > 12) {
@@ -73,7 +66,6 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
           newYear++;
         }
       } else if (newDay < 1) {
-        // Dia negativo, volta para mês anterior
         newMonth--;
         if (newMonth < 1) {
           newMonth = 12;
@@ -81,7 +73,6 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
         }
         newDay += DateTime(newYear, newMonth + 1, 0).day;
       } else {
-        // Dia válido, sair do loop
         break;
       }
     }
@@ -89,35 +80,34 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
     return DateTime(newYear, newMonth, newDay);
   }
 
-  // Calcular nova data com restrições (para mudanças efetivas do usuário)
   DateTime _calculateNewDate(DateTime baseDate, {int dayChange = 0, int monthChange = 0, int yearChange = 0}) {
-    final DateTime newDate = _normalizeDate(
+    final newDate = _normalizeDate(
       baseDate,
       dayChange: dayChange,
       monthChange: monthChange,
       yearChange: yearChange,
     );
 
-    // Aplicar restrições caso existam
-    if (firstDate != null && newDate.isBefore(firstDate!)) {
-      return firstDate!;
+    final normalizedFirstDate = _normalizedFirstDate;
+    final normalizedLastDate = _normalizedLastDate;
+
+    if (normalizedFirstDate != null && newDate.isBefore(normalizedFirstDate)) {
+      return normalizedFirstDate;
     }
-    if (lastDate != null && newDate.isAfter(lastDate!)) {
-      return lastDate!;
+    if (normalizedLastDate != null && newDate.isAfter(normalizedLastDate)) {
+      return normalizedLastDate;
     }
 
     return newDate;
   }
 
-  // Mudar valor da data baseado no componente ativo e no drag horizontal
   void _changeDateValue(double dragAmount) {
-    final int change = dragAmount > 20 ? -1 : (dragAmount < -20 ? 1 : 0);
+    final change = dragAmount > 20 ? -1 : (dragAmount < -20 ? 1 : 0);
 
     if (change == 0) {
       return;
     }
 
-    // Resetar o valor do drag após aplicar a mudança
     _horizontalDragAmount = 0;
 
     DateTime newDate;
@@ -137,7 +127,6 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
     onDateChanged(newDate);
   }
 
-  // Obter valor anterior baseado no componente ativo (sem restrições para visualização)
   DateTime getPreviousValue() {
     DateTime previousDate;
 
@@ -153,18 +142,19 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
         break;
     }
 
-    // Não exibir se estiver fora dos limites permitidos
-    if (firstDate != null && previousDate.isBefore(firstDate!)) {
+    final normalizedFirstDate = _normalizedFirstDate;
+    final normalizedLastDate = _normalizedLastDate;
+
+    if (normalizedFirstDate != null && previousDate.isBefore(normalizedFirstDate)) {
       return selectedDate;
     }
-    if (lastDate != null && previousDate.isAfter(lastDate!)) {
+    if (normalizedLastDate != null && previousDate.isAfter(normalizedLastDate)) {
       return selectedDate;
     }
 
     return previousDate;
   }
 
-  // Obter próximo valor baseado no componente ativo (sem restrições para visualização)
   DateTime getNextValue() {
     DateTime nextDate;
 
@@ -180,18 +170,19 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
         break;
     }
 
-    // Não exibir se estiver fora dos limites permitidos
-    if (firstDate != null && nextDate.isBefore(firstDate!)) {
+    final normalizedFirstDate = _normalizedFirstDate;
+    final normalizedLastDate = _normalizedLastDate;
+
+    if (normalizedFirstDate != null && nextDate.isBefore(normalizedFirstDate)) {
       return selectedDate;
     }
-    if (lastDate != null && nextDate.isAfter(lastDate!)) {
+    if (normalizedLastDate != null && nextDate.isAfter(normalizedLastDate)) {
       return selectedDate;
     }
 
     return nextDate;
   }
 
-  // Obter valor formatado para exibição
   String getFormattedValue(DateTime date) {
     switch (activeComponent) {
       case CyberDateComponent.day:
@@ -203,7 +194,6 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
     }
   }
 
-  // Obter tamanho da fonte baseado no componente ativo
   double getFontSize() {
     switch (activeComponent) {
       case CyberDateComponent.day:

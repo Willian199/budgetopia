@@ -18,9 +18,16 @@ class _StatusPagamentoState extends State<StatusPagamento> with DDIInject<Movime
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: Double.DEZ),
-          child: Text("Transação realizada: "),
+        Padding(
+          padding: const EdgeInsets.only(left: Double.DEZ),
+          child: Text(
+            "Transação realizada: ",
+            style: TextStyle(
+              fontSize: 13,
+              color: colorScheme.primary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
         ValueListenableBuilder(
           valueListenable: instance.status,

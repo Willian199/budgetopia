@@ -78,12 +78,12 @@ class InfoFields extends StatelessWidget {
           onTap: onTap,
           maxLines: maxLines,
           decoration: InputDecoration(
-            prefix: IntrinsicHeight(
+            prefixIcon: IntrinsicHeight(
               child: SizedBox(
-                width: 30,
-                height: double.infinity,
+                width: 40,
+                height: maxLines > 1 ? 100 : double.infinity,
                 child: Align(
-                  alignment: maxLines > 1 ? Alignment.topLeft : Alignment.centerLeft,
+                  alignment: maxLines > 1 ? Alignment.topCenter : Alignment.center,
                   child: FaIcon(
                     icon,
                     size: 20,

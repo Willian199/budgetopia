@@ -1,4 +1,4 @@
-import 'package:budgetopia/common/components/date_picker/cyber_date_pickert.dart';
+import 'package:budgetopia/common/components/date_picker/cyber_date_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 

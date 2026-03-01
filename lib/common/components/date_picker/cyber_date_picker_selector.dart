@@ -1,7 +1,7 @@
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_models.dart';
-import 'package:budgetopia/common/components/date_picker/cyber_date_picker_theme.dart';
 import 'package:budgetopia/common/components/date_picker/notifier/cyber_date_picker_selector_notifier.dart';
 import 'package:budgetopia/common/components/date_picker/widgets/cyber_date_picker_selector_value.dart';
+import 'package:budgetopia/common/components/date_picker/widgets/cyber_date_picker_selector_adjacent_value.dart';
 import 'package:flutter/material.dart';
 
 class CyberDatePickerSelector extends StatefulWidget {
@@ -20,26 +20,23 @@ class CyberDatePickerSelector extends StatefulWidget {
   final DateTime? firstDate;
   final DateTime? lastDate;
   final Animation<double> glitchAnimation;
-  final Function(DateTime) onDateChanged;
+  final ValueChanged<DateTime> onDateChanged;
 
   @override
-  _CyberDatePickerSelectorState createState() => _CyberDatePickerSelectorState();
+  State<CyberDatePickerSelector> createState() => _CyberDatePickerSelectorState();
 }
 
 class _CyberDatePickerSelectorState extends State<CyberDatePickerSelector> with SingleTickerProviderStateMixin {
-  // Para animações
   late AnimationController _componentAnimController;
   late Animation<double> _componentAnimation;
   late Animation<double> _dateRotationAnimation;
 
-  // Modelo
   late CyberDatePickerSelectorModel _model;
 
   @override
   void initState() {
     super.initState();
 
-    // Inicializar modelo
     _model = CyberDatePickerSelectorModel(
       selectedDate: widget.selectedDate,
       activeComponent: widget.activeComponent,
@@ -48,7 +45,6 @@ class _CyberDatePickerSelectorState extends State<CyberDatePickerSelector> with 
       lastDate: widget.lastDate,
     );
 
-    // Controlador de animação do componente
     _componentAnimController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -71,7 +67,6 @@ class _CyberDatePickerSelectorState extends State<CyberDatePickerSelector> with 
   void didUpdateWidget(CyberDatePickerSelector oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Atualizar modelo quando as props do widget mudarem
     _model = CyberDatePickerSelectorModel(
       selectedDate: widget.selectedDate,
       activeComponent: widget.activeComponent,
@@ -108,82 +103,29 @@ class _CyberDatePickerSelectorState extends State<CyberDatePickerSelector> with 
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildPreviousValueWidget(context, previousDate),
-
-                // Usando o widget separado para o valor atual
+                CyberDatePickerSelectorAdjacentValue(
+                  adjacentDate: previousDate,
+                  model: _model,
+                  position: AdjacentValuePosition.previous,
+                  onTap: () => _model.onDateChanged(previousDate),
+                ),
                 CyberDatePickerSelectorValue(
                   model: _model,
                   glitchAnimation: widget.glitchAnimation,
                   componentAnimation: _componentAnimation,
                   dateRotationAnimation: _dateRotationAnimation,
                 ),
-
-                _buildNextValueWidget(context, nextDate),
+                CyberDatePickerSelectorAdjacentValue(
+                  adjacentDate: nextDate,
+                  model: _model,
+                  position: AdjacentValuePosition.next,
+                  onTap: () => _model.onDateChanged(nextDate),
+                ),
               ],
             ),
           ),
         );
       },
-    );
-  }
-
-  // Widget para o valor anterior (esquerda)
-  Widget _buildPreviousValueWidget(BuildContext context, DateTime previousDate) {
-    if (previousDate.isAtSameMomentAs(_model.selectedDate)) {
-      return const SizedBox(width: 90);
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(right: 10),
-      child: GestureDetector(
-        onTap: () => _model.onDateChanged(previousDate),
-        child: SizedBox(
-          width: 80,
-          child: Center(
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: 0.5,
-              child: Text(
-                _model.getFormattedValue(previousDate),
-                style: TextStyle(
-                  fontSize: _model.activeComponent == CyberDateComponent.day ? 40 : 30,
-                  color: context.accentColor.withValues(alpha: .5),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Widget para o próximo valor (direita)
-  Widget _buildNextValueWidget(BuildContext context, DateTime nextDate) {
-    if (nextDate.isAtSameMomentAs(_model.selectedDate)) {
-      return const SizedBox(width: 90);
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 10.0),
-      child: GestureDetector(
-        onTap: () => _model.onDateChanged(nextDate),
-        child: SizedBox(
-          width: 80,
-          child: Center(
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: 0.5,
-              child: Text(
-                _model.getFormattedValue(nextDate),
-                style: TextStyle(
-                  fontSize: _model.activeComponent == CyberDateComponent.day ? 40 : 30,
-                  color: context.accentColor.withValues(alpha: 0.5),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

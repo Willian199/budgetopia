@@ -32,6 +32,17 @@ class MovimentacaoPage extends StatefulWidget {
 
 class _MovimentacaoPageState extends State<MovimentacaoPage>
     with MovimentacaoPageMixin, DDIInject<MovimentacaoController> {
+  void _onValueFocusChanged() {
+    if (!valueFocusNode.hasFocus) {
+      return;
+    }
+
+    valueController.selection = TextSelection(
+      baseOffset: 0,
+      extentOffset: valueController.text.length,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +62,15 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
     } else {
       valueController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);
     }
+
+    valueFocusNode.addListener(_onValueFocusChanged);
+    titleFocusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    valueFocusNode.removeListener(_onValueFocusChanged);
+    super.dispose();
   }
 
   @override
@@ -96,14 +116,13 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
                 ],
               ),
               child: IconButton(
-                icon: const FaIcon(
-                  FontAwesomeIcons.trash,
-                  color: Colors.redAccent,
+                icon: FaIcon(
+                  FontAwesomeIcons.trashCan,
+                  color: theme.colorScheme.error,
                   size: 20,
                 ),
                 onPressed: () {
-                  final MovimentacaoController controller = ddi.get();
-                  if (controller.remover(widget.movimentacaoModel!.id)) {
+                  if (instance.remover(widget.movimentacaoModel!.id)) {
                     Navigator.pop(context);
 
                     CustomSnackBar.sucesso(mensagem: 'Transação removida');
@@ -122,9 +141,7 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
               if ((formKey.currentState?.validate() ?? false) && valor > 0) {
                 context.closeKeyboard();
 
-                final MovimentacaoController salvar = ddi.get();
-
-                final bool status = salvar.salvar(
+                final bool status = instance.salvar(
                   id: widget.movimentacaoModel?.id ?? 0,
                   titulo: titleController.text.trim(),
                   valor: Moeda.parse(valor: valueController.text, simbolo: 'R\$').toDouble(),
@@ -196,12 +213,14 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
               ],
               nextFocus: noteFocusNode,
               onTap: () {
-                if (!valueFocusNode.hasPrimaryFocus) {
-                  valueController.selection = TextSelection(
-                    baseOffset: 0,
-                    extentOffset: valueController.value.text.length,
-                  );
+                if (valueFocusNode.hasPrimaryFocus) {
+                  return;
                 }
+
+                valueController.selection = TextSelection(
+                  baseOffset: 0,
+                  extentOffset: valueController.value.text.length,
+                );
               },
               validator: (value) {
                 if (value?.isEmpty ?? false) {
