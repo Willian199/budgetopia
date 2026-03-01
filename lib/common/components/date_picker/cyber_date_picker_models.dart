@@ -8,7 +8,7 @@ enum CyberDatePickerMode { selector, input }
 class CyberDatePickerConstants {
   static const List<String> months = [
     'JAN',
-    'FEv',
+    'FEV',
     'MAR',
     'ABR',
     'MAI',

@@ -35,8 +35,10 @@ class _CyberDatePickerState extends State<CyberDatePicker> with TickerProviderSt
     super.initState();
 
     // Initialize model
+    final now = DateTime.now();
+    final normalizedNow = DateTime(now.year, now.month, now.day);
     _model = CyberDatePickerModel(
-      initialDate: widget.initialDate ?? DateTime.now(),
+      initialDate: widget.initialDate ?? normalizedNow,
       onDateSelected: widget.onDateSelected,
       firstDate: widget.firstDate,
       lastDate: widget.lastDate,
@@ -133,6 +135,7 @@ class _CyberDatePickerState extends State<CyberDatePicker> with TickerProviderSt
                                   dayFocus: _model.dayFocus,
                                   monthFocus: _model.monthFocus,
                                   yearFocus: _model.yearFocus,
+                                  model: _model,
                                   onSubmitted: (_) => _model.updateDateFromInput(),
                                 ),
                         ),
@@ -147,8 +150,8 @@ class _CyberDatePickerState extends State<CyberDatePicker> with TickerProviderSt
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
                               _model.mode == CyberDatePickerMode.selector
-                                  ? 'Slide horizontally to change value\nTap buttons to change field'
-                                  : 'Enter date directly in DD/MM/YYYY format',
+                                  ? 'Deslize horizontalmente para mudar o valor\nToque nos botões para mudar o campo'
+                                  : 'Digite a data no formato DD/MM/AAAA',
                               textAlign: TextAlign.center,
                               style: context.instructionTextStyle(),
                             ),
@@ -196,7 +199,7 @@ class _CyberDatePickerState extends State<CyberDatePicker> with TickerProviderSt
                           },
                           style: context.confirmButtonStyle(),
                           child: const Text(
-                            'CONFIRM DATE',
+                            'CONFIRMAR DATA',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

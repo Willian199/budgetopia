@@ -209,21 +209,23 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
                 }
                 return null;
               },
-
               primaryColor: primaryColor,
               backgroundColor: backgroundColor,
             ),
 
             const StatusPagamento(),
-            TextFormField(
+            InfoFields(
+              label: Strings.OBSERVACOES,
+              icon: Icons.info_outline,
               controller: noteController,
               focusNode: noteFocusNode,
-              maxLines: 3,
-              decoration: const InputDecoration(
-                labelText: 'Observações',
-                border: OutlineInputBorder(),
-                filled: true,
-              ),
+              keyboardType: TextInputType.multiline,
+              validator: (value) {
+                return null;
+              },
+              primaryColor: primaryColor,
+              backgroundColor: backgroundColor,
+              maxLines: 4,
             ),
             const SizedBox(height: 20.0),
           ],

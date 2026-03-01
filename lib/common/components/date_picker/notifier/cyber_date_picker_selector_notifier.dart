@@ -44,12 +44,58 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Calcular nova data com restrições
+  // Normalizar data sem aplicar restrições (para visualização de valores adjacentes)
+  DateTime _normalizeDate(DateTime baseDate, {int dayChange = 0, int monthChange = 0, int yearChange = 0}) {
+    int newYear = baseDate.year + yearChange;
+    int newMonth = baseDate.month + monthChange;
+    int newDay = baseDate.day + dayChange;
+
+    // Normalizar mês
+    while (newMonth > 12) {
+      newMonth -= 12;
+      newYear++;
+    }
+    while (newMonth < 1) {
+      newMonth += 12;
+      newYear--;
+    }
+
+    // Normalizar dia - garantir que seja válido para o mês/ano
+    while (true) {
+      final daysInMonth = DateTime(newYear, newMonth + 1, 0).day;
+
+      if (newDay > daysInMonth) {
+        // Dia excede o mês, vai para próximo mês
+        newDay -= daysInMonth;
+        newMonth++;
+        if (newMonth > 12) {
+          newMonth = 1;
+          newYear++;
+        }
+      } else if (newDay < 1) {
+        // Dia negativo, volta para mês anterior
+        newMonth--;
+        if (newMonth < 1) {
+          newMonth = 12;
+          newYear--;
+        }
+        newDay += DateTime(newYear, newMonth + 1, 0).day;
+      } else {
+        // Dia válido, sair do loop
+        break;
+      }
+    }
+
+    return DateTime(newYear, newMonth, newDay);
+  }
+
+  // Calcular nova data com restrições (para mudanças efetivas do usuário)
   DateTime _calculateNewDate(DateTime baseDate, {int dayChange = 0, int monthChange = 0, int yearChange = 0}) {
-    final DateTime newDate = DateTime(
-      baseDate.year + yearChange,
-      baseDate.month + monthChange,
-      baseDate.day + dayChange,
+    final DateTime newDate = _normalizeDate(
+      baseDate,
+      dayChange: dayChange,
+      monthChange: monthChange,
+      yearChange: yearChange,
     );
 
     // Aplicar restrições caso existam
@@ -91,28 +137,58 @@ class CyberDatePickerSelectorModel extends ChangeNotifier {
     onDateChanged(newDate);
   }
 
-  // Obter valor anterior baseado no componente ativo
+  // Obter valor anterior baseado no componente ativo (sem restrições para visualização)
   DateTime getPreviousValue() {
+    DateTime previousDate;
+
     switch (activeComponent) {
       case CyberDateComponent.day:
-        return _calculateNewDate(selectedDate, dayChange: -1);
+        previousDate = _normalizeDate(selectedDate, dayChange: -1);
+        break;
       case CyberDateComponent.month:
-        return _calculateNewDate(selectedDate, monthChange: -1);
+        previousDate = _normalizeDate(selectedDate, monthChange: -1);
+        break;
       case CyberDateComponent.year:
-        return _calculateNewDate(selectedDate, yearChange: -1);
+        previousDate = _normalizeDate(selectedDate, yearChange: -1);
+        break;
     }
+
+    // Não exibir se estiver fora dos limites permitidos
+    if (firstDate != null && previousDate.isBefore(firstDate!)) {
+      return selectedDate;
+    }
+    if (lastDate != null && previousDate.isAfter(lastDate!)) {
+      return selectedDate;
+    }
+
+    return previousDate;
   }
 
-  // Obter próximo valor baseado no componente ativo
+  // Obter próximo valor baseado no componente ativo (sem restrições para visualização)
   DateTime getNextValue() {
+    DateTime nextDate;
+
     switch (activeComponent) {
       case CyberDateComponent.day:
-        return _calculateNewDate(selectedDate, dayChange: 1);
+        nextDate = _normalizeDate(selectedDate, dayChange: 1);
+        break;
       case CyberDateComponent.month:
-        return _calculateNewDate(selectedDate, monthChange: 1);
+        nextDate = _normalizeDate(selectedDate, monthChange: 1);
+        break;
       case CyberDateComponent.year:
-        return _calculateNewDate(selectedDate, yearChange: 1);
+        nextDate = _normalizeDate(selectedDate, yearChange: 1);
+        break;
     }
+
+    // Não exibir se estiver fora dos limites permitidos
+    if (firstDate != null && nextDate.isBefore(firstDate!)) {
+      return selectedDate;
+    }
+    if (lastDate != null && nextDate.isAfter(lastDate!)) {
+      return selectedDate;
+    }
+
+    return nextDate;
   }
 
   // Obter valor formatado para exibição

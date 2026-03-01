@@ -16,7 +16,10 @@ class InfoFields extends StatelessWidget {
     this.inputFormatters,
     this.onFieldSubmitted,
     this.onTap,
+    this.maxLines = 1,
     super.key,
+    this.onEditingComplete,
+    this.readOnly = false,
   });
 
   final String label;
@@ -31,6 +34,9 @@ class InfoFields extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Function(String)? onFieldSubmitted;
   final Function()? onTap;
+  final int maxLines;
+  final VoidCallback? onEditingComplete;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +76,22 @@ class InfoFields extends StatelessWidget {
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
           onTap: onTap,
+          maxLines: maxLines,
           decoration: InputDecoration(
+            prefix: IntrinsicHeight(
+              child: SizedBox(
+                width: 30,
+                height: double.infinity,
+                child: Align(
+                  alignment: maxLines > 1 ? Alignment.topLeft : Alignment.centerLeft,
+                  child: FaIcon(
+                    icon,
+                    size: 20,
+                    color: primaryColor,
+                  ),
+                ),
+              ),
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(
@@ -94,31 +115,27 @@ class InfoFields extends StatelessWidget {
             ),
             filled: true,
             fillColor: backgroundColor.withAlpha(200),
-            prefixIcon: Container(
-              width: 40,
-              padding: const EdgeInsets.only(left: 6),
-              child: Center(
-                child: FaIcon(
-                  icon,
-                  size: 20,
-                  color: primaryColor,
-                ),
-              ),
-            ),
           ),
           style: TextStyle(
             fontSize: 16,
             color: primaryColor.withAlpha(230),
             fontWeight: FontWeight.w500,
           ),
-          textInputAction: nextFocus != null ? TextInputAction.next : TextInputAction.done,
-          onFieldSubmitted: (value) {
-            if (nextFocus != null) {
-              FocusScope.of(context).requestFocus(nextFocus);
-            } else if (onFieldSubmitted != null) {
-              onFieldSubmitted!(value);
-            }
-          },
+          textInputAction: maxLines > 1
+              ? TextInputAction.newline
+              : nextFocus != null
+              ? TextInputAction.next
+              : TextInputAction.done,
+          onEditingComplete: maxLines > 1 ? null : onEditingComplete,
+          onFieldSubmitted: maxLines > 1
+              ? null
+              : (value) {
+                  if (nextFocus != null) {
+                    FocusScope.of(context).requestFocus(nextFocus);
+                  } else if (onFieldSubmitted != null) {
+                    onFieldSubmitted!(value);
+                  }
+                },
           validator: validator,
         ),
       ],

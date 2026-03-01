@@ -9,7 +9,8 @@ class TimeLineOpacityController extends ValueNotifier<OpacityState> with PostCon
   TimeLineOpacityController() : super(OpacityState(0));
 
   bool exibindo = false;
-  late final StreamSubscription<double> _ref;
+
+  StreamSubscription<double>? _ref;
 
   late final HomeCase _homeCase = ddi();
 
@@ -31,6 +32,6 @@ class TimeLineOpacityController extends ValueNotifier<OpacityState> with PostCon
 
   @override
   FutureOr<void> onPreDestroy() {
-    _ref.cancel();
+    _ref?.cancel();
   }
 }

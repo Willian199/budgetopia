@@ -23,6 +23,7 @@ class Strings {
   static const String DATA_NASCIMENTO = 'Data de Nascimento';
   static const String TITULO = 'Título';
   static const String VALOR = 'Valor';
+  static const String OBSERVACOES = 'Observações';
   static const String DATA = 'Data';
 
   // Ações

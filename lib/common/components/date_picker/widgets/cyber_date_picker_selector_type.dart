@@ -17,11 +17,11 @@ class CyberDatePickerSelectorType extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildComponentButton(context, 'DAY', CyberDateComponent.day),
+        _buildComponentButton(context, 'DIA', CyberDateComponent.day),
         const SizedBox(width: 15),
-        _buildComponentButton(context, 'MONTH', CyberDateComponent.month),
+        _buildComponentButton(context, 'MÊS', CyberDateComponent.month),
         const SizedBox(width: 15),
-        _buildComponentButton(context, 'YEAR', CyberDateComponent.year),
+        _buildComponentButton(context, 'ANO', CyberDateComponent.year),
       ],
     );
   }
