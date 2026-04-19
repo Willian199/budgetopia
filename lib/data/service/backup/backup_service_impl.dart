@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
+import 'package:budgetopia/config/banco/entity/perfil_entity.dart';
 import 'package:budgetopia/config/banco/entity/recorrencia_movimentacao_entity.dart';
 import 'package:budgetopia/config/banco/module/store_register.dart';
 import 'package:budgetopia/data/service/backup/backup_service.dart';
@@ -15,6 +16,7 @@ class BackupServiceImpl implements BackupService {
   late final Database _database = ddi.get<Database>();
   late final Box<MovimentacaoEntity> _entity = _database.box<MovimentacaoEntity>();
   late final Box<RecorrenciaMovimentacaoEntity> _recorrenciaEntity = _database.box<RecorrenciaMovimentacaoEntity>();
+  late final Box<PerfilEntity> _perfilEntity = _database.box<PerfilEntity>();
 
   @override
   List<MovimentacaoEntity> buscarMovimentacoes() {
@@ -24,6 +26,11 @@ class BackupServiceImpl implements BackupService {
   @override
   List<RecorrenciaMovimentacaoEntity> buscarRecorrencias() {
     return _recorrenciaEntity.getAll();
+  }
+
+  @override
+  PerfilEntity? buscarPerfil() {
+    return _perfilEntity.get(1);
   }
 
   @override
@@ -75,15 +82,20 @@ class BackupServiceImpl implements BackupService {
   void substituirDados({
     required List<MovimentacaoEntity> movimentacoes,
     required List<RecorrenciaMovimentacaoEntity> recorrencias,
+    PerfilEntity? perfil,
   }) {
     _database.runInTransaction(TxMode.write, () {
       _entity.removeAll();
       _recorrenciaEntity.removeAll();
+      _perfilEntity.removeAll();
       if (recorrencias.isNotEmpty) {
         _recorrenciaEntity.putMany(recorrencias);
       }
       if (movimentacoes.isNotEmpty) {
         _entity.putMany(movimentacoes);
+      }
+      if (perfil != null) {
+        _perfilEntity.put(perfil);
       }
     });
   }
@@ -97,6 +109,11 @@ class BackupServiceImpl implements BackupService {
     return _database.runInTransaction(TxMode.write, () {
       return _recorrenciaEntity.putMany(recorrencias);
     });
+  }
+
+  @override
+  void salvarPerfil(PerfilEntity perfil) {
+    _perfilEntity.put(perfil);
   }
 
   Future<Directory> _resolveBackupDirectory() async {

@@ -6,12 +6,29 @@ import 'package:budgetopia/common/dto/resultado_importacao_backup.dart';
 import 'package:budgetopia/common/enum/modo_importacao_backup.dart';
 import 'package:budgetopia/data/repository/backup/backup_repository.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_plus/share_plus.dart';
 
-final class BackupController {
+final class BackupController extends ValueNotifier<bool> {
+  BackupController() : super(false);
+
   late final BackupRepository _repository = ddi();
+
+  Future<void> executarOperacao(Future<void> Function() operacao) async {
+    if (value) {
+      return;
+    }
+
+    value = true;
+
+    try {
+      await operacao();
+    } finally {
+      value = false;
+    }
+  }
 
   Future<void> exportarSomenteLocal() async {
     try {
@@ -31,8 +48,12 @@ final class BackupController {
         return;
       }
 
-      if (arquivoTemporario.existsSync() && arquivoTemporario.path != filePath) {
-        arquivoTemporario.deleteSync();
+      if (arquivoTemporario.path != filePath) {
+        try {
+          await arquivoTemporario.delete();
+        } on FileSystemException {
+          // Arquivo temporario pode ja ter sido movido/removido pelo seletor.
+        }
       }
 
       CustomSnackBar.sucesso(

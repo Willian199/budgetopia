@@ -4,13 +4,14 @@ import 'package:budgetopia/common/dto/resultado_exportacao_backup.dart';
 import 'package:budgetopia/common/dto/resultado_importacao_backup.dart';
 import 'package:budgetopia/common/enum/modo_importacao_backup.dart';
 import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
+import 'package:budgetopia/config/banco/entity/perfil_entity.dart';
 import 'package:budgetopia/config/banco/entity/recorrencia_movimentacao_entity.dart';
 import 'package:budgetopia/data/repository/backup/backup_repository.dart';
 import 'package:budgetopia/data/service/backup/backup_service.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class BackupRepositoryImpl implements BackupRepository {
-  static const int _schemaVersion = 2;
+  static const int _schemaVersion = 3;
   static const int _firstSupportedSchemaVersion = 1;
   static const JsonEncoder _jsonEncoder = JsonEncoder.withIndent('  ');
 
@@ -21,11 +22,13 @@ class BackupRepositoryImpl implements BackupRepository {
     final DateTime now = DateTime.now();
     final List<MovimentacaoEntity> movimentacoes = _service.buscarMovimentacoes();
     final List<RecorrenciaMovimentacaoEntity> recorrencias = _service.buscarRecorrencias();
+    final PerfilEntity? perfil = _service.buscarPerfil();
     final Map<String, dynamic> payload = <String, dynamic>{
       'schemaVersion': _schemaVersion,
       'exportedAt': now.toUtc().toIso8601String(),
       'totalMovimentacoes': movimentacoes.length,
       'totalRecorrencias': recorrencias.length,
+      'perfil': perfil == null ? null : _perfilToJson(perfil),
       'movimentacoes': movimentacoes.map(_toJson).toList(growable: false),
       'recorrencias': recorrencias.map(_recorrenciaToJson).toList(growable: false),
     };
@@ -75,13 +78,16 @@ class BackupRepositoryImpl implements BackupRepository {
         .map((dynamic item) => _parseMovimentacao(item))
         .toList(growable: false);
     final List<RecorrenciaMovimentacaoEntity> recorrenciasImportadas = _parseRecorrencias(root, schemaVersion);
+    final PerfilEntity? perfilImportado = _parsePerfil(root, schemaVersion);
 
     if (modo == ModoImportacaoBackup.substituirTudo) {
       final List<MovimentacaoEntity> limpas = importadas.map(_copyWithoutId).toList(growable: false);
+      final PerfilEntity? perfilLimpo = perfilImportado == null ? null : _copyPerfilForBackup(perfilImportado);
 
       _service.substituirDados(
         movimentacoes: limpas,
         recorrencias: recorrenciasImportadas,
+        perfil: perfilLimpo,
       );
 
       return ResultadoImportacaoBackup(
@@ -113,6 +119,9 @@ class BackupRepositoryImpl implements BackupRepository {
     }
 
     _service.adicionarMovimentacoes(novas);
+    if (perfilImportado != null && _service.buscarPerfil() == null) {
+      _service.salvarPerfil(_copyPerfilForBackup(perfilImportado));
+    }
 
     return ResultadoImportacaoBackup(
       modo: modo,
@@ -161,6 +170,14 @@ class BackupRepositoryImpl implements BackupRepository {
     };
   }
 
+  Map<String, dynamic> _perfilToJson(PerfilEntity item) {
+    return <String, dynamic>{
+      'nome': item.nome,
+      'dataNascimento': item.dataNascimento.toUtc().toIso8601String(),
+      'valor': item.valor,
+    };
+  }
+
   MovimentacaoEntity _parseMovimentacao(dynamic rawItem) {
     if (rawItem is! Map) {
       throw const FormatException('Item de movimentacao invalido.');
@@ -202,6 +219,28 @@ class BackupRepositoryImpl implements BackupRepository {
     }
 
     return rawRecorrencias.map((dynamic item) => _parseRecorrencia(item)).toList(growable: false);
+  }
+
+  PerfilEntity? _parsePerfil(Map<String, dynamic> root, int schemaVersion) {
+    if (schemaVersion < 3 || root['perfil'] == null) {
+      return null;
+    }
+
+    final dynamic rawPerfil = root['perfil'];
+    if (rawPerfil is! Map) {
+      throw const FormatException('Campo perfil invalido.');
+    }
+
+    final Map<String, dynamic> map = rawPerfil.map(
+      (dynamic key, dynamic value) => MapEntry(key.toString(), value),
+    );
+
+    return PerfilEntity(
+      id: 1,
+      nome: _readString(map['nome'], fieldName: 'perfil.nome'),
+      dataNascimento: _readDateTime(map['dataNascimento'], fieldName: 'perfil.dataNascimento'),
+      valor: _readDouble(map['valor'], fieldName: 'perfil.valor'),
+    );
   }
 
   RecorrenciaMovimentacaoEntity _parseRecorrencia(dynamic rawItem) {
@@ -332,6 +371,15 @@ class BackupRepositoryImpl implements BackupRepository {
       observacao: item.observacao,
       statusPadrao: item.statusPadrao,
       ativo: item.ativo,
+    );
+  }
+
+  PerfilEntity _copyPerfilForBackup(PerfilEntity item) {
+    return PerfilEntity(
+      id: 1,
+      nome: item.nome,
+      dataNascimento: item.dataNascimento,
+      valor: item.valor,
     );
   }
 

@@ -305,6 +305,7 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
           left: 40,
           top: 10,
           child: Row(
+            spacing: 8,
             children: [
               Container(
                 width: 6,
@@ -321,7 +322,6 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
               Text(
                 "ANÁLISE TEMPORAL",
                 style: TextStyle(

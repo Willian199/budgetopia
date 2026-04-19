@@ -14,20 +14,21 @@ class BackupPage extends StatefulWidget {
   State<BackupPage> createState() => _BackupPageState();
 }
 
-class _BackupPageState extends State<BackupPage> with DDIInject<BackupController> {
+class _BackupPageState extends ListenableState<BackupPage, BackupController> {
   Future<void> _importarJson() async {
-    final BackupController controller = ddi.get<BackupController>();
-    final String? filePath = await controller.selecionarArquivoJsonImportacao();
-    if (filePath == null || !context.mounted) {
-      return;
-    }
+    await listenable.executarOperacao(() async {
+      final String? filePath = await listenable.selecionarArquivoJsonImportacao();
+      if (filePath == null || !context.mounted) {
+        return;
+      }
 
-    final ModoImportacaoBackup? modo = await _selecionarModoImportacao();
-    if (modo == null) {
-      return;
-    }
+      final ModoImportacaoBackup? modo = await _selecionarModoImportacao();
+      if (modo == null || !context.mounted) {
+        return;
+      }
 
-    await controller.importarJson(filePath: filePath, modo: modo);
+      await listenable.importarJson(filePath: filePath, modo: modo);
+    });
   }
 
   Future<ModoImportacaoBackup?> _selecionarModoImportacao() {
@@ -62,6 +63,7 @@ class _BackupPageState extends State<BackupPage> with DDIInject<BackupController
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = context.colorScheme;
+    final bool processando = listenable.value;
 
     return AppScaffold(
       appBar: const Row(
@@ -101,7 +103,7 @@ class _BackupPageState extends State<BackupPage> with DDIInject<BackupController
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
-                onPressed: instance.exportarSomenteLocal,
+                onPressed: processando ? null : () => listenable.executarOperacao(listenable.exportarSomenteLocal),
                 icon: const Icon(Icons.save_alt_rounded),
                 label: const Text('Exportar JSON (salvar local)'),
               ),
@@ -109,7 +111,7 @@ class _BackupPageState extends State<BackupPage> with DDIInject<BackupController
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: instance.exportarECompartilhar,
+                onPressed: processando ? null : () => listenable.executarOperacao(listenable.exportarECompartilhar),
                 icon: const Icon(Icons.share_rounded),
                 label: const Text('Exportar e compartilhar'),
               ),
@@ -118,7 +120,7 @@ class _BackupPageState extends State<BackupPage> with DDIInject<BackupController
             SizedBox(
               width: double.infinity,
               child: FilledButton.tonalIcon(
-                onPressed: _importarJson,
+                onPressed: processando ? null : _importarJson,
                 icon: const Icon(Icons.file_upload_rounded),
                 label: const Text('Importar JSON'),
               ),
