@@ -19,9 +19,6 @@ class GraficoDadosLinha extends StatefulWidget {
 class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, GraficoController>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  double _minY = 0;
-  double _maxY = 0;
-  int _selectedSpotIndex = 0;
 
   @override
   void initState() {
@@ -39,51 +36,22 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
     super.dispose();
   }
 
-  List<GraficoModel> _eval(List<GraficoModel> values) {
-    if (values.isEmpty) {
-      return [];
-    }
-
-    _minY = values.reduce((current, next) => current.valor < next.valor ? current : next).valor;
-    _maxY = values.reduce((current, next) => current.valor > next.valor ? current : next).valor;
-
-    return [
-      GraficoModel(index: 0, valor: values.length > 1 ? _minY : 0, legenda: ''),
-      ...values,
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData tema = context.theme;
     final bool isDarkMode = ddi.get<bool>(qualifier: Qualifier.dark_mode);
 
-    // Definição de cores
     final Color primaryColor = tema.colorScheme.primary;
     final Color tertiaryColor = tema.colorScheme.tertiary;
-
-    // Cores adaptativas para o gráfico
     final Color corLineChart = isDarkMode ? tertiaryColor : primaryColor;
-    final Color corErro = tema.colorScheme.error;
-    final Color corTooltipSaldoOk = tertiaryColor;
-    final Color corTooltipSaldoMenor = corErro;
-    final Color corBordaSaldoMenor = corErro.withValues(alpha: 0.7);
+    final Color corTooltipSaldoMenor = tema.colorScheme.error;
+    final Color corBordaSaldoMenor = corTooltipSaldoMenor.withValues(alpha: 0.7);
 
-    if (listenable.value.saldo.isEmpty) {
+    final grafico = listenable.value;
+
+    if (grafico.isEmpty) {
       return const SizedBox.shrink();
     }
-
-    final List<GraficoModel> itensGraficoSaldo = _eval(listenable.value.saldo);
-    final List<FlSpot> spotsSaldo = itensGraficoSaldo
-        .map((GraficoModel item) => FlSpot(item.index.toDouble(), item.valor))
-        .toList();
-
-    if (spotsSaldo.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    // Determinar o índice do valor mais recente/atual (excluindo os valores de padding)
-    _selectedSpotIndex = spotsSaldo.length > 4 ? spotsSaldo.length - 2 : 2;
 
     return Stack(
       children: [
@@ -94,29 +62,28 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
             builder: (context, child) {
               return LineChart(
                 LineChartData(
-                  minY: _minY < 0 ? _minY : 0,
-                  maxY: _maxY * 1.1,
-                  minX: itensGraficoSaldo.first.index.toDouble(),
-                  maxX: itensGraficoSaldo.last.index.toDouble(),
+                  minY: grafico.minY,
+                  maxY: grafico.maxY,
+                  minX: grafico.minX,
+                  maxX: grafico.maxX,
                   baselineY: 0,
                   backgroundColor: Colors.transparent,
                   gridData: const FlGridData(show: false),
                   borderData: FlBorderData(show: false),
                   lineTouchData: LineTouchData(
                     getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
-                      final int tamanho = spotsSaldo.length;
+                      final int tamanho = grafico.spots.length;
 
                       return spotIndexes.map((int index) {
-                        final bool isValidForTouch = (index > 1) && (index < (tamanho - 1));
+                        final bool isValidIndex = index >= 0 && index < tamanho;
+                        final bool isValidForTouch = isValidIndex && listenable.isSpotReal(grafico.spots[index]);
 
                         return TouchedSpotIndicatorData(
-                          // Linha vertical sutil
                           FlLine(
                             color: isValidForTouch ? corLineChart.withValues(alpha: 0.2) : Colors.transparent,
                             strokeWidth: 1,
                             dashArray: [5, 5],
                           ),
-                          // Bolinha ao selecionar o item no gráfico
                           FlDotData(
                             show: isValidForTouch,
                             getDotPainter:
@@ -126,17 +93,13 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                                   LineChartBarData barData,
                                   int index,
                                 ) {
-                                  final bool isSaldoOk = spot.y > listenable.value.valorSaldoObjetivo;
+                                  final bool isSaldoOk = listenable.isSaldoOk(spot.y);
 
                                   return FlDotCirclePainter(
                                     radius: 8,
-                                    color: isSaldoOk ? corTooltipSaldoOk : corTooltipSaldoMenor,
+                                    color: isSaldoOk ? tertiaryColor : corTooltipSaldoMenor,
                                     strokeWidth: 3,
-                                    strokeColor: isSaldoOk
-                                        ? corTooltipSaldoOk.withValues(
-                                            alpha: 0.5,
-                                          )
-                                        : corBordaSaldoMenor,
+                                    strokeColor: isSaldoOk ? tertiaryColor.withValues(alpha: 0.5) : corBordaSaldoMenor,
                                   );
                                 },
                           ),
@@ -148,16 +111,12 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                       tooltipBorder: BorderSide(
                         color: corLineChart.withValues(alpha: 0.5),
                       ),
-
                       tooltipBorderRadius: const BorderRadius.all(Radius.circular(8)),
                       tooltipPadding: const EdgeInsets.all(8),
                       getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
                         return lineBarsSpot.map((LineBarSpot lineBarSpot) {
-                          if (lineBarSpot.x > 1 && lineBarSpot.x < itensGraficoSaldo.last.index) {
-                            final GraficoModel item = itensGraficoSaldo.firstWhere(
-                              (element) => element.index == lineBarSpot.x.toInt(),
-                              orElse: () => itensGraficoSaldo[2], // Fallback para evitar exceções
-                            );
+                          if (listenable.isSpotReal(lineBarSpot)) {
+                            final GraficoModel item = listenable.itemPorX(lineBarSpot.x);
 
                             return LineTooltipItem(
                               '${item.legenda}\n${Moeda.format(valor: lineBarSpot.y, simbolo: Strings.RS)}',
@@ -177,9 +136,12 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                       if (touchResponse?.lineBarSpots != null &&
                           touchResponse!.lineBarSpots!.isNotEmpty &&
                           (event is FlTapUpEvent || event is FlPanEndEvent)) {
-                        setState(() {
-                          _selectedSpotIndex = touchResponse.lineBarSpots!.first.spotIndex;
-                        });
+                        final FlSpot touchedSpot = touchResponse.lineBarSpots!.first;
+                        if (!listenable.isSpotReal(touchedSpot)) {
+                          return;
+                        }
+
+                        listenable.selecionarSpotX(touchedSpot.x.toInt());
                       }
                     },
                   ),
@@ -209,18 +171,14 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        interval: itensGraficoSaldo.length > 12 ? 2 : 1,
+                        interval: grafico.intervaloLegendaInferior.toDouble(),
                         reservedSize: 30,
                         getTitlesWidget: (double value, TitleMeta meta) {
                           return LegendaInferior(
-                            selectedSpotIndex: _selectedSpotIndex,
+                            selectedSpotIndex: grafico.selectedSpotX,
                             value: value,
                             meta: meta,
-                            item: itensGraficoSaldo
-                                .where(
-                                  (element) => element.index == value.toInt(),
-                                )
-                                .firstOrNull,
+                            item: grafico.itens.where((element) => element.index == value.toInt()).firstOrNull,
                           );
                         },
                       ),
@@ -228,14 +186,7 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                   ),
                   lineBarsData: <LineChartBarData>[
                     LineChartBarData(
-                      spots: spotsSaldo.asMap().entries.map((entry) {
-                        final FlSpot spot = entry.value;
-                        // Aplicar animação ao valor Y
-                        return FlSpot(
-                          spot.x,
-                          spot.y * _animationController.value,
-                        );
-                      }).toList(),
+                      spots: listenable.spotsAnimados(_animationController.value),
                       isCurved: true,
                       curveSmoothness: 0.3,
                       barWidth: 4,
@@ -251,12 +202,8 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            corLineChart.withValues(
-                              alpha: 0.3 * _animationController.value,
-                            ),
-                            corLineChart.withValues(
-                              alpha: 0.1 * _animationController.value,
-                            ),
+                            corLineChart.withValues(alpha: 0.3 * _animationController.value),
+                            corLineChart.withValues(alpha: 0.1 * _animationController.value),
                             corLineChart.withValues(alpha: 0.0),
                           ],
                         ),
@@ -269,26 +216,20 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                               LineChartBarData bar,
                               int index,
                             ) {
-                              final bool isCurrent = index == _selectedSpotIndex;
-                              final bool isSaldoOk = spot.y > listenable.value.valorSaldoObjetivo;
+                              final bool isCurrent = spot.x.toInt() == grafico.selectedSpotX;
+                              final bool isSaldoOk = listenable.isSaldoOk(spot.y);
 
                               return FlDotCirclePainter(
                                 radius: isCurrent ? 6 : 4,
                                 strokeWidth: isCurrent ? 2 : 1,
                                 color: isSaldoOk
-                                    ? corTooltipSaldoOk.withValues(
-                                        alpha: isCurrent ? 1.0 : 0.7,
-                                      )
-                                    : corTooltipSaldoMenor.withValues(
-                                        alpha: isCurrent ? 1.0 : 0.7,
-                                      ),
-                                strokeColor: Colors.white.withValues(
-                                  alpha: 0.5,
-                                ),
+                                    ? tertiaryColor.withValues(alpha: isCurrent ? 1.0 : 0.7)
+                                    : corTooltipSaldoMenor.withValues(alpha: isCurrent ? 1.0 : 0.7),
+                                strokeColor: Colors.white.withValues(alpha: 0.5),
                               );
                             },
                         checkToShowDot: (FlSpot spot, LineChartBarData barData) {
-                          return spot.x > 1 && spot.x < itensGraficoSaldo.last.index;
+                          return listenable.isSpotReal(spot);
                         },
                       ),
                       color: corLineChart,
@@ -299,8 +240,6 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
             },
           ),
         ),
-
-        // Texto de Análise na parte superior
         Positioned(
           left: 40,
           top: 10,
@@ -323,7 +262,7 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                 ),
               ),
               Text(
-                "ANÁLISE TEMPORAL",
+                'ANÁLISE TEMPORAL',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,

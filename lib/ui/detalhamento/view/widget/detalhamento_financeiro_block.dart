@@ -5,8 +5,8 @@ import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/detalhamento/view/widget/detalhamento_financeiro_card.dart';
 import 'package:flutter/material.dart';
 
-class DetalhamenntoFinanceiroBlock extends StatelessWidget {
-  const DetalhamenntoFinanceiroBlock({
+class DetalhamentoFinanceiroBlock extends StatelessWidget {
+  const DetalhamentoFinanceiroBlock({
     required this.totalEntrada,
     required this.totalSaida,
     required this.totalSaldo,
@@ -22,7 +22,6 @@ class DetalhamenntoFinanceiroBlock extends StatelessWidget {
     final ThemeData tema = context.theme;
     final Size size = MediaQuery.sizeOf(context);
 
-    // Definição de cores com base no tema atual
     final Color primaryColor = tema.colorScheme.primary;
     final Color tertiaryColor = tema.colorScheme.tertiary;
 
@@ -56,7 +55,6 @@ class DetalhamenntoFinanceiroBlock extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 30, 20, 40),
             child: Column(
               children: [
-                // Texto de cabeçalho do resumo financeiro
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Row(
@@ -78,7 +76,7 @@ class DetalhamenntoFinanceiroBlock extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        "RESUMO FINANCEIRO",
+                        'RESUMO FINANCEIRO',
                         style: TextStyle(
                           fontSize: 14,
                           letterSpacing: 2,
@@ -89,7 +87,6 @@ class DetalhamenntoFinanceiroBlock extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 DetalhamentoFinanceiroCard(
                   title: Strings.TOTAL_ENTRADAS,
                   value: totalEntrada,
@@ -97,7 +94,6 @@ class DetalhamenntoFinanceiroBlock extends StatelessWidget {
                   isHighlighted: false,
                 ),
                 const SizedBox(height: 16),
-
                 DetalhamentoFinanceiroCard(
                   title: Strings.TOTAL_SAIDAS,
                   value: totalSaida,
@@ -105,7 +101,6 @@ class DetalhamenntoFinanceiroBlock extends StatelessWidget {
                   isHighlighted: false,
                 ),
                 const SizedBox(height: 16),
-                // Bloco de saldo
                 DetalhamentoFinanceiroCard(
                   isHighlighted: true,
                   title: Strings.SALDO_PERIODO,

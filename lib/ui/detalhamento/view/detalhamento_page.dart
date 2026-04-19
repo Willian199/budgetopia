@@ -4,7 +4,7 @@ import 'package:budgetopia/common/components/generics/page_title.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/detalhamento/controller/detalhamento_controller.dart';
-import 'package:budgetopia/ui/detalhamento/view/widget/detalhamennto_financeiro_block.dart';
+import 'package:budgetopia/ui/detalhamento/view/widget/detalhamento_financeiro_block.dart';
 import 'package:budgetopia/ui/detalhamento/view/widget/detalhamento_target.dart';
 import 'package:budgetopia/ui/detalhamento/view/widget/grafico_dados_linha.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +21,7 @@ class _DetalhamentoPageState extends ListenableState<DetalhamentoPage, Detalhame
   @override
   Widget build(BuildContext context) {
     final Color secondaryColor = context.colorScheme.secondary;
+    final state = listenable.value;
 
     return AppScaffold(
       appBar: const Row(
@@ -33,7 +34,7 @@ class _DetalhamentoPageState extends ListenableState<DetalhamentoPage, Detalhame
       ),
       body: Column(
         children: [
-          DetalhamentoTarget(valorSaldoObjetivo: listenable.valorSaldoObjetivo),
+          DetalhamentoTarget(valorSaldoObjetivo: state.valorSaldoObjetivo),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
             child: Container(
@@ -51,10 +52,10 @@ class _DetalhamentoPageState extends ListenableState<DetalhamentoPage, Detalhame
               child: const GraficoDadosLinha(),
             ),
           ),
-          DetalhamenntoFinanceiroBlock(
-            totalEntrada: listenable.value.totalEntrada,
-            totalSaida: listenable.value.totalSaida,
-            totalSaldo: listenable.value.totalSaldo,
+          DetalhamentoFinanceiroBlock(
+            totalEntrada: state.totalEntrada,
+            totalSaida: state.totalSaida,
+            totalSaldo: state.totalSaldo,
           ),
         ],
       ),

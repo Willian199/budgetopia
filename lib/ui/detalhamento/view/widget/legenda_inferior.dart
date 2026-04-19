@@ -24,6 +24,7 @@ class LegendaInferior extends StatelessWidget {
     if (item == null || item!.legenda.isEmpty) {
       return const SizedBox();
     }
+
     final ThemeData tema = context.theme;
     final bool isDarkMode = ddi.get<bool>(qualifier: Qualifier.dark_mode);
 

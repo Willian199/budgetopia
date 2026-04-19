@@ -1,15 +1,28 @@
 import 'package:budgetopia/ui/home/model/grafico_model.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class GraficoState {
   GraficoState({
-    this.saidas = const [],
-    this.entradas = const [],
-    this.saldo = const [],
-    this.valorSaldoObjetivo = 0,
+    required this.itens,
+    required this.spots,
+    required this.minY,
+    required this.maxY,
+    required this.minX,
+    required this.maxX,
+    required this.selectedSpotX,
+    required this.valorSaldoObjetivo,
+    required this.isEmpty,
+    required this.intervaloLegendaInferior,
   });
 
-  final List<GraficoModel> saidas;
-  final List<GraficoModel> entradas;
-  final List<GraficoModel> saldo;
+  final List<GraficoModel> itens;
+  final List<FlSpot> spots;
+  final double minY;
+  final double maxY;
+  final double minX;
+  final double maxX;
+  final int selectedSpotX;
   final double valorSaldoObjetivo;
+  final bool isEmpty;
+  final int intervaloLegendaInferior;
 }
