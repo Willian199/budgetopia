@@ -7,8 +7,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.1
 
 environment:
-  sdk: '>=3.8.0 <4.0.0'
-  flutter: ">=3.32.0"
+  sdk: '>=3.11.0 <4.0.0'
+  flutter: ">=3.41.0"
 
 dependencies:
   flutter:
@@ -53,6 +53,7 @@ dev_dependencies:
 
   #flutter_launcher_icons: "^0.13.1"
   objectbox_generator: ^5.3.1
+  dart_unused_files: ^1.0.0
 
 objectbox:
   # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).

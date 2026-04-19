@@ -3,6 +3,7 @@ class Strings {
   static const String APP_NAME = "Budgetopia";
   static const String LOCALE_PT = 'pt';
   static const String LOCALE_PT_BR = 'pt_BR';
+    static const String LOCALE_BR = 'BR';
   static const String DETALHES = 'Detalhes';
   static const String PERFIL = 'Perfil';
   static const String MOVIMENTACAO = 'Movimentação';
