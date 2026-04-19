@@ -11,4 +11,6 @@ abstract class HomeRepository {
   void filtrarMovimentacaoAba(TipoRegistroEnum tabSelecionada);
 
   List<MovimentacaoModel> get movimentacoesPorAba;
+
+  bool confirmarSugestao(MovimentacaoModel sugestao);
 }

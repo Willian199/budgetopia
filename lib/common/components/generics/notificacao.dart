@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
@@ -25,7 +26,7 @@ class Notificacao {
 
   static AlertStyle _alertStyle() {
     _navigatorKey ??= ddi.get<GlobalKey<NavigatorState>>();
-    final ThemeData tema = Theme.of(_navigatorKey!.currentContext!);
+    final ThemeData tema = AdaptiveTheme.of(_navigatorKey!.currentContext!).theme;
     final bool darkMode = tema.brightness == Brightness.dark;
 
     return AlertStyle(
@@ -58,7 +59,7 @@ class Notificacao {
 
     _isOpen = true;
 
-    final ThemeData tema = Theme.of(_navigatorKey!.currentContext!);
+    final ThemeData tema = AdaptiveTheme.of(_navigatorKey!.currentContext!).theme;
     final bool darkMode = tema.brightness == Brightness.dark;
 
     Alert(
@@ -190,7 +191,7 @@ class Notificacao {
       return;
     }
 
-    final ThemeData tema = Theme.of(_navigatorKey!.currentContext!);
+    final ThemeData tema = AdaptiveTheme.of(_navigatorKey!.currentContext!).theme;
     final bool darkMode = tema.brightness == Brightness.dark;
 
     _isOpen = true;

@@ -77,4 +77,9 @@ final class MovimentacaoRepositoryImpl implements MovimentacaoRepository {
   int salvar(MovimentacaoEntity movimentacaoEntity) {
     return _movimentacaoService.salvar(movimentacaoEntity);
   }
+
+  @override
+  List<int> salvarTodos(List<MovimentacaoEntity> movimentacoes) {
+    return _movimentacaoService.salvarTodos(movimentacoes);
+  }
 }

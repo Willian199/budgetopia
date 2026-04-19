@@ -7,8 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class HomeTransactionList extends StatefulWidget {
-  const HomeTransactionList({required this.transacoes, super.key});
+  const HomeTransactionList({
+    required this.transacoes,
+    this.onConfirmSuggestion,
+    super.key,
+  });
   final List<MovimentacaoModel> transacoes;
+  final Future<bool> Function(MovimentacaoModel sugestao)? onConfirmSuggestion;
 
   @override
   State<HomeTransactionList> createState() => _HomeTransactionListState();
@@ -70,6 +75,7 @@ class _HomeTransactionListState extends State<HomeTransactionList> {
             month: mes,
             transactions: transacoesDoDia,
             isLast: index == diasOrdenados.length - 1,
+            onConfirmSuggestion: widget.onConfirmSuggestion,
             onRefresh: () {
               controller.refresh(controller.value.tabSelecionada);
             },

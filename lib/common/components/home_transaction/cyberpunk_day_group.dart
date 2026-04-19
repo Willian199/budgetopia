@@ -11,6 +11,7 @@ class CyberpunkDayGroup extends StatefulWidget {
     required this.transactions,
     required this.isLast,
     this.onRefresh,
+    this.onConfirmSuggestion,
     super.key,
   });
   final int day;
@@ -18,6 +19,7 @@ class CyberpunkDayGroup extends StatefulWidget {
   final List<MovimentacaoModel> transactions;
   final bool isLast;
   final VoidCallback? onRefresh;
+  final Future<bool> Function(MovimentacaoModel sugestao)? onConfirmSuggestion;
 
   @override
   State<CyberpunkDayGroup> createState() => _CyberpunkDayGroupState();
@@ -81,6 +83,9 @@ class _CyberpunkDayGroupState extends State<CyberpunkDayGroup> with TickerProvid
   double _calcularTotalDoDia() {
     double total = 0;
     for (var transaction in widget.transactions) {
+      if (transaction.sugestao) {
+        continue;
+      }
       if (transaction.tipoMovimentacao == 1) {
         // Entrada
         total += transaction.valor.toDouble();
@@ -269,6 +274,7 @@ class _CyberpunkDayGroupState extends State<CyberpunkDayGroup> with TickerProvid
                                     child: CyberpunkTransactionCard(
                                       transaction: transaction,
                                       onRefresh: widget.onRefresh,
+                                      onConfirmSuggestion: widget.onConfirmSuggestion,
                                     ),
                                   ),
                                 )

@@ -5,10 +5,12 @@ import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.
 import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository_impl.dart';
 import 'package:budgetopia/data/repository/perfil/perfil_repository.dart';
 import 'package:budgetopia/data/repository/perfil/perfil_repository_impl.dart';
+
 import 'package:budgetopia/data/service/movimentacao/movimentacao_service.dart';
 import 'package:budgetopia/data/service/movimentacao/movimentacao_service_impl.dart';
 import 'package:budgetopia/data/service/perfil/perfil_service.dart';
 import 'package:budgetopia/data/service/perfil/perfil_service_impl.dart';
+
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 class ControlerPageModule with DDIModule {

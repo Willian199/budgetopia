@@ -19,7 +19,8 @@ class GraficoDadosLinha extends StatefulWidget {
 class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, GraficoController>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  double minY = 0;
+  double _minY = 0;
+  double _maxY = 0;
   int _selectedSpotIndex = 0;
 
   @override
@@ -43,13 +44,12 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
       return [];
     }
 
-    minY = values.reduce((current, next) => current.valor < next.valor ? current : next).valor;
+    _minY = values.reduce((current, next) => current.valor < next.valor ? current : next).valor;
+    _maxY = values.reduce((current, next) => current.valor > next.valor ? current : next).valor;
 
     return [
-      GraficoModel(index: 0, valor: minY, legenda: ''),
-      GraficoModel(index: 1, valor: minY, legenda: ''),
+      GraficoModel(index: 0, valor: values.length > 1 ? _minY : 0, legenda: ''),
       ...values,
-      GraficoModel(index: values.length + 2, valor: minY, legenda: ''),
     ];
   }
 
@@ -94,7 +94,8 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
             builder: (context, child) {
               return LineChart(
                 LineChartData(
-                  minY: minY < 0 ? minY : 0,
+                  minY: _minY < 0 ? _minY : 0,
+                  maxY: _maxY * 1.1,
                   minX: itensGraficoSaldo.first.index.toDouble(),
                   maxX: itensGraficoSaldo.last.index.toDouble(),
                   baselineY: 0,

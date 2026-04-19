@@ -15,7 +15,7 @@ class AlternativeAtomCategoryTag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
+        FaIcon(
           FontAwesomeIcons.tag,
           size: 8,
           color: accentColor.withValues(alpha: 0.8),

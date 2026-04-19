@@ -3,8 +3,10 @@ import 'dart:ui';
 
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
+import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/ui/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/ui/movimentacao/view/movimentacao_page.dart';
@@ -17,10 +19,12 @@ class CyberpunkTransactionCard extends StatefulWidget {
   const CyberpunkTransactionCard({
     required this.transaction,
     this.onRefresh,
+    this.onConfirmSuggestion,
     super.key,
   });
   final MovimentacaoModel transaction;
   final VoidCallback? onRefresh;
+  final Future<bool> Function(MovimentacaoModel sugestao)? onConfirmSuggestion;
 
   @override
   State<CyberpunkTransactionCard> createState() => _CyberpunkTransactionCardState();
@@ -85,6 +89,86 @@ class _CyberpunkTransactionCardState extends State<CyberpunkTransactionCard> wit
     super.dispose();
   }
 
+  Future<void> _onTapCard() async {
+    if (_isLongPressing) {
+      return;
+    }
+
+    HapticFeedback.selectionClick();
+
+    if (widget.transaction.sugestao) {
+      final bool? confirmar = await showDialog<bool>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Confirmar sugestão'),
+            content: Text(
+              'Deseja confirmar "${widget.transaction.titulo}" em ${widget.transaction.data.format()} por '
+              '${Moeda.format(valor: widget.transaction.valor, simbolo: 'R\$')}?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Editar recorrência'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancelar'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Confirmar'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmar == null) {
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => FlutterDDIBuilder(
+              module: MovimentacaoModule.new,
+              child: (_) => MovimentacaoPage(
+                codigoRecorrencia: widget.transaction.codigoRecorrencia,
+              ),
+            ),
+          ),
+        );
+
+        widget.onRefresh?.call();
+        return;
+      }
+
+      if (confirmar != true || widget.onConfirmSuggestion == null) {
+        return;
+      }
+
+      final bool status = await widget.onConfirmSuggestion!(widget.transaction);
+
+      if (status) {
+        CustomSnackBar.sucesso(mensagem: 'Sugestão confirmada e salva!');
+        widget.onRefresh?.call();
+      } else {
+        CustomSnackBar.informacacao(mensagem: 'Não foi possível confirmar a sugestão');
+      }
+      return;
+    }
+
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FlutterDDIBuilder(
+          module: MovimentacaoModule.new,
+          child: (_) => MovimentacaoPage(
+            movimentacaoModel: widget.transaction,
+          ),
+        ),
+      ),
+    );
+
+    widget.onRefresh?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
@@ -137,23 +221,7 @@ class _CyberpunkTransactionCardState extends State<CyberpunkTransactionCard> wit
           _scanLineController.reset();
         },
         onTap: () async {
-          if (!_isLongPressing) {
-            HapticFeedback.selectionClick();
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => FlutterDDIBuilder(
-                  module: MovimentacaoModule.new,
-                  child: (_) => MovimentacaoPage(
-                    movimentacaoModel: widget.transaction,
-                  ),
-                ),
-              ),
-            );
-
-            if (widget.onRefresh != null) {
-              widget.onRefresh!();
-            }
-          }
+          await _onTapCard();
         },
         child: AnimatedBuilder(
           animation: Listenable.merge([_pressController, _pulseController, _scanLineController]),
@@ -210,7 +278,7 @@ class _CyberpunkTransactionCardState extends State<CyberpunkTransactionCard> wit
                           Positioned(
                             left: 0,
                             right: 0,
-                            top: MediaQuery.of(context).size.height * _scanLineAnimation.value,
+                            top: MediaQuery.sizeOf(context).height * _scanLineAnimation.value,
                             height: 15,
                             child: Container(
                               decoration: BoxDecoration(
@@ -247,26 +315,51 @@ class _CyberpunkTransactionCardState extends State<CyberpunkTransactionCard> wit
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         // Título
-                                        Text(
-                                          widget.transaction.titulo,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            letterSpacing: 0.3,
-                                            color: isDarkMode
-                                                ? Colors.white.withValues(alpha: 0.95)
-                                                : theme.textTheme.bodyLarge?.color,
-                                            shadows: [
-                                              Shadow(
-                                                color: transactionColor.withValues(alpha: _pulseController.value * 0.3),
-                                                blurRadius: 3.0,
-                                              ),
-                                            ],
+                                        Flexible(
+                                          child: Text(
+                                            widget.transaction.titulo,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              letterSpacing: 0.3,
+                                              color: isDarkMode
+                                                  ? Colors.white.withValues(alpha: 0.95)
+                                                  : theme.textTheme.bodyLarge?.color,
+                                              shadows: [
+                                                Shadow(
+                                                  color: transactionColor.withValues(
+                                                    alpha: _pulseController.value * 0.3,
+                                                  ),
+                                                  blurRadius: 3.0,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
 
                                         // Indicador de status animado
-                                        _buildStatusIndicator(widget.transaction.status, statusColor),
+                                        widget.transaction.sugestao
+                                            ? Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.orange.withValues(alpha: 0.2),
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                    color: Colors.orange.withValues(alpha: 0.6),
+                                                  ),
+                                                ),
+                                                child: const Text(
+                                                  'SUGESTAO',
+                                                  style: TextStyle(
+                                                    color: Colors.orange,
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.bold,
+                                                    letterSpacing: 0.8,
+                                                  ),
+                                                ),
+                                              )
+                                            : _buildStatusIndicator(widget.transaction.status, statusColor),
                                       ],
                                     ),
 

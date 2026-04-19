@@ -9,5 +9,7 @@ abstract interface class MovimentacaoRepository {
 
   int salvar(MovimentacaoEntity movimentacaoEntity);
 
+  List<int> salvarTodos(List<MovimentacaoEntity> movimentacoes);
+
   bool remover(int id);
 }

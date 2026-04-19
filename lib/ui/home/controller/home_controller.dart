@@ -38,7 +38,8 @@ class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDes
         if (_homeRepository.movimentacoesMesSelecionado.isEmpty) {
           mesesDisponiveis = event.keys.toList();
 
-          final int newPos = mesesDisponiveis.indexOf(DateTime.now().getFormattedMonth());
+          final DateTime now = DateTime.now();
+          final int newPos = mesesDisponiveis.indexOf('${now.getFormattedMonth()}/${now.year}');
 
           posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
         } else {
@@ -57,6 +58,9 @@ class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDes
         );
 
         for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
+          if (item.sugestao) {
+            continue;
+          }
           if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {
             entrada += item.valor;
           } else {
@@ -93,6 +97,9 @@ class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDes
     double saida = 0;
 
     for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
+      if (item.sugestao) {
+        continue;
+      }
       if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {
         entrada += item.valor;
       } else {
@@ -107,6 +114,10 @@ class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDes
       valorSaida: saida,
       valorSaldo: entrada - saida,
     );
+  }
+
+  bool confirmarSugestao(MovimentacaoModel sugestao) {
+    return _homeRepository.confirmarSugestao(sugestao);
   }
 
   @override

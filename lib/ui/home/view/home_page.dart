@@ -106,6 +106,13 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
                     builder: (context, child) => Opacity(opacity: _fadeInAnimation.value, child: child!),
                     child: HomeTransactionList(
                       transacoes: listenable.registrosAbaMovimentacao,
+                      onConfirmSuggestion: (sugestao) async {
+                        final bool status = listenable.confirmarSugestao(sugestao);
+                        if (status) {
+                          listenable.refresh(listenable.value.tabSelecionada);
+                        }
+                        return status;
+                      },
                     ),
                   ),
                 ),

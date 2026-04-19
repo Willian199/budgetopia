@@ -7,6 +7,10 @@ import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
 import 'package:budgetopia/ui/home/controller/time_line_opacity_controller.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
+import 'package:budgetopia/data/service/recorrencia/recorrencia_service.dart';
+import 'package:budgetopia/data/service/recorrencia/recorrencia_service_impl.dart';
+import 'package:budgetopia/data/repository/recorrencia/recorrencia_repository.dart';
+import 'package:budgetopia/data/repository/recorrencia/recorrencia_repository_impl.dart';
 
 class HomeModule with DDIModule {
   @override
@@ -22,6 +26,8 @@ class HomeModule with DDIModule {
         factory: ApplicationFactory(builder: HomeController.new.builder),
       ),
       application<HomeRepository>(HomeRepositoryImpl.new),
+      application<RecorrenciaService>(RecorrenciaServiceImpl.new),
+      application<RecorrenciaRepository>(RecorrenciaRepositoryImpl.new),
     ]);
   }
 }

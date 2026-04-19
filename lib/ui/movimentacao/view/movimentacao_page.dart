@@ -9,29 +9,74 @@ import 'package:budgetopia/common/components/input_formatters/decimal_input_form
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
+import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
+import 'package:budgetopia/config/banco/entity/recorrencia_movimentacao_entity.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
+import 'package:budgetopia/ui/movimentacao/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:budgetopia/ui/movimentacao/mixin/movimentacao_page_mixin.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/data_fim_recorrencia.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/data_movimentacao.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/modo_cadastro_movimentacao.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/selecionar_categoria.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/status_pagamento.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/tipo_movimentacao.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/tipo_recorrencia.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MovimentacaoPage extends StatefulWidget {
-  const MovimentacaoPage({this.movimentacaoModel, super.key});
+  const MovimentacaoPage({
+    this.movimentacaoModel,
+    this.codigoRecorrencia,
+    super.key,
+  });
 
   final MovimentacaoModel? movimentacaoModel;
+  final int? codigoRecorrencia;
+
   @override
   _MovimentacaoPageState createState() => _MovimentacaoPageState();
 }
 
 class _MovimentacaoPageState extends State<MovimentacaoPage>
     with MovimentacaoPageMixin, DDIInject<MovimentacaoController> {
+  bool get _isEdicaoRecorrencia => widget.movimentacaoModel == null && (widget.codigoRecorrencia ?? 0) > 0;
+
+  double _parseValor(String value) {
+    try {
+      return Moeda.parse(valor: value, simbolo: 'R\$').toDouble();
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  int _parseParcelas() {
+    final int? parcelas = int.tryParse(parcelasController.text);
+    if (parcelas == null || parcelas <= 0) {
+      return 0;
+    }
+    return parcelas;
+  }
+
+  double _calcularValorTotalParcelado() {
+    final int parcelas = _parseParcelas();
+    final double valorParcela = _parseValor(valueController.text);
+    return parcelas <= 0 ? 0 : valorParcela * parcelas;
+  }
+
+  int _parseIntervaloRecorrencia() {
+    final int? intervalo = int.tryParse(intervaloRecorrenciaController.text);
+    if (intervalo == null || intervalo <= 0) {
+      return 0;
+    }
+    return intervalo;
+  }
+
   void _onValueFocusChanged() {
     if (!valueFocusNode.hasFocus) {
       return;
@@ -43,33 +88,99 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
     );
   }
 
+  void _onParcelasChanged() {
+    instance.alterarQuantidadeParcelas(_parseParcelas());
+  }
+
+  void _onIntervaloRecorrenciaChanged() {
+    instance.alterarIntervaloRecorrenciaDias(_parseIntervaloRecorrencia());
+  }
+
   @override
   void initState() {
     super.initState();
 
     if (widget.movimentacaoModel != null) {
-      titleController.text = widget.movimentacaoModel!.titulo;
-      valueController.text = Moeda.format(valor: widget.movimentacaoModel!.valor, simbolo: 'R\$', decimalDigits: 2);
-      noteController.text = widget.movimentacaoModel!.observacao ?? '';
-      instance.alterarData(widget.movimentacaoModel!.data);
-      instance.selecionarCategoria(
-        CategoriaEnum.getById(widget.movimentacaoModel!.codigoCategoria),
-      );
-      instance.selecionarTipoMovimentacao(
-        TipoMovimentacaoEnum.getById(widget.movimentacaoModel!.tipoMovimentacao),
-      );
-      instance.alterarStatus(widget.movimentacaoModel?.status ?? false);
+      _carregarMovimentacao();
+    } else if (_isEdicaoRecorrencia) {
+      _carregarRecorrencia();
     } else {
-      valueController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);
+      _carregarNovoCadastro();
     }
 
     valueFocusNode.addListener(_onValueFocusChanged);
+    parcelasController.addListener(_onParcelasChanged);
+    intervaloRecorrenciaController.addListener(_onIntervaloRecorrenciaChanged);
     titleFocusNode.requestFocus();
+  }
+
+  void _carregarNovoCadastro() {
+    valueController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);
+    parcelasController.text = '2';
+    intervaloRecorrenciaController.text = '30';
+    instance.definirRecorrenciaSemDataFim(false);
+    instance.alterarQuantidadeParcelas(2);
+    instance.alterarTipoRecorrencia(TipoRecorrenciaEnum.mensal);
+    instance.alterarIntervaloRecorrenciaDias(30);
+    instance.alterarTipoCadastro(TipoCadastroMovimentacaoEnum.unico);
+  }
+
+  void _carregarMovimentacao() {
+    final model = widget.movimentacaoModel!;
+    titleController.text = model.titulo;
+    valueController.text = Moeda.format(
+      valor: model.valor,
+      simbolo: 'R\$',
+      decimalDigits: 2,
+    );
+    noteController.text = model.observacao ?? '';
+    instance.alterarData(model.data);
+    instance.definirRecorrenciaSemDataFim(false);
+    instance.selecionarCategoria(CategoriaEnum.getById(model.codigoCategoria));
+    instance.selecionarTipoMovimentacao(TipoMovimentacaoEnum.getById(model.tipoMovimentacao));
+    instance.alterarStatus(model.status);
+    instance.alterarTipoCadastro(TipoCadastroMovimentacaoEnum.unico);
+  }
+
+  void _carregarRecorrencia() {
+    final RecorrenciaMovimentacaoEntity? recorrencia = instance.buscarRecorrenciaPorId(widget.codigoRecorrencia!);
+    if (recorrencia == null) {
+      _carregarNovoCadastro();
+      return;
+    }
+
+    titleController.text = recorrencia.titulo;
+    valueController.text = Moeda.format(valor: recorrencia.valorBase, simbolo: 'R\$', decimalDigits: 2);
+    noteController.text = recorrencia.observacao;
+    intervaloRecorrenciaController.text = recorrencia.intervaloDias > 0 ? recorrencia.intervaloDias.toString() : '30';
+
+    instance.alterarData(recorrencia.dataInicio);
+    if (recorrencia.dataFim.year < 2000) {
+      instance.definirRecorrenciaSemDataFim(true);
+      instance.alterarDataFimRecorrencia(
+        DateTime(
+          recorrencia.dataInicio.year + 1,
+          recorrencia.dataInicio.month,
+          recorrencia.dataInicio.day,
+        ),
+      );
+    } else {
+      instance.definirRecorrenciaSemDataFim(false);
+      instance.alterarDataFimRecorrencia(recorrencia.dataFim);
+    }
+    instance.selecionarCategoria(CategoriaEnum.getById(recorrencia.codigoCategoria));
+    instance.selecionarTipoMovimentacao(TipoMovimentacaoEnum.getById(recorrencia.tipoMovimentacao));
+    instance.alterarStatus(recorrencia.statusPadrao);
+    instance.alterarTipoCadastro(TipoCadastroMovimentacaoEnum.recorrencia);
+    instance.alterarTipoRecorrencia(TipoRecorrenciaEnum.getById(recorrencia.tipoRecorrencia));
+    instance.alterarIntervaloRecorrenciaDias(recorrencia.intervaloDias > 0 ? recorrencia.intervaloDias : 30);
   }
 
   @override
   void dispose() {
     valueFocusNode.removeListener(_onValueFocusChanged);
+    parcelasController.removeListener(_onParcelasChanged);
+    intervaloRecorrenciaController.removeListener(_onIntervaloRecorrenciaChanged);
     super.dispose();
   }
 
@@ -77,7 +188,6 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
   Widget build(BuildContext context) {
     final theme = AdaptiveTheme.of(context).theme;
 
-    // Cores do tema
     final primaryColor = theme.colorScheme.primary;
     final errorColor = theme.colorScheme.error;
     final backgroundColor = theme.colorScheme.surface;
@@ -86,13 +196,8 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
       appBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Botão de voltar
           const SubMenuBackButton(),
-
-          // Título
           const PageTitle(title: Strings.MOVIMENTACAO),
-
-          // Botão de Excluir
           if (widget.movimentacaoModel != null)
             Container(
               height: 40,
@@ -124,7 +229,6 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
                 onPressed: () {
                   if (instance.remover(widget.movimentacaoModel!.id)) {
                     Navigator.pop(context);
-
                     CustomSnackBar.sucesso(mensagem: 'Transação removida');
                   } else {
                     CustomSnackBar.informacacao(mensagem: 'Erro ao remover transação');
@@ -132,20 +236,32 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
                 },
               ),
             ),
-
           SalvarButton(
             height: 40,
             width: 40,
             onPressed: () {
-              final double valor = Moeda.parse(valor: valueController.text, simbolo: 'R\$').toDouble();
-              if ((formKey.currentState?.validate() ?? false) && valor > 0) {
+              final double valor = _parseValor(valueController.text);
+              final bool isParcelado =
+                  !_isEdicaoRecorrencia &&
+                  widget.movimentacaoModel == null &&
+                  instance.tipoCadastro.value == TipoCadastroMovimentacaoEnum.parcelado;
+              final bool isRecorrencia =
+                  _isEdicaoRecorrencia ||
+                  (widget.movimentacaoModel == null &&
+                      instance.tipoCadastro.value == TipoCadastroMovimentacaoEnum.recorrencia);
+              final int parcelas = isParcelado ? _parseParcelas() : 1;
+
+              if ((formKey.currentState?.validate() ?? false) && valor > 0 && parcelas > 0) {
                 context.closeKeyboard();
 
                 final bool status = instance.salvar(
                   id: widget.movimentacaoModel?.id ?? 0,
                   titulo: titleController.text.trim(),
-                  valor: Moeda.parse(valor: valueController.text, simbolo: 'R\$').toDouble(),
+                  valor: valor,
                   observacao: noteController.text.trim(),
+                  parcelas: parcelas,
+                  codigoRecorrencia: widget.movimentacaoModel?.codigoRecorrencia ?? 0,
+                  recorrenciaId: _isEdicaoRecorrencia ? widget.codigoRecorrencia! : 0,
                 );
 
                 if (!status) {
@@ -154,7 +270,17 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
 
                 Navigator.pop(context);
 
-                CustomSnackBar.sucesso(mensagem: 'Transação salva!');
+                if (isParcelado) {
+                  CustomSnackBar.sucesso(mensagem: '$parcelas transações parceladas salvas!');
+                } else if (isRecorrencia) {
+                  CustomSnackBar.sucesso(
+                    mensagem: _isEdicaoRecorrencia
+                        ? 'Recorrência atualizada com sucesso!'
+                        : 'Recorrência cadastrada com sucesso!',
+                  );
+                } else {
+                  CustomSnackBar.sucesso(mensagem: 'Transação salva!');
+                }
               } else {
                 CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
               }
@@ -167,7 +293,6 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
         autovalidateMode: AutovalidateMode.always,
         child: Column(
           children: <Widget>[
-            // Campo Nome
             Padding(
               padding: const EdgeInsets.only(top: 15),
               child: InfoFields(
@@ -197,45 +322,203 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
               nextFocusNode: dateFocusNode,
             ),
             const SizedBox(height: 15.0),
-            DataMovimentacao(
-              focusNode: dateFocusNode,
-              nextFocus: valueFocusNode,
-            ),
-            const SizedBox(height: 15.0),
-            InfoFields(
-              label: Strings.VALOR,
-              icon: FontAwesomeIcons.moneyBill1Wave,
-              controller: valueController,
-              focusNode: valueFocusNode,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                DecimalInputFormatter(allowNegative: false),
-              ],
-              nextFocus: noteFocusNode,
-              onTap: () {
-                if (valueFocusNode.hasPrimaryFocus) {
-                  return;
+            if (widget.movimentacaoModel == null && !_isEdicaoRecorrencia) ...[
+              const ModoCadastroMovimentacao(),
+              const SizedBox(height: 15.0),
+            ],
+            ValueListenableBuilder<TipoCadastroMovimentacaoEnum>(
+              valueListenable: instance.tipoCadastro,
+              builder: (context, tipoCadastro, child) {
+                final bool exibirCamposRecorrencia =
+                    _isEdicaoRecorrencia || tipoCadastro == TipoCadastroMovimentacaoEnum.recorrencia;
+
+                if (!exibirCamposRecorrencia || widget.movimentacaoModel != null) {
+                  return const SizedBox.shrink();
                 }
 
-                valueController.selection = TextSelection(
-                  baseOffset: 0,
-                  extentOffset: valueController.value.text.length,
+                return Column(
+                  children: [
+                    ValueListenableBuilder<TipoRecorrenciaEnum>(
+                      valueListenable: instance.tipoRecorrencia,
+                      builder: (context, tipoRecorrencia, child) {
+                        return TipoRecorrencia(
+                          focusNode: tipoRecorrenciaFocusNode,
+                          nextFocusNode: tipoRecorrencia.usaIntervaloDias
+                              ? intervaloRecorrenciaFocusNode
+                              : dateFocusNode,
+                        );
+                      },
+                    ),
+                    ValueListenableBuilder<TipoRecorrenciaEnum>(
+                      valueListenable: instance.tipoRecorrencia,
+                      builder: (context, tipoRecorrencia, child) {
+                        if (!tipoRecorrencia.usaIntervaloDias) {
+                          return const SizedBox.shrink();
+                        }
+
+                        return Column(
+                          children: [
+                            const SizedBox(height: 15.0),
+                            InfoFields(
+                              label: 'Intervalo em dias',
+                              icon: FontAwesomeIcons.clockRotateLeft,
+                              controller: intervaloRecorrenciaController,
+                              focusNode: intervaloRecorrenciaFocusNode,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                              nextFocus: dateFocusNode,
+                              validator: (value) {
+                                if (instance.tipoCadastro.value != TipoCadastroMovimentacaoEnum.recorrencia ||
+                                    !instance.tipoRecorrencia.value.usaIntervaloDias) {
+                                  return null;
+                                }
+                                final int? intervalo = int.tryParse(value ?? '');
+                                if (intervalo == null || intervalo <= 0) {
+                                  return 'Informe um intervalo válido';
+                                }
+                                return null;
+                              },
+                              primaryColor: primaryColor,
+                              backgroundColor: backgroundColor,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 15.0),
+                  ],
                 );
               },
-              validator: (value) {
-                if (value?.isEmpty ?? false) {
-                  return Strings.INFORME_VALOR;
-                }
-                return null;
-              },
-              primaryColor: primaryColor,
-              backgroundColor: backgroundColor,
             ),
+            ValueListenableBuilder<TipoCadastroMovimentacaoEnum>(
+              valueListenable: instance.tipoCadastro,
+              builder: (context, tipoCadastro, child) {
+                final bool exibirDataFimRecorrencia =
+                    widget.movimentacaoModel == null &&
+                    (_isEdicaoRecorrencia || tipoCadastro == TipoCadastroMovimentacaoEnum.recorrencia);
 
+                return Column(
+                  children: [
+                    DataMovimentacao(
+                      focusNode: dateFocusNode,
+                      nextFocus: exibirDataFimRecorrencia ? dataFimRecorrenciaFocusNode : valueFocusNode,
+                    ),
+                    if (exibirDataFimRecorrencia) ...[
+                      const SizedBox(height: 15.0),
+                      DataFimRecorrencia(
+                        focusNode: dataFimRecorrenciaFocusNode,
+                        nextFocus: valueFocusNode,
+                      ),
+                    ],
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 15.0),
+            ValueListenableBuilder<TipoCadastroMovimentacaoEnum>(
+              valueListenable: instance.tipoCadastro,
+              builder: (context, tipoCadastro, child) {
+                final bool isParcelado =
+                    !_isEdicaoRecorrencia &&
+                    widget.movimentacaoModel == null &&
+                    tipoCadastro == TipoCadastroMovimentacaoEnum.parcelado;
+                return InfoFields(
+                  label: Strings.VALOR,
+                  icon: FontAwesomeIcons.moneyBill1Wave,
+                  controller: valueController,
+                  focusNode: valueFocusNode,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    DecimalInputFormatter(allowNegative: false),
+                  ],
+                  nextFocus: isParcelado ? parcelasFocusNode : noteFocusNode,
+                  onTap: () {
+                    if (valueFocusNode.hasPrimaryFocus) {
+                      return;
+                    }
+
+                    valueController.selection = TextSelection(
+                      baseOffset: 0,
+                      extentOffset: valueController.value.text.length,
+                    );
+                  },
+                  validator: (value) {
+                    if (value?.isEmpty ?? false) {
+                      return Strings.INFORME_VALOR;
+                    }
+                    return null;
+                  },
+                  primaryColor: primaryColor,
+                  backgroundColor: backgroundColor,
+                );
+              },
+            ),
+            ValueListenableBuilder<TipoCadastroMovimentacaoEnum>(
+              valueListenable: instance.tipoCadastro,
+              builder: (context, value, child) {
+                if (widget.movimentacaoModel != null ||
+                    _isEdicaoRecorrencia ||
+                    value != TipoCadastroMovimentacaoEnum.parcelado) {
+                  return const SizedBox.shrink();
+                }
+
+                return Column(
+                  children: [
+                    const SizedBox(height: 15.0),
+                    InfoFields(
+                      label: 'Quantidade de Parcelas',
+                      icon: FontAwesomeIcons.listOl,
+                      controller: parcelasController,
+                      focusNode: parcelasFocusNode,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      nextFocus: noteFocusNode,
+                      onEditingComplete: noteFocusNode.requestFocus,
+                      validator: (value) {
+                        if (instance.tipoCadastro.value != TipoCadastroMovimentacaoEnum.parcelado) {
+                          return null;
+                        }
+                        final int? parcelas = int.tryParse(value ?? '');
+                        if (parcelas == null || parcelas < 2) {
+                          return 'Informe ao menos 2 parcelas';
+                        }
+                        return null;
+                      },
+                      primaryColor: primaryColor,
+                      backgroundColor: backgroundColor,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: AnimatedBuilder(
+                        animation: Listenable.merge([valueController, parcelasController]),
+                        builder: (context, child) {
+                          final String valorTotal = Moeda.format(
+                            valor: _calcularValorTotalParcelado(),
+                            simbolo: 'R\$',
+                            decimalDigits: 2,
+                          );
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Valor total: $valorTotal',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
             const StatusPagamento(),
             InfoFields(
               label: Strings.OBSERVACOES,
-              icon: Icons.info_outline,
+              icon: FontAwesomeIcons.info,
               controller: noteController,
               focusNode: noteFocusNode,
               keyboardType: TextInputType.multiline,

@@ -4,7 +4,7 @@ import 'package:budgetopia/common/components/home_transaction/alternative_atom/c
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternative_atom_side_bar.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternative_atom_status_indicator.dart';
 import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternative_atom_value_display.dart';
-import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternatve_atom_category_tag.dart';
+import 'package:budgetopia/common/components/home_transaction/alternative_atom/card_widgets.dart/alternative_atom_category_tag.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/config/theme/home_color_template.dart';

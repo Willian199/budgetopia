@@ -15,7 +15,7 @@ class HomeTransactionsEmpty extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          FaIcon(
             FontAwesomeIcons.fileCircleExclamation,
             size: 48,
             color: theme.colorScheme.primary.withAlpha(150),

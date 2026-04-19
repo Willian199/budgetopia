@@ -34,7 +34,7 @@
     },
     {
       "id": "2:5638960901270906135",
-      "lastPropertyId": "11:7734183961005732622",
+      "lastPropertyId": "12:677540164228924369",
       "name": "MovimentacaoEntity",
       "properties": [
         {
@@ -77,6 +77,11 @@
           "id": "11:7734183961005732622",
           "name": "status",
           "type": 1
+        },
+        {
+          "id": "12:677540164228924369",
+          "name": "codigoRecorrencia",
+          "type": 6
         }
       ],
       "relations": []
@@ -114,9 +119,78 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "4:5796389175441392265",
+      "lastPropertyId": "12:6664955707048828196",
+      "name": "RecorrenciaMovimentacaoEntity",
+      "properties": [
+        {
+          "id": "1:770528593603209720",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3036402398314806798",
+          "name": "titulo",
+          "type": 9
+        },
+        {
+          "id": "3:8638466778966166374",
+          "name": "valorBase",
+          "type": 8
+        },
+        {
+          "id": "4:413665856604692954",
+          "name": "dataInicio",
+          "type": 10
+        },
+        {
+          "id": "5:7900977837403426527",
+          "name": "codigoCategoria",
+          "type": 6
+        },
+        {
+          "id": "6:2511052915006422340",
+          "name": "tipoMovimentacao",
+          "type": 6
+        },
+        {
+          "id": "7:7384686459449926755",
+          "name": "tipoRecorrencia",
+          "type": 6
+        },
+        {
+          "id": "8:8882034737267445828",
+          "name": "intervaloDias",
+          "type": 6
+        },
+        {
+          "id": "9:3586985898195696660",
+          "name": "observacao",
+          "type": 9
+        },
+        {
+          "id": "10:757634602906480308",
+          "name": "statusPadrao",
+          "type": 1
+        },
+        {
+          "id": "11:2926149955942114000",
+          "name": "ativo",
+          "type": 1
+        },
+        {
+          "id": "12:6664955707048828196",
+          "name": "dataFim",
+          "type": 10
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "3:8734934441128175638",
+  "lastEntityId": "4:5796389175441392265",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

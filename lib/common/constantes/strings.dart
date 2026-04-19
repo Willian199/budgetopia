@@ -6,6 +6,7 @@ class Strings {
   static const String MOVIMENTACAO = 'Movimentação';
   static const String HOME = 'Home';
   static const String SOBRE = 'Sobre';
+  static const String BACKUP = 'Backup';
   static const String GALERIA = 'Galeria';
   static const String CAMERA = 'Camera';
 

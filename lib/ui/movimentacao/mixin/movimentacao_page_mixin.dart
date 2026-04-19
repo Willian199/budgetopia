@@ -7,12 +7,18 @@ mixin MovimentacaoPageMixin on State<MovimentacaoPage> {
   final titleController = TextEditingController();
   final valueController = TextEditingController();
   final noteController = TextEditingController();
+  final parcelasController = TextEditingController(text: '2');
+  final intervaloRecorrenciaController = TextEditingController(text: '30');
 
   final titleFocusNode = FocusNode();
   final categoriaFocusNode = FocusNode();
   final tipoMovimentacaoFocusNode = FocusNode();
+  final tipoRecorrenciaFocusNode = FocusNode();
   final dateFocusNode = FocusNode();
+  final dataFimRecorrenciaFocusNode = FocusNode();
   final valueFocusNode = FocusNode();
+  final parcelasFocusNode = FocusNode();
+  final intervaloRecorrenciaFocusNode = FocusNode();
   final noteFocusNode = FocusNode();
 
   @override
@@ -20,11 +26,17 @@ mixin MovimentacaoPageMixin on State<MovimentacaoPage> {
     titleController.dispose();
     valueController.dispose();
     noteController.dispose();
+    parcelasController.dispose();
+    intervaloRecorrenciaController.dispose();
     titleFocusNode.dispose();
     categoriaFocusNode.dispose();
     tipoMovimentacaoFocusNode.dispose();
+    tipoRecorrenciaFocusNode.dispose();
     dateFocusNode.dispose();
+    dataFimRecorrenciaFocusNode.dispose();
     valueFocusNode.dispose();
+    parcelasFocusNode.dispose();
+    intervaloRecorrenciaFocusNode.dispose();
     noteFocusNode.dispose();
     super.dispose();
   }

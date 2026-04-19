@@ -83,9 +83,14 @@ class _DrawerItemPageState extends State<DrawerItemPage> with SingleTickerProvid
                   Integer.DOIS,
                 ),
                 DrawerTile(
+                  Icons.backup_rounded,
+                  Strings.BACKUP,
+                  Integer.TRES,
+                ),
+                DrawerTile(
                   Icons.info_rounded,
                   Strings.SOBRE,
-                  Integer.TRES,
+                  Integer.QUATRO,
                 ),
               ],
             ),
