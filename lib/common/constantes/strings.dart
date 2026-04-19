@@ -10,7 +10,7 @@ class Strings {
   static const String SOBRE = 'Sobre';
   static const String BACKUP = 'Backup';
   static const String GALERIA = 'Galeria';
-  static const String CAMERA = 'Camera';
+  static const String CAMERA = 'Câmera';
 
   // Labels
   static const String ENTRADA = "Entrada";
@@ -22,7 +22,7 @@ class Strings {
   static const String RS = 'R\$';
   static const String VERSAO = 'Versão:';
   static const String NOME = 'Nome';
-  static const String OBJETIVO_SALDO_MENSAL = 'Objetivo Saldo Mensal';
+  static const String OBJETIVO_SALDO_MENSAL = 'Objetivo de Saldo Mensal';
   static const String DATA_NASCIMENTO = 'Data de Nascimento';
   static const String TITULO = 'Título';
   static const String VALOR = 'Valor';
@@ -30,10 +30,10 @@ class Strings {
   static const String DATA = 'Data';
   static const String CATEGORIA = 'Categoria';
   static const String TIPO_TRANSACAO = 'Tipo de Transação';
-  static const String TIPO_RECORRENCIA = 'Tipo de Recorrencia';
+  static const String TIPO_RECORRENCIA = 'Tipo de Recorrência';
   static const String QUANTIDADE_PARCELAS = 'Quantidade de Parcelas';
   static const String INTERVALO_EM_DIAS = 'Intervalo em dias';
-  static const String DATA_MAXIMA_SUGESTOES = 'Data maxima das sugestoes';
+  static const String DATA_MAXIMA_SUGESTOES = 'Data máxima das sugestões';
   static const String TRANSACAO_REALIZADA = 'Transação realizada: ';
   static const String VALOR_TOTAL = 'Valor total:';
   static const String NENHUMA_TRANSACAO_ENCONTRADA = 'Nenhuma transação encontrada';
@@ -46,7 +46,7 @@ class Strings {
   static const String MES = 'MES';
   static const String ANO = 'ANO';
   static const String SEPARADOR_DATA = '/';
-  static const String SUGESTAO = 'SUGESTAO';
+  static const String SUGESTAO = 'SUGESTÃO';
 
   // Ações
   static const String OK = 'OK';
@@ -59,7 +59,7 @@ class Strings {
   static const String SUBSTITUIR_TUDO = 'Substituir tudo';
 
   // Mensagens
-  static const String SELECIONAR_IMAGEM = 'Selecionar Imagem';
+  static const String SELECIONAR_IMAGEM = 'Selecionar imagem';
   static const String SALDO_OBJETIVO_MENSAL = 'Saldo objetivo mensal:';
   static const String SALDO_PERIODO = 'Saldo do período:';
   static const String TOTAL_SAIDAS = 'Total de saídas:';
@@ -76,7 +76,7 @@ class Strings {
   static const String INTERVALO_RECORRENCIA_PADRAO = '30';
   static const String DATA_FORMATO_PADRAO = 'dd/MM/yyyy';
   static const String VERIFIQUE_DADOS_INFORMADOS = 'Verifique os dados informados!';
-  static const String DADOS_PERFIL_SALVOS = 'Dados de Perfil salvos com sucesso!';
+  static const String DADOS_PERFIL_SALVOS = 'Dados de perfil salvos com sucesso!';
   static const String TRANSACAO_REMOVIDA = 'Transação removida';
   static const String ERRO_REMOVER_TRANSACAO = 'Erro ao remover transação';
   static const String ERRO_SALVAR_TRANSACAO = 'Erro ao salvar transação';
@@ -86,38 +86,38 @@ class Strings {
   static const String TRANSACAO_SALVA = 'Transação salva!';
   static const String SUCESSO = 'Sucesso!!!';
   static const String ACAO_EXECUTADA_SUCESSO = 'Ação executada com sucesso';
-  static const String SOLICITACAO_EXECUTADA = 'A solicitação foi executa';
+  static const String SOLICITACAO_EXECUTADA = 'A solicitação foi executada';
   static const String OOPS_ALGO_DEU_ERRADO = 'Oops, algo deu errado!';
   static const String IMPORTAR_BACKUP_JSON = 'Importar backup JSON';
   static const String MENSAGEM_MODO_IMPORTACAO_BACKUP =
       'Substituir tudo: remove os dados atuais e restaura apenas o arquivo.\n\n'
       'Mesclar: preserva os dados atuais e adiciona apenas novos registros.';
-  static const String DESCRICAO_BACKUP = 'Exporte suas movimentacoes em JSON para backup e restaure quando necessario.';
+  static const String DESCRICAO_BACKUP = 'Exporte suas movimentações em JSON para backup e restaure quando necessário.';
   static const String EXPORTAR_JSON_LOCAL = 'Exportar JSON (salvar local)';
   static const String EXPORTAR_E_COMPARTILHAR = 'Exportar e compartilhar';
   static const String IMPORTAR_JSON = 'Importar JSON';
   static const String SALVAR_BACKUP_JSON = 'Salvar backup JSON';
   static const String SALVAMENTO_CANCELADO = 'Salvamento cancelado.';
   static const String FALHA_EXPORTAR_BACKUP = 'Falha ao exportar backup.';
-  static const String TEXTO_COMPARTILHAR_BACKUP = 'Backup de movimentacoes do Budgetopia';
+  static const String TEXTO_COMPARTILHAR_BACKUP = 'Backup de movimentações do Budgetopia';
   static const String BACKUP_COMPARTILHADO_SUCESSO = 'Backup criado e compartilhado com sucesso.';
   static const String COMPARTILHAMENTO_CANCELADO = 'Compartilhamento cancelado. O backup ficou salvo localmente.';
   static const String BACKUP_LOCAL_COMPARTILHAMENTO_INDEFINIDO =
-      'Backup salvo localmente, mas nao foi possivel confirmar o compartilhamento.';
+      'Backup salvo localmente, mas não foi possível confirmar o compartilhamento.';
   static const String FALHA_EXPORTAR_COMPARTILHAR_BACKUP = 'Falha ao exportar/compartilhar backup.';
   static const String SELECIONE_ARQUIVO_JSON_BACKUP = 'Selecione um arquivo JSON de backup';
   static const String FALHA_IMPORTAR_BACKUP = 'Falha ao importar backup.';
-  static const String BACKUP_ESTRUTURA_INVALIDA = 'Estrutura invalida para backup.';
-  static const String BACKUP_CAMPO_MOVIMENTACOES_INVALIDO = 'Campo movimentacoes ausente ou invalido.';
-  static const String BACKUP_ITEM_MOVIMENTACAO_INVALIDO = 'Item de movimentacao invalido.';
-  static const String BACKUP_CAMPO_RECORRENCIAS_INVALIDO = 'Campo recorrencias ausente ou invalido.';
-  static const String BACKUP_CAMPO_PERFIL_INVALIDO = 'Campo perfil invalido.';
-  static const String BACKUP_ITEM_RECORRENCIA_INVALIDO = 'Item de recorrencia invalido.';
-  static String backupSchemaNaoSuportado(int schemaVersion) => 'Versao de schema nao suportada: $schemaVersion';
+  static const String BACKUP_ESTRUTURA_INVALIDA = 'Estrutura inválida para backup.';
+  static const String BACKUP_CAMPO_MOVIMENTACOES_INVALIDO = 'Campo movimentações ausente ou inválido.';
+  static const String BACKUP_ITEM_MOVIMENTACAO_INVALIDO = 'Item de movimentação inválido.';
+  static const String BACKUP_CAMPO_RECORRENCIAS_INVALIDO = 'Campo recorrências ausente ou inválido.';
+  static const String BACKUP_CAMPO_PERFIL_INVALIDO = 'Campo perfil inválido.';
+  static const String BACKUP_ITEM_RECORRENCIA_INVALIDO = 'Item de recorrência inválido.';
+  static String backupSchemaNaoSuportado(int schemaVersion) => 'Versão de schema não suportada: $schemaVersion';
 
-  static String jsonInvalido(String message) => 'JSON invalido: $message';
+  static String jsonInvalido(String message) => 'JSON inválido: $message';
 
-  static String campoBackupInvalido(String fieldName) => 'Campo $fieldName invalido.';
+  static String campoBackupInvalido(String fieldName) => 'Campo $fieldName inválido.';
 
   static const String CONFIRMAR_SUGESTAO = 'Confirmar sugestão';
   static const String SUGESTAO_CONFIRMADA_SALVA = 'Sugestão confirmada e salva!';
@@ -126,7 +126,7 @@ class Strings {
       'Backup salvo: $arquivo ($totalMovimentacoes itens).';
 
   static String importacaoBackupConcluida({required int totalImportadas, required int totalIgnoradas}) =>
-      'Importacao concluida: $totalImportadas inseridas e $totalIgnoradas ignoradas.';
+      'Importação concluída: $totalImportadas inseridas e $totalIgnoradas ignoradas.';
 
   static String confirmarSugestao({
     required String titulo,
@@ -150,12 +150,12 @@ class Strings {
   static const String PREENCHA_DADOS_PERFIL = 'Preencha seus dados para personalizar seu perfil';
 
   // Movimentação
-  static const String CADASTRO_UNICO = 'Unico';
+  static const String CADASTRO_UNICO = 'Único';
   static const String CADASTRO_PARCELADO = 'Parcelado';
-  static const String CADASTRO_RECORRENCIA = 'Recorrencia';
+  static const String CADASTRO_RECORRENCIA = 'Recorrência';
 
   // Recorrência
-  static const String RECORRENCIA_DIARIA = 'Diaria';
+  static const String RECORRENCIA_DIARIA = 'Diária';
   static const String RECORRENCIA_SEMANAL = 'Semanal';
   static const String RECORRENCIA_QUINZENAL = 'Quinzenal';
   static const String RECORRENCIA_MENSAL = 'Mensal';
@@ -194,7 +194,7 @@ class Strings {
 
   // Categorias
   static const Map<int, String> CATEGORIA_NOMES = <int, String>{
-    1: 'Alimentacao',
+    1: 'Alimentação',
     2: 'Aluguel',
     3: 'Animais',
     4: 'Bebidas',
@@ -203,8 +203,8 @@ class Strings {
     7: 'Compras',
     8: 'Contas',
     9: 'Cuidados Pessoais',
-    10: 'Educacao',
-    11: 'Eletronicos',
+    10: 'Educação',
+    11: 'Eletrônicos',
     12: 'Energia',
     13: 'Entretenimento',
     14: 'Esportes',
@@ -218,38 +218,38 @@ class Strings {
     22: 'Jogos',
     23: 'Lazer',
     24: 'Livros',
-    25: 'Manutencao',
-    26: 'Musica',
+    25: 'Manutenção',
+    26: 'Música',
     27: 'Presentes',
     28: 'Roupas',
-    29: 'Saude',
+    29: 'Saúde',
     30: 'Seguros',
     31: 'Tecnologia',
     32: 'Transporte',
     33: 'Viagem',
     34: 'Academia',
-    35: 'Acessorios',
+    35: 'Acessórios',
     36: 'Assinaturas',
     37: 'Banco',
     38: 'Casa',
-    39: 'Combustivel',
-    40: 'Comunicacao',
+    39: 'Combustível',
+    40: 'Comunicação',
     41: 'Cursos',
     42: 'Delivery',
-    43: 'Farmacia',
+    43: 'Farmácia',
     44: 'Hotel',
     45: 'Internet',
     46: 'Moradia',
     47: 'Padaria',
     48: 'Papelaria',
     49: 'Restaurante',
-    50: 'Salario',
-    51: 'Servicos',
+    50: 'Salário',
+    51: 'Serviços',
     52: 'Supermercado',
     53: 'Telefone',
     54: 'Taxas',
-    55: 'Agua',
-    56: 'Condominio',
+    55: 'Água',
+    56: 'Condomínio',
     57: 'Creche',
     58: 'Dentista',
     59: 'Estacionamento',
@@ -257,29 +257,29 @@ class Strings {
     61: 'Gift Cards',
     62: 'Higiene',
     63: 'Lavanderia',
-    64: 'Licencas',
+    64: 'Licenças',
     65: 'Material Escolar',
     66: 'Mensalidade',
     67: 'Parcelas',
-    68: 'Refeicoes Trabalho',
+    68: 'Refeições no Trabalho',
     69: 'Reparos',
     70: 'Streaming',
     71: 'Advogado',
-    72: 'Alfandega',
+    72: 'Alfândega',
     73: 'Aplicativos',
     74: 'Artesanato',
     75: 'Bares',
     76: 'Bicicleta',
-    77: 'Bonificacao',
+    77: 'Bonificação',
     78: 'Cashback',
-    79: 'Cambio',
-    80: 'Cartao Credito',
+    79: 'Câmbio',
+    80: 'Cartão de Crédito',
     81: 'Cinema e Teatro',
-    82: 'Clinica Veterinaria',
+    82: 'Clínica Veterinária',
     83: 'Corretagem',
-    84: 'Decoracao',
+    84: 'Decoração',
     85: 'Dividendos',
-    86: 'Eletrodomesticos',
+    86: 'Eletrodomésticos',
     87: 'Exames',
     88: 'Feira',
     89: 'Ferramentas',
@@ -289,8 +289,8 @@ class Strings {
     93: 'Juros',
     94: 'Limpeza',
     95: 'Marketing',
-    96: 'Mobiliario',
-    97: 'Previdencia Privada',
+    96: 'Mobiliário',
+    97: 'Previdência Privada',
     98: 'Reembolso',
     99: 'Outros',
     100: 'Venda de Itens',
