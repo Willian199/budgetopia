@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/selecao_horizontal/config/update_interface.dart';
 import 'package:budgetopia/common/components/selecao_horizontal/controller/selecao_horizontal_controller.dart';
 import 'package:budgetopia/common/extensions/completer_extension.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
@@ -81,7 +81,7 @@ class _HomeSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterf
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
     // Cores do tema

@@ -1,5 +1,5 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class InfoUsuario extends StatelessWidget {
@@ -7,7 +7,7 @@ class InfoUsuario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
 
     // Cores do tema
     final primaryColor = theme.colorScheme.primaryContainer;
@@ -24,6 +24,7 @@ class InfoUsuario extends StatelessWidget {
         ),
       ),
       child: Row(
+        spacing: 12,
         children: [
           Container(
             width: 10,
@@ -40,10 +41,10 @@ class InfoUsuario extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 4,
               children: [
                 Text(
                   Strings.DADOS_DO_USUARIO,
@@ -54,7 +55,6 @@ class InfoUsuario extends StatelessWidget {
                     color: tertiaryColor,
                   ),
                 ),
-                const SizedBox(height: 4),
                 Text(
                   Strings.PREENCHA_DADOS_PERFIL,
                   style: TextStyle(

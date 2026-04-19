@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/button/salvar_button.dart';
 import 'package:budgetopia/common/components/button/sub_menu_back_button.dart';
 import 'package:budgetopia/common/components/fields/info_fields.dart';
@@ -186,7 +185,7 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
 
     final primaryColor = theme.colorScheme.primary;
     final errorColor = theme.colorScheme.error;

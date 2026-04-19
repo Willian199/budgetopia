@@ -22,7 +22,7 @@ class ControlerPageModule with DDIModule {
       application<PerfilService>(PerfilServiceImpl.new),
       application<PerfilRepository>(PerfilRepositoryImpl.new),
       register(
-        factory: ApplicationFactory(builder: UserImageController.new.builder),
+        factory: ApplicationFactory(builder: UserImageController.new.inject),
       ),
     ]);
   }

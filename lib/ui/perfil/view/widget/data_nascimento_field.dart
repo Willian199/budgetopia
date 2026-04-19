@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
@@ -50,7 +49,7 @@ class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, Dat
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
 
     // Theme colors
     final primaryColor = theme.colorScheme.primary;
@@ -63,6 +62,7 @@ class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, Dat
         Padding(
           padding: const EdgeInsets.only(left: 4, bottom: 4),
           child: Row(
+            spacing: 6,
             children: [
               Container(
                 width: 6,
@@ -72,7 +72,6 @@ class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, Dat
                   shape: BoxShape.circle,
                 ),
               ),
-              const SizedBox(width: 6),
               Text(
                 Strings.DATA_NASCIMENTO,
                 style: TextStyle(

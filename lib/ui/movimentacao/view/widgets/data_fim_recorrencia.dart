@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
@@ -89,7 +88,7 @@ class _DataFimRecorrenciaState extends State<DataFimRecorrencia> with DDIInject<
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
     final primaryColor = theme.colorScheme.primary;

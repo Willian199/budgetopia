@@ -1,8 +1,8 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/button/container_back_button.dart';
 import 'package:budgetopia/common/components/generics/app_scaffold.dart';
 import 'package:budgetopia/common/components/generics/page_title.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/sobre/widget/sobre_corpo.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +11,9 @@ class SobrePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
 
     // Using theme colors directly from your theme files
-    final tertiaryColor = theme.colorScheme.tertiary;
+    final tertiaryColor = context.colorScheme.tertiary;
 
     return AppScaffold(
       appBar: Row(

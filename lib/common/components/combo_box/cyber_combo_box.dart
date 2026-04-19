@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

@@ -1,6 +1,6 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/cyber_segmented_button/cyber_segmented_button.dart';
 import 'package:budgetopia/common/components/cyber_segmented_button/cyber_segmented_notifier.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:budgetopia/ui/movimentacao/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class ModoCadastroMovimentacao extends StatefulWidget {
 class _ModoCadastroMovimentacaoState extends State<ModoCadastroMovimentacao> with DDIInject<MovimentacaoController> {
   @override
   Widget build(BuildContext context) {
-    final Color primaryColor = AdaptiveTheme.of(context).theme.colorScheme.primary;
+    final Color primaryColor = context.colorScheme.primary;
 
     return ValueListenableBuilder<TipoCadastroMovimentacaoEnum>(
       valueListenable: instance.tipoCadastro,

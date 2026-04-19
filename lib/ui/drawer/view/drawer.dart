@@ -1,8 +1,8 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/generics/cache.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/drawer/view/controller_page.dart';
 import 'package:budgetopia/ui/drawer/view/widget/drawer_item.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class DrawerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('Building DrawerPage');
 
-    final ColorScheme colorScheme = AdaptiveTheme.of(context).theme.colorScheme;
+    final ColorScheme colorScheme = context.colorScheme;
 
     late List<Color> degrade;
     late Color shadow;

@@ -30,7 +30,7 @@ class _CyberComboBoxFieldBody<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colors = AdaptiveTheme.of(context).theme.colorScheme;
+    final ColorScheme colors = context.colorScheme;
     final Color primaryColor = colors.primary;
     final Color backgroundColor = colors.surface;
     final Color borderColor = hasFocus ? primaryColor : primaryColor.withValues(alpha: 0.30);

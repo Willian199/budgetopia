@@ -1,4 +1,4 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class PageTitle extends StatelessWidget {
@@ -7,7 +7,7 @@ class PageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
 
     final primaryColor = theme.colorScheme.primary;
     return Text(

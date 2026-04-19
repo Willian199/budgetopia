@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/button/container_back_button.dart';
 import 'package:budgetopia/common/components/button/salvar_button.dart';
 import 'package:budgetopia/common/components/generics/app_scaffold.dart';
@@ -6,6 +5,7 @@ import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
 import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/components/generics/page_title.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/common/components/user_imagem/controller/user_image_controller.dart';
 import 'package:budgetopia/ui/perfil/controller/data_nascimento_controller.dart';
@@ -42,7 +42,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
     }
   }
 
-  void validarSalvar() {
+  void _validarSalvar() {
     if (formKey.currentState?.validate() ?? false) {
       FocusManager.instance.primaryFocus?.unfocus();
 
@@ -68,7 +68,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
 
     // Cores do tema
     final primaryColor = theme.colorScheme.primary;
@@ -86,7 +86,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
 
           // Botão de salvar
           SalvarButton(
-            onPressed: validarSalvar,
+            onPressed: _validarSalvar,
           ),
         ],
       ),
@@ -145,7 +145,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
               inputFormatters: [
                 DecimalInputFormatter(allowNegative: false),
               ],
-              onFieldSubmitted: (_) => validarSalvar(),
+              onFieldSubmitted: (_) => _validarSalvar(),
               onTap: () {
                 if (!valorObjetivoFocusNode.hasPrimaryFocus) {
                   valorObjetivoController.selection = TextSelection(

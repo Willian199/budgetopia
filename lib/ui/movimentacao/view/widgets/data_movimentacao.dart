@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
@@ -82,7 +81,7 @@ class _DataMovimentacaoState extends State<DataMovimentacao> with DDIInject<Movi
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
     // Theme colors

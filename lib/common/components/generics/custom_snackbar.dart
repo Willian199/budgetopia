@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:lottie/lottie.dart';
@@ -92,7 +93,7 @@ class CustomSnackBar {
     bool repeat = false,
   }) {
     final context = ddi.get<GlobalKey<NavigatorState>>().currentContext!;
-    final ColorScheme schema = AdaptiveTheme.of(context).theme.colorScheme;
+    final ColorScheme schema = context.colorScheme;
 
     Color? textColor;
     late Color backgroundColor;

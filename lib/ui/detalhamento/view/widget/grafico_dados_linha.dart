@@ -1,6 +1,6 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/ui/detalhamento/controller/grafico_controller.dart';
 import 'package:budgetopia/ui/detalhamento/view/widget/legenda_inferior.dart';
@@ -39,7 +39,7 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
     super.dispose();
   }
 
-  List<GraficoModel> eval(List<GraficoModel> values) {
+  List<GraficoModel> _eval(List<GraficoModel> values) {
     if (values.isEmpty) {
       return [];
     }
@@ -55,7 +55,7 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = AdaptiveTheme.of(context).theme;
+    final ThemeData tema = context.theme;
     final bool isDarkMode = ddi.get<bool>(qualifier: Qualifier.dark_mode);
 
     // Definição de cores
@@ -73,7 +73,7 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
       return const SizedBox.shrink();
     }
 
-    final List<GraficoModel> itensGraficoSaldo = eval(listenable.value.saldo);
+    final List<GraficoModel> itensGraficoSaldo = _eval(listenable.value.saldo);
     final List<FlSpot> spotsSaldo = itensGraficoSaldo
         .map((GraficoModel item) => FlSpot(item.index.toDouble(), item.valor))
         .toList();

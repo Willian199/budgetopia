@@ -1,23 +1,28 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/button/container_back_button.dart';
 import 'package:budgetopia/common/components/generics/app_scaffold.dart';
 import 'package:budgetopia/common/components/generics/page_title.dart';
 import 'package:budgetopia/common/enum/modo_importacao_backup.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/backup/controller/backup_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-class BackupPage extends StatelessWidget {
+class BackupPage extends StatefulWidget {
   const BackupPage({super.key});
 
-  Future<void> _importarJson(BuildContext context) async {
+  @override
+  State<BackupPage> createState() => _BackupPageState();
+}
+
+class _BackupPageState extends State<BackupPage> with DDIInject<BackupController> {
+  Future<void> _importarJson() async {
     final BackupController controller = ddi.get<BackupController>();
     final String? filePath = await controller.selecionarArquivoJsonImportacao();
     if (filePath == null || !context.mounted) {
       return;
     }
 
-    final ModoImportacaoBackup? modo = await _selecionarModoImportacao(context);
+    final ModoImportacaoBackup? modo = await _selecionarModoImportacao();
     if (modo == null) {
       return;
     }
@@ -25,7 +30,7 @@ class BackupPage extends StatelessWidget {
     await controller.importarJson(filePath: filePath, modo: modo);
   }
 
-  Future<ModoImportacaoBackup?> _selecionarModoImportacao(BuildContext context) {
+  Future<ModoImportacaoBackup?> _selecionarModoImportacao() {
     return showDialog<ModoImportacaoBackup>(
       context: context,
       builder: (BuildContext context) {
@@ -56,9 +61,7 @@ class BackupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BackupController controller = context.get<BackupController>();
-    final ThemeData theme = AdaptiveTheme.of(context).theme;
-    final ColorScheme colorScheme = theme.colorScheme;
+    final ColorScheme colorScheme = context.colorScheme;
 
     return AppScaffold(
       appBar: const Row(
@@ -98,7 +101,7 @@ class BackupPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
-                onPressed: controller.exportarSomenteLocal,
+                onPressed: instance.exportarSomenteLocal,
                 icon: const Icon(Icons.save_alt_rounded),
                 label: const Text('Exportar JSON (salvar local)'),
               ),
@@ -106,7 +109,7 @@ class BackupPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: controller.exportarECompartilhar,
+                onPressed: instance.exportarECompartilhar,
                 icon: const Icon(Icons.share_rounded),
                 label: const Text('Exportar e compartilhar'),
               ),
@@ -115,7 +118,7 @@ class BackupPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton.tonalIcon(
-                onPressed: () => _importarJson(context),
+                onPressed: _importarJson,
                 icon: const Icon(Icons.file_upload_rounded),
                 label: const Text('Importar JSON'),
               ),

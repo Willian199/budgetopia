@@ -20,9 +20,9 @@ class HomeTransactionList extends StatefulWidget {
 }
 
 class _HomeTransactionListState extends State<HomeTransactionList> {
-  late List<int> diasOrdenados = [];
-  final Map<int, List<MovimentacaoModel>> transacoesPorDia = {};
-  late final controller = ddi.get<HomeController>();
+  late List<int> _diasOrdenados = [];
+  final Map<int, List<MovimentacaoModel>> _transacoesPorDia = {};
+  late final _controller = ddi.get<HomeController>();
 
   @override
   void didUpdateWidget(covariant HomeTransactionList oldWidget) {
@@ -38,24 +38,24 @@ class _HomeTransactionListState extends State<HomeTransactionList> {
   }
 
   void _refresh() {
-    transacoesPorDia.clear();
-    diasOrdenados.clear();
+    _transacoesPorDia.clear();
+    _diasOrdenados.clear();
 
     for (var transacao in widget.transacoes) {
       final int dia = transacao.data.day;
-      if (!transacoesPorDia.containsKey(dia)) {
-        transacoesPorDia[dia] = [];
+      if (!_transacoesPorDia.containsKey(dia)) {
+        _transacoesPorDia[dia] = [];
       }
-      transacoesPorDia[dia]!.add(transacao);
+      _transacoesPorDia[dia]!.add(transacao);
     }
 
     // Ordenar as chaves (dias) em ordem decrescente
-    diasOrdenados = transacoesPorDia.keys.toList()..sort((a, b) => b.compareTo(a));
+    _diasOrdenados = _transacoesPorDia.keys.toList()..sort((a, b) => b.compareTo(a));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (diasOrdenados.isEmpty) {
+    if (_diasOrdenados.isEmpty) {
       return const HomeTransactionsEmpty();
     }
 
@@ -64,20 +64,20 @@ class _HomeTransactionListState extends State<HomeTransactionList> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: diasOrdenados.length,
+        itemCount: _diasOrdenados.length,
         itemBuilder: (context, index) {
-          final int dia = diasOrdenados[index];
-          final List<MovimentacaoModel> transacoesDoDia = transacoesPorDia[dia]!;
+          final int dia = _diasOrdenados[index];
+          final List<MovimentacaoModel> transacoesDoDia = _transacoesPorDia[dia]!;
           final String mes = transacoesDoDia.first.data.getFormattedMonth();
 
           return CyberpunkDayGroup(
             day: dia,
             month: mes,
             transactions: transacoesDoDia,
-            isLast: index == diasOrdenados.length - 1,
+            isLast: index == _diasOrdenados.length - 1,
             onConfirmSuggestion: widget.onConfirmSuggestion,
             onRefresh: () {
-              controller.refresh(controller.value.tabSelecionada);
+              _controller.refresh(_controller.value.tabSelecionada);
             },
           );
         },
