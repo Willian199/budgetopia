@@ -1,5 +1,6 @@
 // cyberpunk_home_page.dart
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/components/selecao_horizontal/view/selecao_horizontal.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
@@ -9,7 +10,7 @@ import 'package:budgetopia/ui/home/view/widgets/home_add_button.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_app_bar.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_background.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_segmented_button.dart';
-import 'package:budgetopia/ui/home/view/widgets/home_selecao_mes.dart';
+
 import 'package:budgetopia/ui/home/view/widgets/home_transaction_list.dart';
 import 'package:budgetopia/ui/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/ui/movimentacao/view/movimentacao_page.dart';
