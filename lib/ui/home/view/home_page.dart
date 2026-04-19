@@ -36,7 +36,6 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
     Future.delayed(Duration.zero, () {
       FlutterNativeSplash.remove();
     });
-    listenable.refresh(listenable.value.tabSelecionada);
 
     _fadeInController = AnimationController(
       duration: const Duration(milliseconds: 800),
@@ -108,6 +107,7 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
                     builder: (context, child) => Opacity(opacity: _fadeInAnimation.value, child: child!),
                     child: HomeTransactionList(
                       transacoes: listenable.registrosAbaMovimentacao,
+                      onRefresh: () => listenable.refresh(listenable.value.tabSelecionada),
                       onConfirmSuggestion: (sugestao) async {
                         final bool status = listenable.confirmarSugestao(sugestao);
                         if (status) {

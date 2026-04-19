@@ -39,7 +39,7 @@ class _DrawerItemState extends State<DrawerItem> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = context.colorScheme;
-    final isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
+    final bool isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
 
     return Stack(
       children: [
@@ -54,7 +54,9 @@ class _DrawerItemState extends State<DrawerItem> with SingleTickerProviderStateM
           duration: const Duration(milliseconds: 200),
           child: GestureDetector(
             onTap: () {
-              if (_backgroundController.isCompleted) {
+              final bool isDarkMode = context.theme.brightness == Brightness.dark;
+
+              if (isDarkMode) {
                 _backgroundController.reverse();
                 AdaptiveTheme.of(context).setLight();
                 ddi.addDecorator([(_) => false], qualifier: Qualifier.dark_mode);

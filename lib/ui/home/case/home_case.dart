@@ -24,10 +24,13 @@ final class HomeCase with PreDestroy implements UpdateInterface {
   int get slidePosicaoValue => _slidePosicaoValue;
 
   /// Retorna o item corrente conforme `slidePosicaoValue`.
-  ///
-  /// Pode lançar `RangeError` se a lista `itens` estiver vazia
-  /// ou o índice estiver fora do intervalo.
-  String get getByPosicao => itens[_slidePosicaoValue];
+  String? get itemSelecionado {
+    if (_itens.isEmpty || _slidePosicaoValue < 0 || _slidePosicaoValue >= _itens.length) {
+      return null;
+    }
+
+    return _itens[_slidePosicaoValue];
+  }
 
   /// Stream broadcast que emite a posição de scroll vertical/horizontal
   /// (valor `double`) quando `changeScrollPosition` é chamado.

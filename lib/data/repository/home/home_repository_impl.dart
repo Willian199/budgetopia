@@ -14,18 +14,17 @@ class HomeRepositoryImpl implements HomeRepository {
   late final MovimentacaoRepository _movimentacaoRepository = ddi();
   late final RecorrenciaRepository _recorrenciaRepository = ddi();
 
-  late Map<String, List<MovimentacaoModel>> _todasMovimentacoes = {};
+  Map<String, List<MovimentacaoModel>> _movimentacoesPorMes = {};
+  Map<String, List<MovimentacaoModel>> _ultimoSnapshotPersistido = {};
 
-  late List<MovimentacaoModel> _movimentacoesMesSelecionado = [];
-
-  late List<MovimentacaoModel> _registrosAbaMovimentacao = [];
-  Map<String, List<MovimentacaoModel>> _ultimoSnapshotMovimentacoes = {};
-
-  @override
-  List<MovimentacaoModel> get movimentacoesMesSelecionado => _movimentacoesMesSelecionado;
+  List<MovimentacaoModel> _movimentacoesDoMesSelecionado = [];
+  List<MovimentacaoModel> _movimentacoesDaAbaSelecionada = [];
 
   @override
-  List<MovimentacaoModel> get movimentacoesPorAba => _registrosAbaMovimentacao;
+  List<MovimentacaoModel> get movimentacoesMesSelecionado => List.unmodifiable(_movimentacoesDoMesSelecionado);
+
+  @override
+  List<MovimentacaoModel> get movimentacoesPorAba => List.unmodifiable(_movimentacoesDaAbaSelecionada);
 
   @override
   Stream<Map<String, List<MovimentacaoModel>>> buscarDadosMovimentacao() {
@@ -34,12 +33,12 @@ class HomeRepositoryImpl implements HomeRepository {
       late final StreamSubscription<dynamic> subRecorrencias;
 
       void emitSnapshot() {
-        controller.add(_mesclarComRecorrencias(_ultimoSnapshotMovimentacoes));
+        controller.add(_mesclarComRecorrencias(_ultimoSnapshotPersistido));
       }
 
       subMovimentacoes = _movimentacaoRepository.buscarDadosMovimentacao().listen(
         (event) {
-          _ultimoSnapshotMovimentacoes = event;
+          _ultimoSnapshotPersistido = event;
           emitSnapshot();
         },
         onError: controller.addError,
@@ -73,64 +72,50 @@ class HomeRepositoryImpl implements HomeRepository {
       merged.putIfAbsent(key, () => []);
     }
 
-    final List<String> orderedKeys = merged.keys.toList()..sort((a, b) => _parseMesAno(a).compareTo(_parseMesAno(b)));
+    final List<String> chavesOrdenadas = merged.keys.toList()..sort(_compararMesAno);
 
-    _todasMovimentacoes = {
-      for (final String key in orderedKeys)
-        key: (merged[key]!
-          ..sort((a, b) {
-            final int dateCompare = a.data.compareTo(b.data);
-            if (dateCompare != 0) {
-              return dateCompare;
-            }
-            return a.id.compareTo(b.id);
-          })),
+    _movimentacoesPorMes = {
+      for (final String key in chavesOrdenadas)
+        key: List<MovimentacaoModel>.of(merged[key]!)..sort(_compararMovimentacao),
     };
 
-    return _todasMovimentacoes;
+    return _movimentacoesPorMes;
   }
 
   @override
   List<MovimentacaoModel> filtrarMovimentacao(int posicao, TipoRegistroEnum tabSelecionada) {
-    if (_todasMovimentacoes.isEmpty) {
-      _movimentacoesMesSelecionado = [];
-      _registrosAbaMovimentacao = [];
-      return _movimentacoesMesSelecionado;
+    if (_movimentacoesPorMes.isEmpty) {
+      _movimentacoesDoMesSelecionado = [];
+      _movimentacoesDaAbaSelecionada = [];
+      return const [];
     }
 
-    final int posicaoAjustada = posicao >= _todasMovimentacoes.length ? _todasMovimentacoes.length - 1 : posicao;
-    final MapEntry<String, List<MovimentacaoModel>> entry = _todasMovimentacoes.entries.elementAt(posicaoAjustada);
+    final int posicaoAjustada = posicao.clamp(0, _movimentacoesPorMes.length - 1).toInt();
+    final MapEntry<String, List<MovimentacaoModel>> entry = _movimentacoesPorMes.entries.elementAt(posicaoAjustada);
 
     final DateTime mesSelecionado = _parseMesAno(entry.key);
     final List<MovimentacaoModel> sugestoes = _recorrenciaRepository.buscarSugestoesParaMes(mesSelecionado);
 
-    _movimentacoesMesSelecionado =
-        [
-          ...entry.value,
-          ...sugestoes.where((sugestao) => !_containsSugestao(entry.value, sugestao)),
-        ]..sort((a, b) {
-          final int dateCompare = a.data.compareTo(b.data);
-          if (dateCompare != 0) {
-            return dateCompare;
-          }
-          return a.id.compareTo(b.id);
-        });
+    _movimentacoesDoMesSelecionado = [
+      ...entry.value,
+      ...sugestoes.where((sugestao) => !_containsSugestao(entry.value, sugestao)),
+    ]..sort(_compararMovimentacao);
 
     filtrarMovimentacaoAba(tabSelecionada);
 
-    return _movimentacoesMesSelecionado;
+    return List.unmodifiable(_movimentacoesDoMesSelecionado);
   }
 
   @override
   void filtrarMovimentacaoAba(TipoRegistroEnum tabSelecionada) {
-    _registrosAbaMovimentacao = switch (tabSelecionada) {
-      TipoRegistroEnum.todos => _movimentacoesMesSelecionado,
+    _movimentacoesDaAbaSelecionada = switch (tabSelecionada) {
+      TipoRegistroEnum.todos => List.of(_movimentacoesDoMesSelecionado),
       TipoRegistroEnum.entrada =>
-        _movimentacoesMesSelecionado
+        _movimentacoesDoMesSelecionado
             .where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id)
             .toList(),
       TipoRegistroEnum.saida =>
-        _movimentacoesMesSelecionado
+        _movimentacoesDoMesSelecionado
             .where((element) => element.tipoMovimentacao == TipoMovimentacaoEnum.saida.id)
             .toList(),
     };
@@ -174,16 +159,61 @@ class HomeRepositoryImpl implements HomeRepository {
     });
   }
 
+  int _compararMovimentacao(MovimentacaoModel a, MovimentacaoModel b) {
+    final int dateCompare = a.data.compareTo(b.data);
+    if (dateCompare != 0) {
+      return dateCompare;
+    }
+
+    return a.id.compareTo(b.id);
+  }
+
+  int _compararMesAno(String a, String b) {
+    final DateTime? dataA = _tryParseMesAno(a);
+    final DateTime? dataB = _tryParseMesAno(b);
+
+    if (dataA == null && dataB == null) {
+      return a.compareTo(b);
+    }
+    if (dataA == null) {
+      return 1;
+    }
+    if (dataB == null) {
+      return -1;
+    }
+
+    return dataA.compareTo(dataB);
+  }
+
   String _formatMesAno(DateTime date) => '${date.getFormattedMonth()}/${date.year}';
 
   DateTime _parseMesAno(String key) {
-    final List<String> parts = key.split('/');
-    if (parts.length != 2) {
-      return DateTime.now();
+    final DateTime? date = _tryParseMesAno(key);
+    if (date == null) {
+      throw FormatException('Mes/ano invalido', key);
     }
 
-    final int year = int.tryParse(parts[1]) ?? DateTime.now().year;
-    final int month = switch (parts[0]) {
+    return date;
+  }
+
+  DateTime? _tryParseMesAno(String key) {
+    final List<String> parts = key.split('/');
+    if (parts.length != 2) {
+      return null;
+    }
+
+    final int? year = int.tryParse(parts[1]);
+    final int? month = _parseMes(parts[0]);
+
+    if (year == null || month == null) {
+      return null;
+    }
+
+    return DateTime(year, month);
+  }
+
+  int? _parseMes(String value) {
+    return switch (value) {
       'Jan' => 1,
       'Fev' => 2,
       'Mar' => 3,
@@ -196,9 +226,7 @@ class HomeRepositoryImpl implements HomeRepository {
       'Out' => 10,
       'Nov' => 11,
       'Dez' => 12,
-      _ => DateTime.now().month,
+      _ => null,
     };
-
-    return DateTime(year, month);
   }
 }

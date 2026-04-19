@@ -15,12 +15,20 @@ class DrawerTile extends StatefulWidget {
   State<DrawerTile> createState() => _DrawerTileState();
 }
 
-class _DrawerTileState extends State<DrawerTile> with DDIInject<PageController> {
+class _DrawerTileState extends ListenableState<DrawerTile, PageController> {
+  int get _currentPage {
+    if (!listenable.hasClients || listenable.page == null) {
+      return listenable.initialPage;
+    }
+
+    return listenable.page!.round();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = context.colorScheme;
 
-    final itemColor = instance.page?.round() == widget.page ? scheme.primary : scheme.onSecondaryFixedVariant;
+    final Color itemColor = _currentPage == widget.page ? scheme.primaryFixed : scheme.onPrimaryFixed;
 
     return Material(
       color: Colors.transparent,
@@ -30,7 +38,9 @@ class _DrawerTileState extends State<DrawerTile> with DDIInject<PageController> 
         onTap: () {
           ddi.get<ZoomDrawerController>().close?.call();
 
-          instance.jumpToPage(widget.page);
+          if (listenable.hasClients) {
+            listenable.jumpToPage(widget.page);
+          }
         },
         child: Container(
           height: Double.SETENTA,
