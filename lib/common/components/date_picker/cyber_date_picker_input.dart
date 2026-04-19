@@ -1,6 +1,7 @@
 import 'package:budgetopia/common/components/date_picker/notifier/cyber_date_picker_notifier.dart';
 import 'package:budgetopia/common/components/date_picker/widgets/cyber_date_picker_date_input_field.dart';
 import 'package:budgetopia/common/components/date_picker/widgets/cyber_date_picker_input_separator.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 
 /// Input mode widget for direct date entry via text fields.
@@ -54,7 +55,7 @@ class CyberDatePickerInput extends StatelessWidget {
           CyberDatePickerDateInputField(
             controller: dayController,
             focusNode: dayFocus,
-            hintText: 'DD',
+            hintText: Strings.DIA_HINT,
             width: 80,
             validator: model.validateAndFixDay,
             onChanged: (value) {
@@ -69,7 +70,7 @@ class CyberDatePickerInput extends StatelessWidget {
           CyberDatePickerDateInputField(
             controller: monthController,
             focusNode: monthFocus,
-            hintText: 'MM',
+            hintText: Strings.MES_HINT,
             width: 80,
             validator: model.validateAndFixMonth,
             onChanged: _handleMonthChanged,
@@ -79,7 +80,7 @@ class CyberDatePickerInput extends StatelessWidget {
           CyberDatePickerDateInputField(
             controller: yearController,
             focusNode: yearFocus,
-            hintText: 'AAAA',
+            hintText: Strings.ANO_HINT,
             width: 100,
             validator: model.validateAndFixYear,
             onChanged: (_) => model.updateDatePreview(),

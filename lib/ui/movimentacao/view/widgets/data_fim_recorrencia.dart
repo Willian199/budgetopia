@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/components/fields/info_fields.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
@@ -95,7 +96,7 @@ class _DataFimRecorrenciaState extends State<DataFimRecorrencia> with DDIInject<
     final backgroundColor = isDarkMode ? const Color(0xFF002215) : const Color(0xFFebffe5);
 
     return InfoFields(
-      label: 'Data maxima das sugestoes',
+      label: Strings.DATA_MAXIMA_SUGESTOES,
       icon: FontAwesomeIcons.calendarPlus,
       controller: _dataController,
       focusNode: widget.focusNode,

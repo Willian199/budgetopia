@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_theme.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -50,7 +51,7 @@ class CyberDatePickerInputField extends StatelessWidget {
       },
       onSubmitted: onSubmitted,
       cursorColor: context.accentColor,
-      maxLength: hintText == 'AAAA' ? 4 : 2,
+      maxLength: hintText == Strings.ANO_HINT ? 4 : 2,
       buildCounter: (context, {required currentLength, required isFocused, maxLength}) => null,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
     );

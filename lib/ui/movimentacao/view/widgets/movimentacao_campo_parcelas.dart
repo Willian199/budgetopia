@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/components/fields/info_fields.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,7 @@ class MovimentacaoCampoParcelas extends StatelessWidget with DDIInject<Movimenta
       spacing: 8,
       children: [
         InfoFields(
-          label: 'Quantidade de Parcelas',
+          label: Strings.QUANTIDADE_PARCELAS,
           icon: FontAwesomeIcons.listOl,
           controller: parcelasController,
           focusNode: parcelasFocusNode,
@@ -55,7 +56,7 @@ class MovimentacaoCampoParcelas extends StatelessWidget with DDIInject<Movimenta
               return Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Valor total: $valorTotal',
+                  '${Strings.VALOR_TOTAL} $valorTotal',
                   style: TextStyle(
                     color: primaryColor,
                     fontWeight: FontWeight.w600,

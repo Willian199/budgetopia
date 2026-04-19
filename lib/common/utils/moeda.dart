@@ -1,3 +1,4 @@
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:intl/intl.dart';
 
 class Moeda {
@@ -5,7 +6,7 @@ class Moeda {
     final NumberFormat format = NumberFormat.currency(
       symbol: simbolo ?? "",
       decimalDigits: decimalDigits ?? 2,
-      locale: 'pt',
+      locale: Strings.LOCALE_PT,
     );
     return format.format(valor);
   }
@@ -14,7 +15,7 @@ class Moeda {
     final NumberFormat format = NumberFormat.currency(
       symbol: simbolo ?? "",
       decimalDigits: decimalDigits ?? 2,
-      locale: 'pt',
+      locale: Strings.LOCALE_PT,
     );
     return format.parse(valor);
   }

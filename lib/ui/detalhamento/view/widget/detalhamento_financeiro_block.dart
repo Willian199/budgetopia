@@ -76,7 +76,7 @@ class DetalhamentoFinanceiroBlock extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        'RESUMO FINANCEIRO',
+                        Strings.RESUMO_FINANCEIRO,
                         style: TextStyle(
                           fontSize: 14,
                           letterSpacing: 2,

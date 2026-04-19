@@ -1,9 +1,12 @@
+import 'package:budgetopia/common/constantes/strings.dart';
+
 enum TipoRecorrenciaEnum {
-  diaria('Diaria', 1, 1),
-  semanal('Semanal', 2, 7),
-  quinzenal('Quinzenal', 3, 15),
-  mensal('Mensal', 4, 0),
-  intervaloDias('Dias Fixos', 5, 0);
+  diaria(Strings.RECORRENCIA_DIARIA, 1, 1),
+  semanal(Strings.RECORRENCIA_SEMANAL, 2, 7),
+  quinzenal(Strings.RECORRENCIA_QUINZENAL, 3, 15),
+  mensal(Strings.RECORRENCIA_MENSAL, 4, 0),
+  intervaloDias(Strings.RECORRENCIA_DIAS_FIXOS, 5, 0)
+  ;
 
   const TipoRecorrenciaEnum(this.nome, this.id, this.intervaloPadraoDias);
   final String nome;

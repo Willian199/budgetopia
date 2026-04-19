@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/dto/resultado_exportacao_backup.dart';
 import 'package:budgetopia/common/dto/resultado_importacao_backup.dart';
 import 'package:budgetopia/common/enum/modo_importacao_backup.dart';
@@ -54,7 +55,7 @@ class BackupRepositoryImpl implements BackupRepository {
     final String content = await _service.lerArquivoBackupJson(filePath: filePath);
     final dynamic decoded = _decodeJson(content);
     if (decoded is! Map) {
-      throw const FormatException('Estrutura invalida para backup.');
+      throw const FormatException(Strings.BACKUP_ESTRUTURA_INVALIDA);
     }
 
     final Map<String, dynamic> root = decoded.map(
@@ -66,12 +67,12 @@ class BackupRepositoryImpl implements BackupRepository {
       fieldName: 'schemaVersion',
     );
     if (schemaVersion < _firstSupportedSchemaVersion || schemaVersion > _schemaVersion) {
-      throw FormatException('Versao de schema nao suportada: $schemaVersion');
+      throw FormatException(Strings.backupSchemaNaoSuportado(schemaVersion));
     }
 
     final dynamic rawMovimentacoes = root['movimentacoes'];
     if (rawMovimentacoes is! List) {
-      throw const FormatException('Campo movimentacoes ausente ou invalido.');
+      throw const FormatException(Strings.BACKUP_CAMPO_MOVIMENTACOES_INVALIDO);
     }
 
     final List<MovimentacaoEntity> importadas = rawMovimentacoes
@@ -135,7 +136,7 @@ class BackupRepositoryImpl implements BackupRepository {
     try {
       return jsonDecode(content);
     } on FormatException catch (error) {
-      throw FormatException('JSON invalido: ${error.message}');
+      throw FormatException(Strings.jsonInvalido(error.message));
     }
   }
 
@@ -180,7 +181,7 @@ class BackupRepositoryImpl implements BackupRepository {
 
   MovimentacaoEntity _parseMovimentacao(dynamic rawItem) {
     if (rawItem is! Map) {
-      throw const FormatException('Item de movimentacao invalido.');
+      throw const FormatException(Strings.BACKUP_ITEM_MOVIMENTACAO_INVALIDO);
     }
 
     final Map<String, dynamic> map = rawItem.map(
@@ -215,7 +216,7 @@ class BackupRepositoryImpl implements BackupRepository {
 
     final dynamic rawRecorrencias = root['recorrencias'];
     if (rawRecorrencias is! List) {
-      throw const FormatException('Campo recorrencias ausente ou invalido.');
+      throw const FormatException(Strings.BACKUP_CAMPO_RECORRENCIAS_INVALIDO);
     }
 
     return rawRecorrencias.map((dynamic item) => _parseRecorrencia(item)).toList(growable: false);
@@ -228,7 +229,7 @@ class BackupRepositoryImpl implements BackupRepository {
 
     final dynamic rawPerfil = root['perfil'];
     if (rawPerfil is! Map) {
-      throw const FormatException('Campo perfil invalido.');
+      throw const FormatException(Strings.BACKUP_CAMPO_PERFIL_INVALIDO);
     }
 
     final Map<String, dynamic> map = rawPerfil.map(
@@ -245,7 +246,7 @@ class BackupRepositoryImpl implements BackupRepository {
 
   RecorrenciaMovimentacaoEntity _parseRecorrencia(dynamic rawItem) {
     if (rawItem is! Map) {
-      throw const FormatException('Item de recorrencia invalido.');
+      throw const FormatException(Strings.BACKUP_ITEM_RECORRENCIA_INVALIDO);
     }
 
     final Map<String, dynamic> map = rawItem.map(
@@ -290,7 +291,7 @@ class BackupRepositoryImpl implements BackupRepository {
         return parsed;
       }
     }
-    throw FormatException('Campo $fieldName invalido.');
+    throw FormatException(Strings.campoBackupInvalido(fieldName));
   }
 
   double _readDouble(dynamic value, {required String fieldName}) {
@@ -306,7 +307,7 @@ class BackupRepositoryImpl implements BackupRepository {
         return parsed;
       }
     }
-    throw FormatException('Campo $fieldName invalido.');
+    throw FormatException(Strings.campoBackupInvalido(fieldName));
   }
 
   bool _readBool(dynamic value, {required String fieldName}) {
@@ -321,24 +322,24 @@ class BackupRepositoryImpl implements BackupRepository {
         return false;
       }
     }
-    throw FormatException('Campo $fieldName invalido.');
+    throw FormatException(Strings.campoBackupInvalido(fieldName));
   }
 
   String _readString(dynamic value, {required String fieldName}) {
     if (value is String) {
       return value;
     }
-    throw FormatException('Campo $fieldName invalido.');
+    throw FormatException(Strings.campoBackupInvalido(fieldName));
   }
 
   DateTime _readDateTime(dynamic value, {required String fieldName}) {
     if (value is! String) {
-      throw FormatException('Campo $fieldName invalido.');
+      throw FormatException(Strings.campoBackupInvalido(fieldName));
     }
     try {
       return DateTime.parse(value).toLocal();
     } on FormatException {
-      throw FormatException('Campo $fieldName invalido.');
+      throw FormatException(Strings.campoBackupInvalido(fieldName));
     }
   }
 

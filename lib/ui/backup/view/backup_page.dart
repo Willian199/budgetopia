@@ -1,6 +1,7 @@
 import 'package:budgetopia/common/components/button/container_back_button.dart';
 import 'package:budgetopia/common/components/generics/app_scaffold.dart';
 import 'package:budgetopia/common/components/generics/page_title.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/modo_importacao_backup.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/backup/controller/backup_controller.dart';
@@ -36,23 +37,20 @@ class _BackupPageState extends ListenableState<BackupPage, BackupController> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Importar backup JSON'),
-          content: const Text(
-            'Substituir tudo: remove os dados atuais e restaura apenas o arquivo.\n\n'
-            'Mesclar: preserva os dados atuais e adiciona apenas novos registros.',
-          ),
+          title: const Text(Strings.IMPORTAR_BACKUP_JSON),
+          content: const Text(Strings.MENSAGEM_MODO_IMPORTACAO_BACKUP),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
+              child: const Text(Strings.CANCELAR),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(ModoImportacaoBackup.mesclar),
-              child: const Text('Mesclar'),
+              child: const Text(Strings.MESCLAR),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(ModoImportacaoBackup.substituirTudo),
-              child: const Text('Substituir tudo'),
+              child: const Text(Strings.SUBSTITUIR_TUDO),
             ),
           ],
         );
@@ -71,7 +69,7 @@ class _BackupPageState extends ListenableState<BackupPage, BackupController> {
           ContainerBackButton(),
           Expanded(
             child: Center(
-              child: PageTitle(title: 'Backup'),
+              child: PageTitle(title: Strings.BACKUP),
             ),
           ),
           SizedBox(width: 30),
@@ -92,7 +90,7 @@ class _BackupPageState extends ListenableState<BackupPage, BackupController> {
                 border: Border.all(color: colorScheme.tertiary.withAlpha(120)),
               ),
               child: Text(
-                'Exporte suas movimentacoes em JSON para backup e restaure quando necessario.',
+                Strings.DESCRICAO_BACKUP,
                 style: TextStyle(
                   fontSize: 15,
                   height: 1.45,
@@ -105,7 +103,7 @@ class _BackupPageState extends ListenableState<BackupPage, BackupController> {
               child: FilledButton.icon(
                 onPressed: processando ? null : () => listenable.executarOperacao(listenable.exportarSomenteLocal),
                 icon: const Icon(Icons.save_alt_rounded),
-                label: const Text('Exportar JSON (salvar local)'),
+                label: const Text(Strings.EXPORTAR_JSON_LOCAL),
               ),
             ),
             SizedBox(
@@ -113,7 +111,7 @@ class _BackupPageState extends ListenableState<BackupPage, BackupController> {
               child: OutlinedButton.icon(
                 onPressed: processando ? null : () => listenable.executarOperacao(listenable.exportarECompartilhar),
                 icon: const Icon(Icons.share_rounded),
-                label: const Text('Exportar e compartilhar'),
+                label: const Text(Strings.EXPORTAR_E_COMPARTILHAR),
               ),
             ),
             const Divider(height: 26),
@@ -122,7 +120,7 @@ class _BackupPageState extends ListenableState<BackupPage, BackupController> {
               child: FilledButton.tonalIcon(
                 onPressed: processando ? null : _importarJson,
                 icon: const Icon(Icons.file_upload_rounded),
-                label: const Text('Importar JSON'),
+                label: const Text(Strings.IMPORTAR_JSON),
               ),
             ),
           ],

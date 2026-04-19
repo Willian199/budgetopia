@@ -1,3 +1,4 @@
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
@@ -71,7 +72,9 @@ final class MovimentacaoFormularioUseCase {
         titulo: recorrencia.titulo,
         valor: formatarValor(recorrencia.valorBase),
         observacao: recorrencia.observacao,
-        intervaloRecorrencia: recorrencia.intervaloDias > 0 ? recorrencia.intervaloDias.toString() : '30',
+        intervaloRecorrencia: recorrencia.intervaloDias > 0
+            ? recorrencia.intervaloDias.toString()
+            : Strings.INTERVALO_RECORRENCIA_PADRAO,
       ),
       estado: MovimentacaoFormularioEstado(
         data: recorrencia.dataInicio,
@@ -89,7 +92,7 @@ final class MovimentacaoFormularioUseCase {
 
   double parseValor(String value) {
     try {
-      return Moeda.parse(valor: value, simbolo: 'R\$').toDouble();
+      return Moeda.parse(valor: value, simbolo: Strings.RS).toDouble();
     } catch (_) {
       return 0;
     }
@@ -111,19 +114,19 @@ final class MovimentacaoFormularioUseCase {
   }
 
   String formatarValor(double valor) {
-    return Moeda.format(valor: valor, simbolo: 'R\$', decimalDigits: 2);
+    return Moeda.format(valor: valor, simbolo: Strings.RS, decimalDigits: 2);
   }
 
   String? validarTitulo(String? value) {
     if ((value ?? '').trim().isEmpty) {
-      return 'Por favor, insira um título';
+      return Strings.INFORME_TITULO;
     }
     return null;
   }
 
   String? validarValor(String? value) {
     if ((value ?? '').trim().isEmpty) {
-      return 'Informe o valor';
+      return Strings.INFORME_O_VALOR;
     }
     return null;
   }
@@ -136,7 +139,7 @@ final class MovimentacaoFormularioUseCase {
       return null;
     }
     if (parseQuantidadeParcelas(value ?? '') < 2) {
-      return 'Informe ao menos 2 parcelas';
+      return Strings.INFORME_AO_MENOS_DUAS_PARCELAS;
     }
     return null;
   }
@@ -150,7 +153,7 @@ final class MovimentacaoFormularioUseCase {
       return null;
     }
     if (parseIntervaloRecorrencia(value ?? '') <= 0) {
-      return 'Informe um intervalo válido';
+      return Strings.INFORME_INTERVALO_VALIDO;
     }
     return null;
   }

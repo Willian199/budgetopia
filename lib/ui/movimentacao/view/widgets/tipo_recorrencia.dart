@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/components/combo_box/cyber_combo_box.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _TipoRecorrenciaState extends State<TipoRecorrencia> with DDIInject<Movime
   @override
   Widget build(BuildContext context) {
     return CyberComboBoxField<TipoRecorrenciaEnum>(
-      label: 'Tipo de Recorrencia',
+      label: Strings.TIPO_RECORRENCIA,
       options: _options,
       valueListenable: instance.tipoRecorrencia,
       focusNode: widget.focusNode,

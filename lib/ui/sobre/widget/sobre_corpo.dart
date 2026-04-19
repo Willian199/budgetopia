@@ -1,3 +1,4 @@
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -93,7 +94,7 @@ class SobreCorpo extends StatelessWidget {
               spacing: 16,
               children: [
                 Text(
-                  'Gerencie suas finanças com facilidade',
+                  Strings.SOBRE_CHAMADA,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -102,7 +103,7 @@ class SobreCorpo extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Budgetopia permite que você acompanhe suas entradas e saídas financeiras de forma simples e eficaz. Com recursos práticos e uma interface amigável, você pode manter suas finanças sob controle, alcançando seus objetivos financeiros com mais tranquilidade.',
+                  Strings.SOBRE_DESCRICAO,
                   style: TextStyle(
                     fontSize: 16,
                     height: 1.8,
@@ -143,7 +144,7 @@ class SobreCorpo extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'STATUS OPERACIONAL',
+                      Strings.STATUS_OPERACIONAL,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -154,7 +155,7 @@ class SobreCorpo extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  'Mantenha-se no comando das suas finanças com Budgetopia - seu parceiro confiável para uma jornada financeira mais inteligente em um mundo cada vez mais complexo.',
+                  Strings.SOBRE_STATUS,
                   style: TextStyle(
                     fontSize: 14,
                     height: 1.6,
@@ -179,7 +180,7 @@ class SobreCorpo extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'v 1.0.0',
+                Strings.VERSAO_APP,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,

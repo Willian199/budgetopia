@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/components/combo_box/cyber_combo_box.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _SelecionarCategoriaState extends State<SelecionarCategoria> with DDIInjec
   @override
   Widget build(BuildContext context) {
     return CyberComboBoxField<CategoriaEnum>(
-      label: 'Categoria',
+      label: Strings.CATEGORIA,
       options: _options,
       valueListenable: instance.categoria,
       focusNode: widget.focusNode,

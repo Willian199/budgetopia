@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/dto/resultado_exportacao_backup.dart';
 import 'package:budgetopia/common/dto/resultado_importacao_backup.dart';
 import 'package:budgetopia/common/enum/modo_importacao_backup.dart';
@@ -36,7 +37,7 @@ final class BackupController extends ValueNotifier<bool> {
       final File arquivoTemporario = File(resultado.filePath);
       final String fileName = p.basename(resultado.filePath);
       final String? filePath = await FilePicker.saveFile(
-        dialogTitle: 'Salvar backup JSON',
+        dialogTitle: Strings.SALVAR_BACKUP_JSON,
         fileName: fileName,
         type: FileType.custom,
         allowedExtensions: const <String>['json'],
@@ -44,7 +45,7 @@ final class BackupController extends ValueNotifier<bool> {
       );
 
       if (filePath == null) {
-        CustomSnackBar.informacacao(mensagem: 'Salvamento cancelado.');
+        CustomSnackBar.informacacao(mensagem: Strings.SALVAMENTO_CANCELADO);
         return;
       }
 
@@ -57,12 +58,15 @@ final class BackupController extends ValueNotifier<bool> {
       }
 
       CustomSnackBar.sucesso(
-        mensagem: 'Backup salvo: ${p.basename(filePath)} (${resultado.totalMovimentacoes} itens).',
+        mensagem: Strings.backupSalvo(
+          arquivo: p.basename(filePath),
+          totalMovimentacoes: resultado.totalMovimentacoes,
+        ),
       );
     } on FormatException catch (error) {
       CustomSnackBar.informacacao(mensagem: error.message);
     } catch (_) {
-      CustomSnackBar.informacacao(mensagem: 'Falha ao exportar backup.');
+      CustomSnackBar.informacacao(mensagem: Strings.FALHA_EXPORTAR_BACKUP);
     }
   }
 
@@ -73,37 +77,37 @@ final class BackupController extends ValueNotifier<bool> {
       final ShareResult shareResult = await SharePlus.instance.share(
         ShareParams(
           files: <XFile>[XFile(resultado.filePath)],
-          text: 'Backup de movimentacoes do Budgetopia',
+          text: Strings.TEXTO_COMPARTILHAR_BACKUP,
         ),
       );
 
       switch (shareResult.status) {
         case ShareResultStatus.success:
           CustomSnackBar.sucesso(
-            mensagem: 'Backup criado e compartilhado com sucesso.',
+            mensagem: Strings.BACKUP_COMPARTILHADO_SUCESSO,
           );
           break;
         case ShareResultStatus.dismissed:
           CustomSnackBar.informacacao(
-            mensagem: 'Compartilhamento cancelado. O backup ficou salvo localmente.',
+            mensagem: Strings.COMPARTILHAMENTO_CANCELADO,
           );
           break;
         case ShareResultStatus.unavailable:
           CustomSnackBar.informacacao(
-            mensagem: 'Backup salvo localmente, mas nao foi possivel confirmar o compartilhamento.',
+            mensagem: Strings.BACKUP_LOCAL_COMPARTILHAMENTO_INDEFINIDO,
           );
           break;
       }
     } on FormatException catch (error) {
       CustomSnackBar.informacacao(mensagem: error.message);
     } catch (_) {
-      CustomSnackBar.informacacao(mensagem: 'Falha ao exportar/compartilhar backup.');
+      CustomSnackBar.informacacao(mensagem: Strings.FALHA_EXPORTAR_COMPARTILHAR_BACKUP);
     }
   }
 
   Future<String?> selecionarArquivoJsonImportacao() async {
     final FilePickerResult? file = await FilePicker.pickFiles(
-      dialogTitle: 'Selecione um arquivo JSON de backup',
+      dialogTitle: Strings.SELECIONE_ARQUIVO_JSON_BACKUP,
       type: FileType.custom,
       allowedExtensions: const <String>['json'],
     );
@@ -122,13 +126,15 @@ final class BackupController extends ValueNotifier<bool> {
       );
 
       CustomSnackBar.sucesso(
-        mensagem:
-            'Importacao concluida: ${resultado.totalImportadas} inseridas e ${resultado.totalIgnoradas} ignoradas.',
+        mensagem: Strings.importacaoBackupConcluida(
+          totalImportadas: resultado.totalImportadas,
+          totalIgnoradas: resultado.totalIgnoradas,
+        ),
       );
     } on FormatException catch (error) {
       CustomSnackBar.informacacao(mensagem: error.message);
     } catch (_) {
-      CustomSnackBar.informacacao(mensagem: 'Falha ao importar backup.');
+      CustomSnackBar.informacacao(mensagem: Strings.FALHA_IMPORTAR_BACKUP);
     }
   }
 }

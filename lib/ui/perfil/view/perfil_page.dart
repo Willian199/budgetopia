@@ -33,12 +33,12 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
 
     if (instance.registroSalvo case final item?) {
       nomeController.text = item.nome;
-      valorObjetivoController.text = Moeda.format(valor: item.valor, simbolo: 'R\$');
+      valorObjetivoController.text = Moeda.format(valor: item.valor, simbolo: Strings.RS);
       Future.delayed(Duration.zero, () {
         ddi.get<DataNascimentoController>().alterarDataNascimento(item.dataNascimento);
       });
     } else {
-      valorObjetivoController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);
+      valorObjetivoController.text = Moeda.format(valor: 0, simbolo: Strings.RS, decimalDigits: 2);
     }
   }
 
@@ -50,19 +50,19 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
       final userImageController = ddi.get<UserImageController>();
       final bool status = instance.salvar(
         nome: nomeController.text.trim(),
-        valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: 'R\$').toDouble(),
+        valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: Strings.RS).toDouble(),
         dataNascimento: dataNascimentoController.value,
         pathImagem: userImageController.pathImagem,
       );
 
       if (!status) {
-        CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
+        CustomSnackBar.informacacao(mensagem: Strings.VERIFIQUE_DADOS_INFORMADOS);
         return;
       }
 
-      CustomSnackBar.sucesso(mensagem: 'Dados de Perfil salvos com sucesso!');
+      CustomSnackBar.sucesso(mensagem: Strings.DADOS_PERFIL_SALVOS);
     } else {
-      CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
+      CustomSnackBar.informacacao(mensagem: Strings.VERIFIQUE_DADOS_INFORMADOS);
     }
   }
 

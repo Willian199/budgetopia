@@ -1,6 +1,7 @@
 // cyberpunk_segmented_tabs.dart
 import 'package:budgetopia/common/components/cyber_segmented_button/cyber_segmented_button.dart';
 import 'package:budgetopia/common/components/cyber_segmented_button/cyber_segmented_notifier.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/tipo_registro_enum.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_segmented_button_content.dart';
@@ -44,7 +45,7 @@ class _HomeSegmentedButtonState extends ListenableState<HomeSegmentedButton, Hom
         CyberSegmentItem<TipoRegistroEnum>(
           value: TipoRegistroEnum.todos,
           label: HomeSegmentedButtonContent(
-            title: "Saldo",
+            title: Strings.SALDO,
             value: listenable.value.valorSaldo,
             isSelected: listenable.value.tabSelecionada.first == TipoRegistroEnum.todos,
           ),
@@ -52,7 +53,7 @@ class _HomeSegmentedButtonState extends ListenableState<HomeSegmentedButton, Hom
         CyberSegmentItem<TipoRegistroEnum>(
           value: TipoRegistroEnum.entrada,
           label: HomeSegmentedButtonContent(
-            title: "Entrada",
+            title: Strings.ENTRADA,
             value: listenable.value.valorEntrada,
             isSelected: listenable.value.tabSelecionada.first == TipoRegistroEnum.entrada,
             showUpIcon: true,
@@ -61,7 +62,7 @@ class _HomeSegmentedButtonState extends ListenableState<HomeSegmentedButton, Hom
         CyberSegmentItem<TipoRegistroEnum>(
           value: TipoRegistroEnum.saida,
           label: HomeSegmentedButtonContent(
-            title: "Saída",
+            title: Strings.SAIDA,
             value: listenable.value.valorSaida,
             isSelected: listenable.value.tabSelecionada.first == TipoRegistroEnum.saida,
             showUpIcon: false,

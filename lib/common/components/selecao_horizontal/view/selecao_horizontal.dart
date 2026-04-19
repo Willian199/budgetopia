@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:budgetopia/common/components/selecao_horizontal/config/update_interface.dart';
 import 'package:budgetopia/common/components/selecao_horizontal/controller/selecao_horizontal_controller.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/completer_extension.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -93,7 +94,7 @@ class _HomeSelecaoMesState<ModuleT extends DDIModule, CaseT extends UpdateInterf
       builder: (context, child) {
         if (instance.value.itens.isEmpty) {
           return const Center(
-            child: Text('Nenhum mês disponível'),
+            child: Text(Strings.NENHUM_MES_DISPONIVEL),
           );
         }
 

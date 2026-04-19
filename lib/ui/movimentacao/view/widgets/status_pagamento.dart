@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/constantes/double.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _StatusPagamentoState extends State<StatusPagamento> with DDIInject<Movime
         Padding(
           padding: const EdgeInsets.only(left: Double.DEZ),
           child: Text(
-            "Transação realizada: ",
+            Strings.TRANSACAO_REALIZADA,
             style: TextStyle(
               fontSize: 13,
               color: colorScheme.primary,

@@ -76,7 +76,7 @@ class MovimentacaoModoCadastro extends StatelessWidget with DDIInject<Movimentac
                       ),
                       if (tipoRecorrencia.usaIntervaloDias)
                         InfoFields(
-                          label: 'Intervalo em dias',
+                          label: Strings.INTERVALO_EM_DIAS,
                           icon: FontAwesomeIcons.clockRotateLeft,
                           controller: intervaloRecorrenciaController,
                           focusNode: intervaloRecorrenciaFocusNode,

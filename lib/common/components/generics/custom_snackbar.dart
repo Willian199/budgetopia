@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:budgetopia/common/constantes/double.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
@@ -9,8 +10,8 @@ import 'package:lottie/lottie.dart';
 
 class CustomSnackBar {
   static void sucessoTitulo({
-    String titulo = 'Sucesso!!!',
-    String mensagem = 'Ação executada com sucesso',
+    String titulo = Strings.SUCESSO,
+    String mensagem = Strings.ACAO_EXECUTADA_SUCESSO,
   }) {
     final ColorScheme schema = AdaptiveTheme.of(ddi.get<GlobalKey<NavigatorState>>().currentContext!).theme.colorScheme;
 
@@ -59,7 +60,7 @@ class CustomSnackBar {
   }
 
   static void sucesso({
-    String mensagem = 'Ação executada com sucesso',
+    String mensagem = Strings.ACAO_EXECUTADA_SUCESSO,
     void Function(Flushbar)? onTap,
     void Function(FlushbarStatus?)? onStatusChanged,
   }) {
@@ -72,7 +73,7 @@ class CustomSnackBar {
   }
 
   static void informacacao({
-    String mensagem = 'A solicitação foi executa',
+    String mensagem = Strings.SOLICITACAO_EXECUTADA,
     void Function(Flushbar)? onTap,
     void Function(FlushbarStatus?)? onStatusChanged,
   }) {

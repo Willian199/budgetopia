@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_theme.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 
 /// Widget for the confirm button in the date picker.
@@ -20,7 +21,7 @@ class CyberDatePickerConfirmButton extends StatelessWidget {
       onPressed: onPressed,
       style: context.confirmButtonStyle(),
       child: const Text(
-        'CONFIRMAR DATA',
+        Strings.CONFIRMAR_DATA,
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,

@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/components/generics/degrade.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
@@ -32,7 +33,7 @@ final class CustomLoaderModule extends LoaderModuleInterface {
                 padding: EdgeInsets.only(
                   top: 20,
                 ),
-                child: Text("Carregando..."),
+                child: Text(Strings.CARREGANDO),
               ),
             ],
           ),

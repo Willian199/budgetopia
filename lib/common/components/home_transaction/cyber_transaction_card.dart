@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
@@ -101,23 +102,26 @@ class _CyberpunkTransactionCardState extends State<CyberpunkTransactionCard> wit
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Confirmar sugestão'),
+            title: const Text(Strings.CONFIRMAR_SUGESTAO),
             content: Text(
-              'Deseja confirmar "${widget.transaction.titulo}" em ${widget.transaction.data.format()} por '
-              '${Moeda.format(valor: widget.transaction.valor, simbolo: 'R\$')}?',
+              Strings.confirmarSugestao(
+                titulo: widget.transaction.titulo,
+                data: widget.transaction.data.format(),
+                valor: Moeda.format(valor: widget.transaction.valor, simbolo: Strings.RS),
+              ),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Editar recorrência'),
+                child: const Text(Strings.EDITAR_RECORRENCIA),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancelar'),
+                child: const Text(Strings.CANCELAR),
               ),
               FilledButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Confirmar'),
+                child: const Text(Strings.CONFIRMAR),
               ),
             ],
           );
@@ -147,10 +151,10 @@ class _CyberpunkTransactionCardState extends State<CyberpunkTransactionCard> wit
       final bool status = await widget.onConfirmSuggestion!(widget.transaction);
 
       if (status) {
-        CustomSnackBar.sucesso(mensagem: 'Sugestão confirmada e salva!');
+        CustomSnackBar.sucesso(mensagem: Strings.SUGESTAO_CONFIRMADA_SALVA);
         widget.onRefresh?.call();
       } else {
-        CustomSnackBar.informacacao(mensagem: 'Não foi possível confirmar a sugestão');
+        CustomSnackBar.informacacao(mensagem: Strings.FALHA_CONFIRMAR_SUGESTAO);
       }
       return;
     }
@@ -350,7 +354,7 @@ class _CyberpunkTransactionCardState extends State<CyberpunkTransactionCard> wit
                                                   ),
                                                 ),
                                                 child: const Text(
-                                                  'SUGESTAO',
+                                                  Strings.SUGESTAO,
                                                   style: TextStyle(
                                                     color: Colors.orange,
                                                     fontSize: 10,
@@ -584,7 +588,7 @@ class _CyberpunkTransactionCardState extends State<CyberpunkTransactionCard> wit
               ],
             ).createShader(bounds),
             child: const Text(
-              'R\$',
+              Strings.RS,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,

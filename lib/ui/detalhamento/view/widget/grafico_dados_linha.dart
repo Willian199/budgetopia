@@ -262,7 +262,7 @@ class _GraficoDadosLinhaState extends ListenableState<GraficoDadosLinha, Grafico
                 ),
               ),
               Text(
-                'ANÁLISE TEMPORAL',
+                Strings.ANALISE_TEMPORAL,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,

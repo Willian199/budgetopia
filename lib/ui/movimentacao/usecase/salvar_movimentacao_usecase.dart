@@ -1,4 +1,5 @@
 import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/config/banco/entity/recorrencia_movimentacao_entity.dart';
 import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.dart';
 import 'package:budgetopia/data/repository/recorrencia/recorrencia_repository.dart';
@@ -20,7 +21,7 @@ final class SalvarMovimentacaoUseCase {
     final int quantidadeParcelas = isParcelado ? _formularioUseCase.parseQuantidadeParcelas(request.parcelas) : 1;
 
     if (!request.formValido || valorMovimentacao <= 0 || quantidadeParcelas <= 0) {
-      return const MovimentacaoSalvarResultado.erro('Verifique os dados informados!');
+      return const MovimentacaoSalvarResultado.erro(Strings.VERIFIQUE_DADOS_INFORMADOS);
     }
 
     final bool sucesso = _salvar(
@@ -32,18 +33,18 @@ final class SalvarMovimentacaoUseCase {
     );
 
     if (!sucesso) {
-      return const MovimentacaoSalvarResultado.erro('Erro ao salvar transação');
+      return const MovimentacaoSalvarResultado.erro(Strings.ERRO_SALVAR_TRANSACAO);
     }
 
     if (isParcelado) {
-      return MovimentacaoSalvarResultado.sucesso('$quantidadeParcelas transações parceladas salvas!');
+      return MovimentacaoSalvarResultado.sucesso('$quantidadeParcelas ${Strings.TRANSACOES_PARCELADAS_SALVAS}');
     }
     if (isRecorrencia) {
       return MovimentacaoSalvarResultado.sucesso(
-        request.isEdicaoRecorrencia ? 'Recorrência atualizada com sucesso!' : 'Recorrência cadastrada com sucesso!',
+        request.isEdicaoRecorrencia ? Strings.RECORRENCIA_ATUALIZADA : Strings.RECORRENCIA_CADASTRADA,
       );
     }
-    return const MovimentacaoSalvarResultado.sucesso('Transação salva!');
+    return const MovimentacaoSalvarResultado.sucesso(Strings.TRANSACAO_SALVA);
   }
 
   bool _salvar({

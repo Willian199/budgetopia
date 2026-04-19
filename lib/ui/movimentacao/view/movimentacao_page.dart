@@ -1,5 +1,6 @@
 import 'package:budgetopia/common/components/generics/app_scaffold.dart';
 import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/dto/movimentacao_formulario_dados.dart';
 import 'package:budgetopia/common/dto/movimentacao_salvar_resultado.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
@@ -113,11 +114,11 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
   void _remover() {
     if (instance.remover(widget.movimentacaoModel!.id)) {
       Navigator.pop(context);
-      CustomSnackBar.sucesso(mensagem: 'Transação removida');
+      CustomSnackBar.sucesso(mensagem: Strings.TRANSACAO_REMOVIDA);
       return;
     }
 
-    CustomSnackBar.informacacao(mensagem: 'Erro ao remover transação');
+    CustomSnackBar.informacacao(mensagem: Strings.ERRO_REMOVER_TRANSACAO);
   }
 
   @override
