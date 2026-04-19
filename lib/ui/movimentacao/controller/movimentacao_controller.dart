@@ -3,16 +3,19 @@ import 'dart:async';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
-import 'package:budgetopia/config/banco/entity/movimentacao_entity.dart';
-import 'package:budgetopia/config/banco/entity/recorrencia_movimentacao_entity.dart';
-import 'package:budgetopia/data/repository/movimentacao/movimentacao_repository.dart';
-import 'package:budgetopia/data/repository/recorrencia/recorrencia_repository.dart';
+import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/ui/movimentacao/enum/tipo_cadastro_movimentacao_enum.dart';
+import 'package:budgetopia/common/dto/movimentacao_formulario_dados.dart';
+import 'package:budgetopia/common/dto/movimentacao_formulario_estado.dart';
+import 'package:budgetopia/common/dto/movimentacao_formulario_resultado.dart';
+import 'package:budgetopia/common/dto/movimentacao_salvar_resultado.dart';
+import 'package:budgetopia/common/dto/salvar_movimentacao_request.dart';
+import 'package:budgetopia/ui/movimentacao/usecase/movimentacao_formulario_usecase.dart';
+import 'package:budgetopia/ui/movimentacao/usecase/remover_movimentacao_usecase.dart';
+import 'package:budgetopia/ui/movimentacao/usecase/salvar_movimentacao_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
-/// Case do módulo de movimentação: armazena o estado do formulário em [ValueNotifier]s
-/// e executa salvar/remover via repositório. O controller é apenas ponta de acesso ao listener.
 final class MovimentacaoController with PreDestroy {
   MovimentacaoController()
     : data = ValueNotifier(DateTime.now()),
@@ -25,38 +28,43 @@ final class MovimentacaoController with PreDestroy {
       tipoRecorrencia = ValueNotifier(TipoRecorrenciaEnum.mensal),
       intervaloRecorrenciaDias = ValueNotifier(30);
 
-  /// Data da movimentação (reativo).
   final ValueNotifier<DateTime> data;
-
-  /// Data máxima para geração das sugestões da recorrência.
   final ValueNotifier<DateTime> dataFimRecorrencia;
-
-  /// Categoria selecionada (reativo).
   final ValueNotifier<CategoriaEnum> categoria;
-
-  /// Tipo de movimentação (reativo).
   final ValueNotifier<TipoMovimentacaoEnum> tipoMovimentacao;
-
-  /// Status de pagamento realizado (reativo).
   final ValueNotifier<bool> status;
-
-  /// Tipo de cadastro (unico ou parcelado).
   final ValueNotifier<TipoCadastroMovimentacaoEnum> tipoCadastro;
-
-  /// Quantidade de parcelas quando o cadastro for parcelado.
   final ValueNotifier<int> quantidadeParcelas;
-
-  /// Tipo da recorrencia selecionada.
   final ValueNotifier<TipoRecorrenciaEnum> tipoRecorrencia;
-
-  /// Intervalo para recorrencia por dias fixos.
   final ValueNotifier<int> intervaloRecorrenciaDias;
 
-  late final MovimentacaoRepository _repository = ddi();
-  late final RecorrenciaRepository _recorrenciaRepository = ddi();
+  late final MovimentacaoFormularioUseCase _formularioUseCase = ddi();
+  late final SalvarMovimentacaoUseCase _salvarMovimentacaoUseCase = ddi();
+  late final RemoverMovimentacaoUseCase _removerMovimentacaoUseCase = ddi();
   bool _recorrenciaSemDataFim = false;
 
   bool get recorrenciaSemDataFim => _recorrenciaSemDataFim;
+
+  MovimentacaoFormularioDados carregarNovoCadastro() {
+    final MovimentacaoFormularioResultado resultado = _formularioUseCase.novoCadastro();
+    _aplicarEstadoFormulario(resultado.estado);
+    return resultado.dados;
+  }
+
+  MovimentacaoFormularioDados carregarMovimentacao(MovimentacaoModel model) {
+    final MovimentacaoFormularioResultado resultado = _formularioUseCase.carregarMovimentacao(model);
+    _aplicarEstadoFormulario(resultado.estado);
+    return resultado.dados;
+  }
+
+  MovimentacaoFormularioDados? carregarRecorrencia(int id) {
+    final MovimentacaoFormularioResultado? resultado = _formularioUseCase.carregarRecorrencia(id);
+    if (resultado == null) {
+      return null;
+    }
+    _aplicarEstadoFormulario(resultado.estado);
+    return resultado.dados;
+  }
 
   void alterarData(DateTime value) {
     data.value = value;
@@ -110,135 +118,110 @@ final class MovimentacaoController with PreDestroy {
     intervaloRecorrenciaDias.value = value <= 0 ? 1 : value;
   }
 
-  RecorrenciaMovimentacaoEntity? buscarRecorrenciaPorId(int id) {
-    if (id <= 0) {
-      return null;
-    }
-    return _recorrenciaRepository.buscarPorId(id);
+  int parseQuantidadeParcelas(String value) => _formularioUseCase.parseQuantidadeParcelas(value);
+
+  int parseIntervaloRecorrencia(String value) => _formularioUseCase.parseIntervaloRecorrencia(value);
+
+  double calcularValorTotalParcelado({
+    required String valor,
+    required String parcelas,
+  }) {
+    return _formularioUseCase.calcularValorTotalParcelado(valor: valor, parcelas: parcelas);
   }
 
-  /// Persiste a movimentação; campos de texto vêm da View.
-  bool salvar({
+  String formatarValor(double valor) => _formularioUseCase.formatarValor(valor);
+
+  String? validarTitulo(String? value) => _formularioUseCase.validarTitulo(value);
+
+  String? validarValor(String? value) => _formularioUseCase.validarValor(value);
+
+  String? validarQuantidadeParcelas(String? value) {
+    return _formularioUseCase.validarQuantidadeParcelas(
+      value: value,
+      tipoCadastro: tipoCadastro.value,
+    );
+  }
+
+  String? validarIntervaloRecorrencia(String? value) {
+    return _formularioUseCase.validarIntervaloRecorrencia(
+      value: value,
+      tipoCadastro: tipoCadastro.value,
+      tipoRecorrencia: tipoRecorrencia.value,
+    );
+  }
+
+  MovimentacaoSalvarResultado salvarFormulario({
+    required bool formValido,
+    required bool isEdicaoRecorrencia,
+    required bool possuiMovimentacao,
     required int id,
     required String titulo,
-    required double valor,
+    required String valor,
     required String observacao,
-    int parcelas = 1,
-    int codigoRecorrencia = 0,
-    int recorrenciaId = 0,
+    required String parcelas,
+    required int codigoRecorrencia,
+    required int recorrenciaId,
   }) {
-    if (tipoCadastro.value == TipoCadastroMovimentacaoEnum.parcelado && id == 0) {
-      return _salvarParcelado(
+    return _salvarMovimentacaoUseCase.executar(
+      SalvarMovimentacaoRequest(
+        formValido: formValido,
+        isEdicaoRecorrencia: isEdicaoRecorrencia,
+        possuiMovimentacao: possuiMovimentacao,
+        id: id,
         titulo: titulo,
         valor: valor,
         observacao: observacao,
         parcelas: parcelas,
-      );
-    }
-
-    if (tipoCadastro.value == TipoCadastroMovimentacaoEnum.recorrencia && id == 0) {
-      return _salvarRecorrencia(
-        titulo: titulo,
-        valor: valor,
-        observacao: observacao,
+        codigoRecorrencia: codigoRecorrencia,
         recorrenciaId: recorrenciaId,
-      );
-    }
-
-    final entity = MovimentacaoEntity(
-      id: id,
-      titulo: titulo,
-      valor: valor,
-      observacao: observacao,
-      data: data.value,
-      codigoCategoria: categoria.value.id,
-      tipoMovimentacao: tipoMovimentacao.value.id,
-      status: status.value,
-      codigoRecorrencia: codigoRecorrencia,
-    );
-    return _repository.salvar(entity) > 0;
-  }
-
-  bool _salvarParcelado({
-    required String titulo,
-    required double valor,
-    required String observacao,
-    required int parcelas,
-  }) {
-    if (parcelas <= 1) {
-      return false;
-    }
-
-    final List<MovimentacaoEntity> entidades = <MovimentacaoEntity>[];
-    for (int indice = 0; indice < parcelas; indice++) {
-      entidades.add(
-        MovimentacaoEntity(
-        titulo: titulo,
-        valor: valor,
-        observacao: observacao,
-        data: _addMonths(data.value, indice),
-        codigoCategoria: categoria.value.id,
-        tipoMovimentacao: tipoMovimentacao.value.id,
+        data: data.value,
+        dataFimRecorrencia: dataFimRecorrencia.value,
+        categoria: categoria.value,
+        tipoMovimentacao: tipoMovimentacao.value,
         status: status.value,
+        tipoCadastro: tipoCadastro.value,
+        tipoRecorrencia: tipoRecorrencia.value,
+        intervaloRecorrenciaDias: intervaloRecorrenciaDias.value,
+        recorrenciaSemDataFim: _recorrenciaSemDataFim,
       ),
-      );
-    }
-
-    final List<int> ids = _repository.salvarTodos(entidades);
-    if (ids.length != parcelas) {
-      return false;
-    }
-    return ids.every((id) => id > 0);
-  }
-
-  bool _salvarRecorrencia({
-    required String titulo,
-    required double valor,
-    required String observacao,
-    required int recorrenciaId,
-  }) {
-    if (tipoRecorrencia.value.usaIntervaloDias && intervaloRecorrenciaDias.value <= 0) {
-      return false;
-    }
-
-    final RecorrenciaMovimentacaoEntity entity = RecorrenciaMovimentacaoEntity(
-      id: recorrenciaId,
-      titulo: titulo,
-      valorBase: valor,
-      observacao: observacao,
-      dataInicio: data.value,
-      dataFim: _recorrenciaSemDataFim ? DateTime(1) : dataFimRecorrencia.value,
-      codigoCategoria: categoria.value.id,
-      tipoMovimentacao: tipoMovimentacao.value.id,
-      tipoRecorrencia: tipoRecorrencia.value.id,
-      intervaloDias: tipoRecorrencia.value.usaIntervaloDias ? intervaloRecorrenciaDias.value : 0,
-      statusPadrao: status.value,
-    );
-
-    return _recorrenciaRepository.salvar(entity) > 0;
-  }
-
-  DateTime _addMonths(DateTime baseDate, int monthsToAdd) {
-    final int monthIndex = baseDate.month - 1 + monthsToAdd;
-    final int year = baseDate.year + (monthIndex ~/ 12);
-    final int month = monthIndex % 12 + 1;
-    final int lastDayOfTargetMonth = DateTime(year, month + 1, 0).day;
-    final int day = baseDate.day > lastDayOfTargetMonth ? lastDayOfTargetMonth : baseDate.day;
-    return DateTime(
-      year,
-      month,
-      day,
-      baseDate.hour,
-      baseDate.minute,
-      baseDate.second,
-      baseDate.millisecond,
-      baseDate.microsecond,
     );
   }
 
-  bool remover(int id) => _repository.remover(id);
+  bool remover(int id) => _removerMovimentacaoUseCase.executar(id);
 
-  /// Libera os notifiers ao encerrar o fluxo.
+  void _aplicarEstadoFormulario(MovimentacaoFormularioEstado estado) {
+    if (estado.data != null) {
+      alterarData(estado.data!);
+    }
+    if (estado.dataFimRecorrencia != null) {
+      alterarDataFimRecorrencia(estado.dataFimRecorrencia!);
+    }
+    if (estado.recorrenciaSemDataFim != null) {
+      definirRecorrenciaSemDataFim(estado.recorrenciaSemDataFim!);
+    }
+    if (estado.categoria != null) {
+      selecionarCategoria(estado.categoria);
+    }
+    if (estado.tipoMovimentacao != null) {
+      selecionarTipoMovimentacao(estado.tipoMovimentacao);
+    }
+    if (estado.status != null) {
+      alterarStatus(estado.status!);
+    }
+    if (estado.tipoCadastro != null) {
+      alterarTipoCadastro(estado.tipoCadastro!);
+    }
+    if (estado.quantidadeParcelas != null) {
+      alterarQuantidadeParcelas(estado.quantidadeParcelas!);
+    }
+    if (estado.tipoRecorrencia != null) {
+      alterarTipoRecorrencia(estado.tipoRecorrencia);
+    }
+    if (estado.intervaloRecorrenciaDias != null) {
+      alterarIntervaloRecorrenciaDias(estado.intervaloRecorrenciaDias!);
+    }
+  }
+
   void dispose() {
     data.dispose();
     dataFimRecorrencia.dispose();
