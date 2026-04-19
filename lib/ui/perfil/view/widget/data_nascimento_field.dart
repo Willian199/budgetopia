@@ -32,6 +32,7 @@ class _DataNascimentoFieldState extends ListenableState<DataNascimentoField, Dat
   void dispose() {
     widget.focusNode.removeListener(_openDataFocus);
     super.listenable.removeListener(_refreshTextField);
+    _dateTextController.dispose();
     super.dispose();
   }
 

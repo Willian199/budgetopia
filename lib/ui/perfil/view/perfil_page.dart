@@ -70,7 +70,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
   Widget build(BuildContext context) {
     final theme = context.theme;
 
-    // Cores do tema
+    // Cores do tema.
     final primaryColor = theme.colorScheme.primary;
     final backgroundColor = theme.colorScheme.surface;
 

@@ -25,7 +25,7 @@ class UserImageController extends ValueNotifier<UserImageState> with PostConstru
     });
   }
 
-  void selecionarImagem(ImageSource source) async {
+  Future<void> selecionarImagem(ImageSource source) async {
     final CroppedFile? imagem = await ImageCrop.pickImage(source);
 
     if (imagem != null) {
@@ -38,7 +38,7 @@ class UserImageController extends ValueNotifier<UserImageState> with PostConstru
       value = UserImageState(path);
     }
   }
-  
+
   @override
   FutureOr<void> onPreDestroy() {
     _perfilSubscription?.cancel();
