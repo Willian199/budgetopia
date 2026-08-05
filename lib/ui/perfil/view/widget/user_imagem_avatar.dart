@@ -1,12 +1,17 @@
-import 'package:budgetopia/common/components/user_imagem/controller/user_image_controller.dart';
-import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/ui/perfil/controller/user_image_controller.dart';
+import 'package:budgetopia/ui/perfil/view/widget/user_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserImagemAvatar extends StatelessWidget {
   const UserImagemAvatar({super.key});
+
+  Future<void> _selecionarImagem(BuildContext context, ImageSource source) async {
+    Navigator.of(context).pop();
+    await ddi.get<UserImageController>().selecionarImagem(source);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +26,12 @@ class UserImagemAvatar extends StatelessWidget {
                   ListTile(
                     leading: const Icon(Icons.photo_library),
                     title: const Text(Strings.GALERIA),
-                    onTap: () {
-                      ddi.get<UserImageController>().selecionarImagem(ImageSource.gallery);
-                      Navigator.of(context).pop();
-                    },
+                    onTap: () => _selecionarImagem(bc, ImageSource.gallery),
                   ),
                   ListTile(
                     leading: const Icon(Icons.photo_camera),
                     title: const Text(Strings.CAMERA),
-                    onTap: () {
-                      ddi.get<UserImageController>().selecionarImagem(ImageSource.camera);
-                      Navigator.of(context).pop();
-                    },
+                    onTap: () => _selecionarImagem(bc, ImageSource.camera),
                   ),
                 ],
               ),

@@ -1,0 +1,131 @@
+import 'package:budgetopia/common/components/button/container_back_button.dart';
+import 'package:budgetopia/common/components/generics/app_scaffold.dart';
+import 'package:budgetopia/common/components/generics/page_title.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/enum/modo_importacao_backup.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
+import 'package:budgetopia/ui/backup/controller/backup_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_ddi/flutter_ddi.dart';
+
+class BackupPage extends StatefulWidget {
+  const BackupPage({super.key});
+
+  @override
+  State<BackupPage> createState() => _BackupPageState();
+}
+
+class _BackupPageState extends ListenableState<BackupPage, BackupController> {
+  Future<void> _importarJson() async {
+    await listenable.executarOperacao(() async {
+      final String? filePath = await listenable.selecionarArquivoJsonImportacao();
+      if (filePath == null || !context.mounted) {
+        return;
+      }
+
+      final ModoImportacaoBackup? modo = await _selecionarModoImportacao();
+      if (modo == null || !context.mounted) {
+        return;
+      }
+
+      await listenable.importarJson(filePath: filePath, modo: modo);
+    });
+  }
+
+  Future<ModoImportacaoBackup?> _selecionarModoImportacao() {
+    return showDialog<ModoImportacaoBackup>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(Strings.IMPORTAR_BACKUP_JSON),
+          content: const Text(Strings.MENSAGEM_MODO_IMPORTACAO_BACKUP),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(Strings.CANCELAR),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(ModoImportacaoBackup.mesclar),
+              child: const Text(Strings.MESCLAR),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(ModoImportacaoBackup.substituirTudo),
+              child: const Text(Strings.SUBSTITUIR_TUDO),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = context.colorScheme;
+    final bool processando = listenable.value;
+
+    return AppScaffold(
+      appBar: const Row(
+        children: <Widget>[
+          ContainerBackButton(),
+          Expanded(
+            child: Center(
+              child: PageTitle(title: Strings.BACKUP),
+            ),
+          ),
+          SizedBox(width: 30),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 14,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: colorScheme.surface.withAlpha(210),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: colorScheme.tertiary.withAlpha(120)),
+              ),
+              child: Text(
+                Strings.DESCRICAO_BACKUP,
+                style: TextStyle(
+                  fontSize: 15,
+                  height: 1.45,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: processando ? null : () => listenable.executarOperacao(listenable.exportarSomenteLocal),
+                icon: const Icon(Icons.save_alt_rounded),
+                label: const Text(Strings.EXPORTAR_JSON_LOCAL),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: processando ? null : () => listenable.executarOperacao(listenable.exportarECompartilhar),
+                icon: const Icon(Icons.share_rounded),
+                label: const Text(Strings.EXPORTAR_E_COMPARTILHAR),
+              ),
+            ),
+            const Divider(height: 26),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.tonalIcon(
+                onPressed: processando ? null : _importarJson,
+                icon: const Icon(Icons.file_upload_rounded),
+                label: const Text(Strings.IMPORTAR_JSON),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

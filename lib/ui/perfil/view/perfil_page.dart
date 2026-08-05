@@ -1,18 +1,18 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/button/container_back_button.dart';
 import 'package:budgetopia/common/components/button/salvar_button.dart';
+import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:budgetopia/common/components/generics/app_scaffold.dart';
 import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
-import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/components/generics/page_title.dart';
+import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
-import 'package:budgetopia/common/components/user_imagem/controller/user_image_controller.dart';
 import 'package:budgetopia/ui/perfil/controller/data_nascimento_controller.dart';
 import 'package:budgetopia/ui/perfil/controller/perfil_controller.dart';
+import 'package:budgetopia/ui/perfil/controller/user_image_controller.dart';
 import 'package:budgetopia/ui/perfil/mixin/perfil_page_mixin.dart';
 import 'package:budgetopia/ui/perfil/view/widget/data_nascimento_field.dart';
-import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:budgetopia/ui/perfil/view/widget/info_usuario.dart';
 import 'package:budgetopia/ui/perfil/view/widget/user_imagem_avatar.dart';
 import 'package:flutter/material.dart';
@@ -33,16 +33,16 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
 
     if (instance.registroSalvo case final item?) {
       nomeController.text = item.nome;
-      valorObjetivoController.text = Moeda.format(valor: item.valor, simbolo: 'R\$');
+      valorObjetivoController.text = Moeda.format(valor: item.valor, simbolo: Strings.RS);
       Future.delayed(Duration.zero, () {
         ddi.get<DataNascimentoController>().alterarDataNascimento(item.dataNascimento);
       });
     } else {
-      valorObjetivoController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);
+      valorObjetivoController.text = Moeda.format(valor: 0, simbolo: Strings.RS, decimalDigits: 2);
     }
   }
 
-  void validarSalvar() {
+  void _validarSalvar() {
     if (formKey.currentState?.validate() ?? false) {
       FocusManager.instance.primaryFocus?.unfocus();
 
@@ -50,27 +50,27 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
       final userImageController = ddi.get<UserImageController>();
       final bool status = instance.salvar(
         nome: nomeController.text.trim(),
-        valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: 'R\$').toDouble(),
+        valorObjetivo: Moeda.parse(valor: valorObjetivoController.text, simbolo: Strings.RS).toDouble(),
         dataNascimento: dataNascimentoController.value,
         pathImagem: userImageController.pathImagem,
       );
 
       if (!status) {
-        CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
+        CustomSnackBar.informacacao(mensagem: Strings.VERIFIQUE_DADOS_INFORMADOS);
         return;
       }
 
-      CustomSnackBar.sucesso(mensagem: 'Dados de Perfil salvos com sucesso!');
+      CustomSnackBar.sucesso(mensagem: Strings.DADOS_PERFIL_SALVOS);
     } else {
-      CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
+      CustomSnackBar.informacacao(mensagem: Strings.VERIFIQUE_DADOS_INFORMADOS);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
 
-    // Cores do tema
+    // Cores do tema.
     final primaryColor = theme.colorScheme.primary;
     final backgroundColor = theme.colorScheme.surface;
 
@@ -86,7 +86,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
 
           // Botão de salvar
           SalvarButton(
-            onPressed: validarSalvar,
+            onPressed: _validarSalvar,
           ),
         ],
       ),
@@ -145,7 +145,7 @@ class _PerfilPageState extends State<PerfilPage> with PerfilPageMixin, DDIInject
               inputFormatters: [
                 DecimalInputFormatter(allowNegative: false),
               ],
-              onFieldSubmitted: (_) => validarSalvar(),
+              onFieldSubmitted: (_) => _validarSalvar(),
               onTap: () {
                 if (!valorObjetivoFocusNode.hasPrimaryFocus) {
                   valorObjetivoController.selection = TextSelection(

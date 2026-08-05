@@ -23,7 +23,7 @@ class InfoFields extends StatelessWidget {
   });
 
   final String label;
-  final IconData icon;
+  final FaIconData icon;
   final TextEditingController controller;
   final FocusNode focusNode;
   final String? Function(String?)? validator;

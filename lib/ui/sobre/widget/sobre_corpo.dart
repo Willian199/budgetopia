@@ -1,4 +1,5 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class SobreCorpo extends StatelessWidget {
@@ -6,7 +7,7 @@ class SobreCorpo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
     // Using theme colors directly from your theme files
@@ -90,9 +91,10 @@ class SobreCorpo extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 16,
               children: [
                 Text(
-                  'Gerencie suas finanças com facilidade',
+                  Strings.SOBRE_CHAMADA,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -100,9 +102,8 @@ class SobreCorpo extends StatelessWidget {
                     height: 1.4,
                   ),
                 ),
-                const SizedBox(height: 16),
                 Text(
-                  'Budgetopia permite que você acompanhe suas entradas e saídas financeiras de forma simples e eficaz. Com recursos práticos e uma interface amigável, você pode manter suas finanças sob controle, alcançando seus objetivos financeiros com mais tranquilidade.',
+                  Strings.SOBRE_DESCRICAO,
                   style: TextStyle(
                     fontSize: 16,
                     height: 1.8,
@@ -129,8 +130,10 @@ class SobreCorpo extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 16,
               children: [
                 Row(
+                  spacing: 8,
                   children: [
                     Container(
                       width: 6,
@@ -140,9 +143,8 @@ class SobreCorpo extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: 8),
                     Text(
-                      'STATUS OPERACIONAL',
+                      Strings.STATUS_OPERACIONAL,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -152,9 +154,8 @@ class SobreCorpo extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
                 Text(
-                  'Mantenha-se no comando das suas finanças com Budgetopia - seu parceiro confiável para uma jornada financeira mais inteligente em um mundo cada vez mais complexo.',
+                  Strings.SOBRE_STATUS,
                   style: TextStyle(
                     fontSize: 14,
                     height: 1.6,
@@ -178,44 +179,14 @@ class SobreCorpo extends StatelessWidget {
                   color: secondaryColor.withAlpha(77), // ~0.3 opacity
                 ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                spacing: 8,
-                children: [
-                  Text(
-                    'v 1.0.0',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1,
-                      color: secondaryColor,
-                    ),
-                  ),
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: tertiaryColor,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: tertiaryColor.withAlpha(153), // ~0.6 opacity
-                          blurRadius: 4,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    'ONLINE',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
-                      color: tertiaryColor,
-                    ),
-                  ),
-                ],
+              child: Text(
+                Strings.VERSAO_APP,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1,
+                  color: secondaryColor,
+                ),
               ),
             ),
           ),

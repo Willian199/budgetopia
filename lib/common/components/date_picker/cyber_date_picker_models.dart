@@ -1,3 +1,5 @@
+import 'package:budgetopia/common/constantes/strings.dart';
+
 /// Enum representing the date components that can be edited.
 ///
 /// Used in selector mode to track which component (day, month, or year)
@@ -33,20 +35,7 @@ class CyberDatePickerConstants {
   /// Month names abbreviated to 3 characters for display.
   ///
   /// Index corresponds to month number minus 1 (0-indexed).
-  static const List<String> months = [
-    'JAN',
-    'FEV',
-    'MAR',
-    'ABR',
-    'MAI',
-    'JUN',
-    'JUL',
-    'AGO',
-    'SET',
-    'OUT',
-    'NOV',
-    'DEZ',
-  ];
+  static const List<String> months = Strings.MESES_ABREVIADOS;
 
   /// The minimum allowed year for date selection.
   static const int minYear = 1900;

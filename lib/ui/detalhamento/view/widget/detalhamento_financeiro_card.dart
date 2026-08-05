@@ -1,5 +1,5 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class DetalhamentoFinanceiroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = AdaptiveTheme.of(context).theme;
+    final ThemeData tema = context.theme;
 
     // Definição de cores com base no tema atual
     final Color primaryColor = tema.colorScheme.primary;

@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
 
+  WakelockPlus.enable();
   runApp(const StartApp());
 }
 
@@ -41,7 +43,7 @@ class StartApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: const <Locale>[
-              Locale('pt'),
+              Locale(Strings.LOCALE_PT, Strings.LOCALE_BR),
             ],
           );
         },

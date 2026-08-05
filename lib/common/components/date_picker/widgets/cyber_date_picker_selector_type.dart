@@ -1,5 +1,6 @@
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_models.dart';
 import 'package:budgetopia/common/components/date_picker/widgets/cyber_date_picker_component_button.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 
 /// Component selector buttons (Day/Month/Year)
@@ -26,19 +27,19 @@ class CyberDatePickerSelectorType extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CyberDatePickerComponentButton(
-          label: 'DIA',
+          label: Strings.DIA,
           isActive: activeComponent == CyberDateComponent.day,
           onTap: () => onComponentSelected(CyberDateComponent.day),
         ),
         const SizedBox(width: 15),
         CyberDatePickerComponentButton(
-          label: 'MES',
+          label: Strings.MES,
           isActive: activeComponent == CyberDateComponent.month,
           onTap: () => onComponentSelected(CyberDateComponent.month),
         ),
         const SizedBox(width: 15),
         CyberDatePickerComponentButton(
-          label: 'ANO',
+          label: Strings.ANO,
           isActive: activeComponent == CyberDateComponent.year,
           onTap: () => onComponentSelected(CyberDateComponent.year),
         ),

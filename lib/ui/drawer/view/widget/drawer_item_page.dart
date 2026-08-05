@@ -37,9 +37,15 @@ class _DrawerItemPageState extends State<DrawerItemPage> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     debugPrint('Building DrawerItemPage');
+    final ValueNotifier<DrawerState>? stateNotifier = ddi.get<ZoomDrawerController>().stateNotifier;
+
+    if (stateNotifier == null) {
+      return const SizedBox();
+    }
+
     return SizedBox(
       child: ValueListenableBuilder<DrawerState>(
-        valueListenable: ddi.get<ZoomDrawerController>().stateNotifier!,
+        valueListenable: stateNotifier,
         builder: (BuildContext context, DrawerState state, Widget? child) {
           switch (state) {
             case DrawerState.closed:
@@ -83,9 +89,14 @@ class _DrawerItemPageState extends State<DrawerItemPage> with SingleTickerProvid
                   Integer.DOIS,
                 ),
                 DrawerTile(
+                  Icons.backup_rounded,
+                  Strings.BACKUP,
+                  Integer.TRES,
+                ),
+                DrawerTile(
                   Icons.info_rounded,
                   Strings.SOBRE,
-                  Integer.TRES,
+                  Integer.QUATRO,
                 ),
               ],
             ),

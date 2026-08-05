@@ -1,5 +1,5 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/home/model/grafico_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,8 @@ class LegendaInferior extends StatelessWidget {
     if (item == null || item!.legenda.isEmpty) {
       return const SizedBox();
     }
-    final ThemeData tema = AdaptiveTheme.of(context).theme;
+
+    final ThemeData tema = context.theme;
     final bool isDarkMode = ddi.get<bool>(qualifier: Qualifier.dark_mode);
 
     // Definição de cores

@@ -1,55 +1,26 @@
-import 'package:budgetopia/common/components/home_transaction/cyberpunk_day_group.dart';
 import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
-import 'package:budgetopia/ui/home/controller/home_controller.dart';
+import 'package:budgetopia/ui/home/view/widgets/cyberpunk_day_group.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_transacion_empty.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ddi/flutter_ddi.dart';
 
-class HomeTransactionList extends StatefulWidget {
-  const HomeTransactionList({required this.transacoes, super.key});
+class HomeTransactionList extends StatelessWidget {
+  const HomeTransactionList({
+    required this.transacoes,
+    this.onConfirmSuggestion,
+    this.onRefresh,
+    super.key,
+  });
+
   final List<MovimentacaoModel> transacoes;
-
-  @override
-  State<HomeTransactionList> createState() => _HomeTransactionListState();
-}
-
-class _HomeTransactionListState extends State<HomeTransactionList> {
-  late List<int> diasOrdenados = [];
-  final Map<int, List<MovimentacaoModel>> transacoesPorDia = {};
-  late final controller = ddi.get<HomeController>();
-
-  @override
-  void didUpdateWidget(covariant HomeTransactionList oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    _refresh();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _refresh();
-  }
-
-  void _refresh() {
-    transacoesPorDia.clear();
-    diasOrdenados.clear();
-
-    for (var transacao in widget.transacoes) {
-      final int dia = transacao.data.day;
-      if (!transacoesPorDia.containsKey(dia)) {
-        transacoesPorDia[dia] = [];
-      }
-      transacoesPorDia[dia]!.add(transacao);
-    }
-
-    // Ordenar as chaves (dias) em ordem decrescente
-    diasOrdenados = transacoesPorDia.keys.toList()..sort((a, b) => b.compareTo(a));
-  }
+  final Future<bool> Function(MovimentacaoModel sugestao)? onConfirmSuggestion;
+  final VoidCallback? onRefresh;
 
   @override
   Widget build(BuildContext context) {
+    final Map<int, List<MovimentacaoModel>> transacoesPorDia = _agruparTransacoesPorDia();
+    final List<int> diasOrdenados = transacoesPorDia.keys.toList()..sort((a, b) => b.compareTo(a));
+
     if (diasOrdenados.isEmpty) {
       return const HomeTransactionsEmpty();
     }
@@ -70,12 +41,22 @@ class _HomeTransactionListState extends State<HomeTransactionList> {
             month: mes,
             transactions: transacoesDoDia,
             isLast: index == diasOrdenados.length - 1,
-            onRefresh: () {
-              controller.refresh(controller.value.tabSelecionada);
-            },
+            onConfirmSuggestion: onConfirmSuggestion,
+            onRefresh: onRefresh,
           );
         },
       ),
     );
+  }
+
+  Map<int, List<MovimentacaoModel>> _agruparTransacoesPorDia() {
+    final Map<int, List<MovimentacaoModel>> transacoesPorDia = {};
+
+    for (final MovimentacaoModel transacao in transacoes) {
+      final int dia = transacao.data.day;
+      transacoesPorDia.putIfAbsent(dia, () => []).add(transacao);
+    }
+
+    return transacoesPorDia;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_theme.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 
 class CyberDatePickerInputSeparator extends StatelessWidget {
@@ -18,7 +19,7 @@ class CyberDatePickerInputSeparator extends StatelessWidget {
         ).createShader(bounds);
       },
       child: const Text(
-        '/',
+        Strings.SEPARADOR_DATA,
         style: TextStyle(
           fontSize: 40,
           color: Colors.white,
