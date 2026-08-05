@@ -21,62 +21,39 @@ class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDes
 
   late final StreamSubscription<Map<String, List<MovimentacaoModel>>> _streamRef;
   late final StreamSubscription<int> _streamSliderRef;
+  bool _selecionouMesInicial = false;
 
   @override
   FutureOr<void> onPostConstruct() {
     _streamSliderRef = _homeCase.slidePosition.listen(alterouSelecao);
 
     _streamRef = _homeRepository.buscarDadosMovimentacao().listen((Map<String, List<MovimentacaoModel>> event) {
-      double entrada = 0;
-      double saida = 0;
-
       int posicaoSelecionada = 0;
       List<String> mesesDisponiveis = [];
+      List<MovimentacaoModel> movimentacoesMesSelecionado = [];
 
       if (event.isNotEmpty) {
-        //Somente será vazio quando for o primeiro evento disparado
-        if (_homeRepository.movimentacoesMesSelecionado.isEmpty) {
-          mesesDisponiveis = event.keys.toList();
+        mesesDisponiveis = event.keys.toList();
 
-          final int newPos = mesesDisponiveis.indexOf(DateTime.now().getFormattedMonth());
-
-          posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
+        if (!_selecionouMesInicial) {
+          posicaoSelecionada = _posicaoMesAtualOuUltimo(mesesDisponiveis);
+          _selecionouMesInicial = true;
         } else {
-          final String mesSelecionado = _homeCase.getByPosicao;
-
-          mesesDisponiveis = event.keys.toList();
-
-          final int newPos = mesesDisponiveis.indexOf(mesSelecionado);
-
-          posicaoSelecionada = newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
+          final String? mesSelecionado = _homeCase.itemSelecionado;
+          final int newPos = mesSelecionado == null ? -1 : mesesDisponiveis.indexOf(mesSelecionado);
+          posicaoSelecionada = newPos < 0 ? _posicaoMesAtualOuUltimo(mesesDisponiveis) : newPos;
         }
 
-        final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(
+        movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(
           posicaoSelecionada,
           value.tabSelecionada.first,
         );
-
-        for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
-          if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {
-            entrada += item.valor;
-          } else {
-            saida += item.valor;
-          }
-        }
-      } else {
-        mesesDisponiveis = [];
-        posicaoSelecionada = 0;
       }
-      _homeCase.changeScrollPosition(0);
 
+      _homeCase.changeScrollPosition(0);
       _homeCase.update(posicaoSelecionada, mesesDisponiveis);
 
-      value = HomeState(
-        tabSelecionada: value.tabSelecionada,
-        valorEntrada: entrada,
-        valorSaida: saida,
-        valorSaldo: entrada - saida,
-      );
+      value = _criarResumo(movimentacoesMesSelecionado);
     });
   }
 
@@ -89,24 +66,43 @@ class HomeController extends ValueNotifier<HomeState> with PostConstruct, PreDes
   void alterouSelecao(int pos) {
     final movimentacoesMesSelecionado = _homeRepository.filtrarMovimentacao(pos, value.tabSelecionada.first);
 
+    _homeCase.changeScrollPosition(0);
+
+    value = _criarResumo(movimentacoesMesSelecionado);
+  }
+
+  int _posicaoMesAtualOuUltimo(List<String> mesesDisponiveis) {
+    final DateTime now = DateTime.now();
+    final int newPos = mesesDisponiveis.indexOf('${now.getFormattedMonth()}/${now.year}');
+
+    return newPos < 0 ? mesesDisponiveis.length - 1 : newPos;
+  }
+
+  HomeState _criarResumo(List<MovimentacaoModel> movimentacoes) {
     double entrada = 0;
     double saida = 0;
 
-    for (final MovimentacaoModel item in movimentacoesMesSelecionado) {
+    for (final MovimentacaoModel item in movimentacoes) {
+      if (item.sugestao) {
+        continue;
+      }
       if (item.tipoMovimentacao == TipoMovimentacaoEnum.entrada.id) {
         entrada += item.valor;
       } else {
         saida += item.valor;
       }
     }
-    _homeCase.changeScrollPosition(0);
 
-    value = HomeState(
+    return HomeState(
       tabSelecionada: value.tabSelecionada,
       valorEntrada: entrada,
       valorSaida: saida,
       valorSaldo: entrada - saida,
     );
+  }
+
+  bool confirmarSugestao(MovimentacaoModel sugestao) {
+    return _homeRepository.confirmarSugestao(sugestao);
   }
 
   @override

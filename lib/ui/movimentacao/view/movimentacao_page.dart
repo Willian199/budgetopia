@@ -1,37 +1,73 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:budgetopia/common/components/button/salvar_button.dart';
-import 'package:budgetopia/common/components/button/sub_menu_back_button.dart';
-import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:budgetopia/common/components/generics/app_scaffold.dart';
 import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
-import 'package:budgetopia/common/components/generics/page_title.dart';
-import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
-import 'package:budgetopia/common/enum/categoria_enum.dart';
-import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
+import 'package:budgetopia/common/dto/movimentacao_formulario_dados.dart';
+import 'package:budgetopia/common/dto/movimentacao_salvar_resultado.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
-import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
 import 'package:budgetopia/ui/movimentacao/mixin/movimentacao_page_mixin.dart';
-import 'package:budgetopia/ui/movimentacao/view/widgets/data_movimentacao.dart';
-import 'package:budgetopia/ui/movimentacao/view/widgets/selecionar_categoria.dart';
-import 'package:budgetopia/ui/movimentacao/view/widgets/status_pagamento.dart';
-import 'package:budgetopia/ui/movimentacao/view/widgets/tipo_movimentacao.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/movimentacao_app_bar.dart';
+import 'package:budgetopia/ui/movimentacao/view/widgets/movimentacao_formulario.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MovimentacaoPage extends StatefulWidget {
-  const MovimentacaoPage({this.movimentacaoModel, super.key});
+  const MovimentacaoPage({
+    this.movimentacaoModel,
+    this.codigoRecorrencia,
+    super.key,
+  });
 
   final MovimentacaoModel? movimentacaoModel;
+  final int? codigoRecorrencia;
+
   @override
-  _MovimentacaoPageState createState() => _MovimentacaoPageState();
+  State<MovimentacaoPage> createState() => _MovimentacaoPageState();
 }
 
 class _MovimentacaoPageState extends State<MovimentacaoPage>
     with MovimentacaoPageMixin, DDIInject<MovimentacaoController> {
+  bool get _isEdicaoRecorrencia => widget.movimentacaoModel == null && (widget.codigoRecorrencia ?? 0) > 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarFormulario();
+
+    valueFocusNode.addListener(_onValueFocusChanged);
+    parcelasController.addListener(_onParcelasChanged);
+    intervaloRecorrenciaController.addListener(_onIntervaloRecorrenciaChanged);
+    titleFocusNode.requestFocus();
+  }
+
+  void _carregarFormulario() {
+    if (widget.movimentacaoModel != null) {
+      _preencherFormulario(instance.carregarMovimentacao(widget.movimentacaoModel!));
+      return;
+    }
+
+    if (_isEdicaoRecorrencia) {
+      _carregarRecorrencia();
+      return;
+    }
+
+    _preencherFormulario(instance.carregarNovoCadastro());
+  }
+
+  void _carregarRecorrencia() {
+    final MovimentacaoFormularioDados? dados = instance.carregarRecorrencia(widget.codigoRecorrencia!);
+    _preencherFormulario(dados ?? instance.carregarNovoCadastro());
+  }
+
+  void _preencherFormulario(MovimentacaoFormularioDados dados) {
+    titleController.text = dados.titulo;
+    valueController.text = dados.valor;
+    noteController.text = dados.observacao;
+    parcelasController.text = dados.parcelas;
+    intervaloRecorrenciaController.text = dados.intervaloRecorrencia;
+  }
+
   void _onValueFocusChanged() {
     if (!valueFocusNode.hasFocus) {
       return;
@@ -43,212 +79,83 @@ class _MovimentacaoPageState extends State<MovimentacaoPage>
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void _onParcelasChanged() {
+    instance.alterarQuantidadeParcelas(instance.parseQuantidadeParcelas(parcelasController.text));
+  }
 
-    if (widget.movimentacaoModel != null) {
-      titleController.text = widget.movimentacaoModel!.titulo;
-      valueController.text = Moeda.format(valor: widget.movimentacaoModel!.valor, simbolo: 'R\$', decimalDigits: 2);
-      noteController.text = widget.movimentacaoModel!.observacao ?? '';
-      instance.alterarData(widget.movimentacaoModel!.data);
-      instance.selecionarCategoria(
-        CategoriaEnum.getById(widget.movimentacaoModel!.codigoCategoria),
-      );
-      instance.selecionarTipoMovimentacao(
-        TipoMovimentacaoEnum.getById(widget.movimentacaoModel!.tipoMovimentacao),
-      );
-      instance.alterarStatus(widget.movimentacaoModel?.status ?? false);
-    } else {
-      valueController.text = Moeda.format(valor: 0, simbolo: 'R\$', decimalDigits: 2);
+  void _onIntervaloRecorrenciaChanged() {
+    instance.alterarIntervaloRecorrenciaDias(instance.parseIntervaloRecorrencia(intervaloRecorrenciaController.text));
+  }
+
+  void _salvar() {
+    final MovimentacaoSalvarResultado resultado = instance.salvarFormulario(
+      formValido: formKey.currentState?.validate() ?? false,
+      isEdicaoRecorrencia: _isEdicaoRecorrencia,
+      possuiMovimentacao: widget.movimentacaoModel != null,
+      id: widget.movimentacaoModel?.id ?? 0,
+      titulo: titleController.text,
+      valor: valueController.text,
+      observacao: noteController.text,
+      parcelas: parcelasController.text,
+      codigoRecorrencia: widget.movimentacaoModel?.codigoRecorrencia ?? 0,
+      recorrenciaId: _isEdicaoRecorrencia ? widget.codigoRecorrencia! : 0,
+    );
+
+    if (!resultado.sucesso) {
+      CustomSnackBar.informacacao(mensagem: resultado.mensagem);
+      return;
     }
 
-    valueFocusNode.addListener(_onValueFocusChanged);
-    titleFocusNode.requestFocus();
+    context.closeKeyboard();
+    Navigator.pop(context);
+    CustomSnackBar.sucesso(mensagem: resultado.mensagem);
+  }
+
+  void _remover() {
+    if (instance.remover(widget.movimentacaoModel!.id)) {
+      Navigator.pop(context);
+      CustomSnackBar.sucesso(mensagem: Strings.TRANSACAO_REMOVIDA);
+      return;
+    }
+
+    CustomSnackBar.informacacao(mensagem: Strings.ERRO_REMOVER_TRANSACAO);
   }
 
   @override
   void dispose() {
     valueFocusNode.removeListener(_onValueFocusChanged);
+    parcelasController.removeListener(_onParcelasChanged);
+    intervaloRecorrenciaController.removeListener(_onIntervaloRecorrenciaChanged);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
-
-    // Cores do tema
-    final primaryColor = theme.colorScheme.primary;
-    final errorColor = theme.colorScheme.error;
-    final backgroundColor = theme.colorScheme.surface;
-
     return AppScaffold(
-      appBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Botão de voltar
-          const SubMenuBackButton(),
-
-          // Título
-          const PageTitle(title: Strings.MOVIMENTACAO),
-
-          // Botão de Excluir
-          if (widget.movimentacaoModel != null)
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: errorColor.withAlpha(128),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: errorColor.withAlpha(77),
-                    blurRadius: 8,
-                    spreadRadius: 1,
-                  ),
-                  BoxShadow(
-                    color: errorColor.withAlpha(100),
-                    blurRadius: 9,
-                    blurStyle: BlurStyle.outer,
-                  ),
-                ],
-              ),
-              child: IconButton(
-                icon: FaIcon(
-                  FontAwesomeIcons.trashCan,
-                  color: theme.colorScheme.error,
-                  size: 20,
-                ),
-                onPressed: () {
-                  if (instance.remover(widget.movimentacaoModel!.id)) {
-                    Navigator.pop(context);
-
-                    CustomSnackBar.sucesso(mensagem: 'Transação removida');
-                  } else {
-                    CustomSnackBar.informacacao(mensagem: 'Erro ao remover transação');
-                  }
-                },
-              ),
-            ),
-
-          SalvarButton(
-            height: 40,
-            width: 40,
-            onPressed: () {
-              final double valor = Moeda.parse(valor: valueController.text, simbolo: 'R\$').toDouble();
-              if ((formKey.currentState?.validate() ?? false) && valor > 0) {
-                context.closeKeyboard();
-
-                final bool status = instance.salvar(
-                  id: widget.movimentacaoModel?.id ?? 0,
-                  titulo: titleController.text.trim(),
-                  valor: Moeda.parse(valor: valueController.text, simbolo: 'R\$').toDouble(),
-                  observacao: noteController.text.trim(),
-                );
-
-                if (!status) {
-                  return;
-                }
-
-                Navigator.pop(context);
-
-                CustomSnackBar.sucesso(mensagem: 'Transação salva!');
-              } else {
-                CustomSnackBar.informacacao(mensagem: 'Verifique os dados informados!');
-              }
-            },
-          ),
-        ],
+      appBar: MovimentacaoAppBar(
+        exibirRemover: widget.movimentacaoModel != null,
+        onSalvar: _salvar,
+        onRemover: _remover,
       ),
-      body: Form(
-        key: formKey,
-        autovalidateMode: AutovalidateMode.always,
-        child: Column(
-          children: <Widget>[
-            // Campo Nome
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: InfoFields(
-                label: Strings.TITULO,
-                icon: FontAwesomeIcons.noteSticky,
-                controller: titleController,
-                focusNode: titleFocusNode,
-                nextFocus: categoriaFocusNode,
-                validator: (value) {
-                  if (value?.isEmpty ?? false) {
-                    return 'Por favor, insira um título';
-                  }
-                  return null;
-                },
-                primaryColor: primaryColor,
-                backgroundColor: backgroundColor,
-              ),
-            ),
-            const SizedBox(height: 15.0),
-            SelecionarCategoria(
-              focusNode: categoriaFocusNode,
-              nextFocusNode: tipoMovimentacaoFocusNode,
-            ),
-            const SizedBox(height: 15.0),
-            TipoMovimentacao(
-              focusNode: tipoMovimentacaoFocusNode,
-              nextFocusNode: dateFocusNode,
-            ),
-            const SizedBox(height: 15.0),
-            DataMovimentacao(
-              focusNode: dateFocusNode,
-              nextFocus: valueFocusNode,
-            ),
-            const SizedBox(height: 15.0),
-            InfoFields(
-              label: Strings.VALOR,
-              icon: FontAwesomeIcons.moneyBill1Wave,
-              controller: valueController,
-              focusNode: valueFocusNode,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                DecimalInputFormatter(allowNegative: false),
-              ],
-              nextFocus: noteFocusNode,
-              onTap: () {
-                if (valueFocusNode.hasPrimaryFocus) {
-                  return;
-                }
-
-                valueController.selection = TextSelection(
-                  baseOffset: 0,
-                  extentOffset: valueController.value.text.length,
-                );
-              },
-              validator: (value) {
-                if (value?.isEmpty ?? false) {
-                  return Strings.INFORME_VALOR;
-                }
-                return null;
-              },
-              primaryColor: primaryColor,
-              backgroundColor: backgroundColor,
-            ),
-
-            const StatusPagamento(),
-            InfoFields(
-              label: Strings.OBSERVACOES,
-              icon: Icons.info_outline,
-              controller: noteController,
-              focusNode: noteFocusNode,
-              keyboardType: TextInputType.multiline,
-              validator: (value) {
-                return null;
-              },
-              primaryColor: primaryColor,
-              backgroundColor: backgroundColor,
-              maxLines: 4,
-            ),
-            const SizedBox(height: 20.0),
-          ],
-        ),
+      body: MovimentacaoFormulario(
+        formKey: formKey,
+        isEdicaoRecorrencia: _isEdicaoRecorrencia,
+        possuiMovimentacao: widget.movimentacaoModel != null,
+        titleController: titleController,
+        valueController: valueController,
+        noteController: noteController,
+        parcelasController: parcelasController,
+        intervaloRecorrenciaController: intervaloRecorrenciaController,
+        titleFocusNode: titleFocusNode,
+        categoriaFocusNode: categoriaFocusNode,
+        tipoMovimentacaoFocusNode: tipoMovimentacaoFocusNode,
+        tipoRecorrenciaFocusNode: tipoRecorrenciaFocusNode,
+        dateFocusNode: dateFocusNode,
+        dataFimRecorrenciaFocusNode: dataFimRecorrenciaFocusNode,
+        valueFocusNode: valueFocusNode,
+        parcelasFocusNode: parcelasFocusNode,
+        intervaloRecorrenciaFocusNode: intervaloRecorrenciaFocusNode,
+        noteFocusNode: noteFocusNode,
       ),
     );
   }

@@ -16,6 +16,7 @@ import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import '../../../config/banco/entity/movimentacao_entity.dart';
 import '../../../config/banco/entity/perfil_entity.dart';
+import '../../../config/banco/entity/recorrencia_movimentacao_entity.dart';
 import '../../../config/banco/entity/user_preferences_entity.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -58,7 +59,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(2, 5638960901270906135),
     name: 'MovimentacaoEntity',
-    lastPropertyId: const obx_int.IdUid(11, 7734183961005732622),
+    lastPropertyId: const obx_int.IdUid(12, 677540164228924369),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -109,6 +110,12 @@ final _entities = <obx_int.ModelEntity>[
         type: 1,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 677540164228924369),
+        name: 'codigoRecorrencia',
+        type: 6,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -147,6 +154,88 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(6, 7175241245634489750),
         name: 'pathImagem',
         type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(4, 5796389175441392265),
+    name: 'RecorrenciaMovimentacaoEntity',
+    lastPropertyId: const obx_int.IdUid(12, 6664955707048828196),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 770528593603209720),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 3036402398314806798),
+        name: 'titulo',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 8638466778966166374),
+        name: 'valorBase',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 413665856604692954),
+        name: 'dataInicio',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 7900977837403426527),
+        name: 'codigoCategoria',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 2511052915006422340),
+        name: 'tipoMovimentacao',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 7384686459449926755),
+        name: 'tipoRecorrencia',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 8882034737267445828),
+        name: 'intervaloDias',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 3586985898195696660),
+        name: 'observacao',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 757634602906480308),
+        name: 'statusPadrao',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 2926149955942114000),
+        name: 'ativo',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 6664955707048828196),
+        name: 'dataFim',
+        type: 10,
         flags: 0,
       ),
     ],
@@ -198,7 +287,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(3, 8734934441128175638),
+    lastEntityId: const obx_int.IdUid(4, 5796389175441392265),
     lastIndexId: const obx_int.IdUid(0, 0),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
@@ -275,7 +364,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
       objectToFB: (MovimentacaoEntity object, fb.Builder fbb) {
         final tituloOffset = fbb.writeString(object.titulo);
         final observacaoOffset = fbb.writeString(object.observacao);
-        fbb.startTable(12);
+        fbb.startTable(13);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, tituloOffset);
         fbb.addInt64(2, object.data.millisecondsSinceEpoch);
@@ -284,6 +373,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(7, object.codigoCategoria);
         fbb.addOffset(8, observacaoOffset);
         fbb.addBool(10, object.status);
+        fbb.addInt64(11, object.codigoRecorrencia);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -329,6 +419,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           24,
           false,
         );
+        final codigoRecorrenciaParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          26,
+          0,
+        );
         final object = MovimentacaoEntity(
           titulo: tituloParam,
           data: dataParam,
@@ -338,6 +434,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           valor: valorParam,
           observacao: observacaoParam,
           status: statusParam,
+          codigoRecorrencia: codigoRecorrenciaParam,
         );
 
         return object;
@@ -400,6 +497,115 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    RecorrenciaMovimentacaoEntity:
+        obx_int.EntityDefinition<RecorrenciaMovimentacaoEntity>(
+          model: _entities[3],
+          toOneRelations: (RecorrenciaMovimentacaoEntity object) => [],
+          toManyRelations: (RecorrenciaMovimentacaoEntity object) => {},
+          getId: (RecorrenciaMovimentacaoEntity object) => object.id,
+          setId: (RecorrenciaMovimentacaoEntity object, int id) {
+            object.id = id;
+          },
+          objectToFB: (RecorrenciaMovimentacaoEntity object, fb.Builder fbb) {
+            final tituloOffset = fbb.writeString(object.titulo);
+            final observacaoOffset = fbb.writeString(object.observacao);
+            fbb.startTable(13);
+            fbb.addInt64(0, object.id);
+            fbb.addOffset(1, tituloOffset);
+            fbb.addFloat64(2, object.valorBase);
+            fbb.addInt64(3, object.dataInicio.millisecondsSinceEpoch);
+            fbb.addInt64(4, object.codigoCategoria);
+            fbb.addInt64(5, object.tipoMovimentacao);
+            fbb.addInt64(6, object.tipoRecorrencia);
+            fbb.addInt64(7, object.intervaloDias);
+            fbb.addOffset(8, observacaoOffset);
+            fbb.addBool(9, object.statusPadrao);
+            fbb.addBool(10, object.ativo);
+            fbb.addInt64(11, object.dataFim.millisecondsSinceEpoch);
+            fbb.finish(fbb.endTable());
+            return object.id;
+          },
+          objectFromFB: (obx.Store store, ByteData fbData) {
+            final buffer = fb.BufferContext(fbData);
+            final rootOffset = buffer.derefObject(0);
+            final tituloParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 6, '');
+            final dataInicioParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
+            );
+            final dataFimParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 26, 0),
+            );
+            final tipoMovimentacaoParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              14,
+              0,
+            );
+            final codigoCategoriaParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              12,
+              0,
+            );
+            final tipoRecorrenciaParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              16,
+              0,
+            );
+            final idParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              4,
+              0,
+            );
+            final valorBaseParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              8,
+              0,
+            );
+            final observacaoParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 20, '');
+            final statusPadraoParam = const fb.BoolReader().vTableGet(
+              buffer,
+              rootOffset,
+              22,
+              false,
+            );
+            final intervaloDiasParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              18,
+              0,
+            );
+            final ativoParam = const fb.BoolReader().vTableGet(
+              buffer,
+              rootOffset,
+              24,
+              false,
+            );
+            final object = RecorrenciaMovimentacaoEntity(
+              titulo: tituloParam,
+              dataInicio: dataInicioParam,
+              dataFim: dataFimParam,
+              tipoMovimentacao: tipoMovimentacaoParam,
+              codigoCategoria: codigoCategoriaParam,
+              tipoRecorrencia: tipoRecorrenciaParam,
+              id: idParam,
+              valorBase: valorBaseParam,
+              observacao: observacaoParam,
+              statusPadrao: statusPadraoParam,
+              intervaloDias: intervaloDiasParam,
+              ativo: ativoParam,
+            );
+
+            return object;
+          },
+        ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -469,6 +675,11 @@ class MovimentacaoEntity_ {
   static final status = obx.QueryBooleanProperty<MovimentacaoEntity>(
     _entities[1].properties[7],
   );
+
+  /// See [MovimentacaoEntity.codigoRecorrencia].
+  static final codigoRecorrencia = obx.QueryIntegerProperty<MovimentacaoEntity>(
+    _entities[1].properties[8],
+  );
 }
 
 /// [PerfilEntity] entity fields to define ObjectBox queries.
@@ -496,5 +707,76 @@ class PerfilEntity_ {
   /// See [PerfilEntity.pathImagem].
   static final pathImagem = obx.QueryStringProperty<PerfilEntity>(
     _entities[2].properties[4],
+  );
+}
+
+/// [RecorrenciaMovimentacaoEntity] entity fields to define ObjectBox queries.
+class RecorrenciaMovimentacaoEntity_ {
+  /// See [RecorrenciaMovimentacaoEntity.id].
+  static final id = obx.QueryIntegerProperty<RecorrenciaMovimentacaoEntity>(
+    _entities[3].properties[0],
+  );
+
+  /// See [RecorrenciaMovimentacaoEntity.titulo].
+  static final titulo = obx.QueryStringProperty<RecorrenciaMovimentacaoEntity>(
+    _entities[3].properties[1],
+  );
+
+  /// See [RecorrenciaMovimentacaoEntity.valorBase].
+  static final valorBase =
+      obx.QueryDoubleProperty<RecorrenciaMovimentacaoEntity>(
+        _entities[3].properties[2],
+      );
+
+  /// See [RecorrenciaMovimentacaoEntity.dataInicio].
+  static final dataInicio =
+      obx.QueryDateProperty<RecorrenciaMovimentacaoEntity>(
+        _entities[3].properties[3],
+      );
+
+  /// See [RecorrenciaMovimentacaoEntity.codigoCategoria].
+  static final codigoCategoria =
+      obx.QueryIntegerProperty<RecorrenciaMovimentacaoEntity>(
+        _entities[3].properties[4],
+      );
+
+  /// See [RecorrenciaMovimentacaoEntity.tipoMovimentacao].
+  static final tipoMovimentacao =
+      obx.QueryIntegerProperty<RecorrenciaMovimentacaoEntity>(
+        _entities[3].properties[5],
+      );
+
+  /// See [RecorrenciaMovimentacaoEntity.tipoRecorrencia].
+  static final tipoRecorrencia =
+      obx.QueryIntegerProperty<RecorrenciaMovimentacaoEntity>(
+        _entities[3].properties[6],
+      );
+
+  /// See [RecorrenciaMovimentacaoEntity.intervaloDias].
+  static final intervaloDias =
+      obx.QueryIntegerProperty<RecorrenciaMovimentacaoEntity>(
+        _entities[3].properties[7],
+      );
+
+  /// See [RecorrenciaMovimentacaoEntity.observacao].
+  static final observacao =
+      obx.QueryStringProperty<RecorrenciaMovimentacaoEntity>(
+        _entities[3].properties[8],
+      );
+
+  /// See [RecorrenciaMovimentacaoEntity.statusPadrao].
+  static final statusPadrao =
+      obx.QueryBooleanProperty<RecorrenciaMovimentacaoEntity>(
+        _entities[3].properties[9],
+      );
+
+  /// See [RecorrenciaMovimentacaoEntity.ativo].
+  static final ativo = obx.QueryBooleanProperty<RecorrenciaMovimentacaoEntity>(
+    _entities[3].properties[10],
+  );
+
+  /// See [RecorrenciaMovimentacaoEntity.dataFim].
+  static final dataFim = obx.QueryDateProperty<RecorrenciaMovimentacaoEntity>(
+    _entities[3].properties[11],
   );
 }

@@ -42,5 +42,8 @@ class MovimentacaoServiceImpl implements MovimentacaoService {
   int salvar(MovimentacaoEntity movimentacaoEntity) => _entity.put(movimentacaoEntity);
 
   @override
+  List<int> salvarTodos(List<MovimentacaoEntity> movimentacoes) => _entity.putMany(movimentacoes);
+
+  @override
   bool remover(int id) => _entity.remove(id);
 }

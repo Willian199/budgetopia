@@ -1,5 +1,7 @@
+import 'package:budgetopia/ui/backup/module/backup_module.dart';
 import 'package:budgetopia/ui/detalhamento/module/detalhamento_module.dart';
 import 'package:budgetopia/ui/detalhamento/view/detalhamento_page.dart';
+import 'package:budgetopia/ui/backup/view/backup_page.dart';
 import 'package:budgetopia/ui/drawer/module/controler_page_module.dart';
 import 'package:budgetopia/ui/home/module/home_module.dart';
 import 'package:budgetopia/ui/home/view/home_page.dart';
@@ -37,6 +39,10 @@ class _ControllerPageState extends State<ControllerPage> with DDIInject<PageCont
           FlutterDDIBuilder(
             module: PerfilModule.new,
             child: (_) => const PerfilPage(),
+          ),
+          FlutterDDIBuilder(
+            module: BackupModule.new,
+            child: (_) => const BackupPage(),
           ),
           const SobrePage(),
         ],

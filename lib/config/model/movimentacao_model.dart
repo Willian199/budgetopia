@@ -12,6 +12,7 @@ class MovimentacaoModel {
       tipoMovimentacao: entity.tipoMovimentacao,
       observacao: entity.observacao,
       status: entity.status,
+      codigoRecorrencia: entity.codigoRecorrencia,
     );
   }
 
@@ -24,6 +25,8 @@ class MovimentacaoModel {
     required this.codigoCategoria,
     this.observacao,
     this.status = false,
+    this.sugestao = false,
+    this.codigoRecorrencia = 0,
   });
 
   final String titulo;
@@ -34,6 +37,8 @@ class MovimentacaoModel {
   final int tipoMovimentacao;
   final String? observacao;
   final bool status;
+  final bool sugestao;
+  final int codigoRecorrencia;
 
   @override
   bool operator ==(covariant MovimentacaoModel other) {
@@ -48,7 +53,9 @@ class MovimentacaoModel {
         other.id == id &&
         other.tipoMovimentacao == tipoMovimentacao &&
         other.observacao == observacao &&
-        other.status == status;
+        other.status == status &&
+        other.sugestao == sugestao &&
+        other.codigoRecorrencia == codigoRecorrencia;
   }
 
   @override
@@ -60,6 +67,8 @@ class MovimentacaoModel {
         id.hashCode ^
         tipoMovimentacao.hashCode ^
         observacao.hashCode ^
-        status.hashCode;
+        status.hashCode ^
+        sugestao.hashCode ^
+        codigoRecorrencia.hashCode;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/constantes/qualifiers.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/drawer/view/widget/drawer_item_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
@@ -37,8 +38,8 @@ class _DrawerItemState extends State<DrawerItem> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = AdaptiveTheme.of(context).theme.colorScheme;
-    final isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
+    final ColorScheme colorScheme = context.colorScheme;
+    final bool isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
 
     return Stack(
       children: [
@@ -53,7 +54,9 @@ class _DrawerItemState extends State<DrawerItem> with SingleTickerProviderStateM
           duration: const Duration(milliseconds: 200),
           child: GestureDetector(
             onTap: () {
-              if (_backgroundController.isCompleted) {
+              final bool isDarkMode = context.theme.brightness == Brightness.dark;
+
+              if (isDarkMode) {
                 _backgroundController.reverse();
                 AdaptiveTheme.of(context).setLight();
                 ddi.addDecorator([(_) => false], qualifier: Qualifier.dark_mode);

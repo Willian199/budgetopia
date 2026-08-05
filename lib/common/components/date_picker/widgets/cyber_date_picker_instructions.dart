@@ -1,5 +1,6 @@
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_models.dart';
 import 'package:budgetopia/common/components/date_picker/cyber_date_picker_theme.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/material.dart';
 
 /// Widget that displays instructions based on the current mode.
@@ -19,8 +20,8 @@ class CyberDatePickerInstructions extends StatelessWidget {
   /// Returns the appropriate instruction text for the current mode.
   String _getInstructionText() {
     return mode == CyberDatePickerMode.selector
-        ? 'Deslize horizontalmente para mudar o valor\nToque nos botões para mudar o campo'
-        : 'Digite a data no formato DD/MM/AAAA';
+        ? Strings.INSTRUCAO_DATE_PICKER_SELECTOR
+        : Strings.INSTRUCAO_DATE_PICKER_INPUT;
   }
 
   @override

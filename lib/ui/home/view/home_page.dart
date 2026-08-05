@@ -1,15 +1,17 @@
 // cyberpunk_home_page.dart
-import 'package:adaptive_theme/adaptive_theme.dart';
+
+import 'package:budgetopia/common/components/selecao_horizontal/view/selecao_horizontal.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/home/case/home_case.dart';
 import 'package:budgetopia/ui/home/controller/home_controller.dart';
 import 'package:budgetopia/ui/home/mixins/home_mixin.dart';
 import 'package:budgetopia/ui/home/module/home_module.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_add_button.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_app_bar.dart';
-import 'package:budgetopia/ui/home/view/widgets/home_background.dart';
+import 'package:budgetopia/common/components/generics/app_background.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_segmented_button.dart';
-import 'package:budgetopia/ui/home/view/widgets/home_selecao_mes.dart';
+
 import 'package:budgetopia/ui/home/view/widgets/home_transaction_list.dart';
 import 'package:budgetopia/ui/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/ui/movimentacao/view/movimentacao_page.dart';
@@ -34,7 +36,6 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
     Future.delayed(Duration.zero, () {
       FlutterNativeSplash.remove();
     });
-    listenable.refresh(listenable.value.tabSelecionada);
 
     _fadeInController = AnimationController(
       duration: const Duration(milliseconds: 800),
@@ -57,7 +58,7 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = AdaptiveTheme.of(context).theme;
+    final ThemeData theme = context.theme;
     final bool isDarkMode = theme.brightness == Brightness.dark;
     final Color backgroundColor = isDarkMode ? const Color(0xFF002215) : const Color(0xFFebffe5);
 
@@ -79,7 +80,7 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
       ),
       body: Stack(
         children: [
-          const HomeBackground(),
+          const AppBackground(),
           SafeArea(
             child: Column(
               children: [
@@ -106,6 +107,14 @@ class _HomePageState extends ListenableState<HomePage, HomeController> with Home
                     builder: (context, child) => Opacity(opacity: _fadeInAnimation.value, child: child!),
                     child: HomeTransactionList(
                       transacoes: listenable.registrosAbaMovimentacao,
+                      onRefresh: () => listenable.refresh(listenable.value.tabSelecionada),
+                      onConfirmSuggestion: (sugestao) async {
+                        final bool status = listenable.confirmarSugestao(sugestao);
+                        if (status) {
+                          listenable.refresh(listenable.value.tabSelecionada);
+                        }
+                        return status;
+                      },
                     ),
                   ),
                 ),

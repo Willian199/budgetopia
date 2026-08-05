@@ -1,5 +1,5 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/button/default_menu_back_button.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class ContainerBackButton extends StatelessWidget {
@@ -7,9 +7,8 @@ class ContainerBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
 
-    final tertiaryColor = theme.colorScheme.tertiary;
+    final tertiaryColor = context.colorScheme.tertiary;
     return Container(
       height: 50,
       width: 50,

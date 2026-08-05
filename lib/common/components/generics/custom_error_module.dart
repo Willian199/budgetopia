@@ -1,5 +1,6 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/generics/degrade.dart';
+import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 import 'package:lottie/lottie.dart';
@@ -9,7 +10,7 @@ final class CustomErrorModule extends ErrorModuleInterface {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = AdaptiveTheme.of(context).theme;
+    final ThemeData tema = context.theme;
     return Scaffold(
       body: Container(
         decoration: Degrade.efeitoDegrade(
@@ -32,7 +33,7 @@ final class CustomErrorModule extends ErrorModuleInterface {
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
-                child: Text('Oops, algo deu errado!'),
+                child: Text(Strings.OOPS_ALGO_DEU_ERRADO),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),

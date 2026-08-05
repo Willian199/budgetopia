@@ -1,4 +1,4 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -15,7 +15,7 @@ class SalvarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
 
     // Cores do tema
     final primaryColor = theme.colorScheme.primary;

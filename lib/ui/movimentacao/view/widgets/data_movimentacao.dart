@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
@@ -34,6 +33,7 @@ class _DataMovimentacaoState extends State<DataMovimentacao> with DDIInject<Movi
   void dispose() {
     widget.focusNode.removeListener(_openDataFocus);
     instance.data.removeListener(_definirData);
+    _dataController.dispose();
     super.dispose();
   }
 
@@ -55,7 +55,20 @@ class _DataMovimentacaoState extends State<DataMovimentacao> with DDIInject<Movi
 
     _isSelectingDate = true;
     context.closeKeyboard();
-    final bool hasSelected = await instance.selecionarDataMovimentacao();
+    final DateTime start = DateTime(2024);
+    final DateTime initialDate = instance.data.value.isBefore(start) ? start : instance.data.value;
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: start,
+      lastDate: DateTime(2040),
+      keyboardType: TextInputType.datetime,
+    );
+    final DateTime? selectedDate = picked;
+    final bool hasSelected = selectedDate != null && selectedDate != instance.data.value;
+    if (selectedDate != null && hasSelected) {
+      instance.alterarData(selectedDate.isBefore(start) ? start : selectedDate);
+    }
     _isSelectingDate = false;
 
     if (!mounted) {
@@ -68,7 +81,7 @@ class _DataMovimentacaoState extends State<DataMovimentacao> with DDIInject<Movi
 
   @override
   Widget build(BuildContext context) {
-    final theme = AdaptiveTheme.of(context).theme;
+    final theme = context.theme;
     final isDarkMode = theme.brightness == Brightness.dark;
 
     // Theme colors

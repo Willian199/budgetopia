@@ -1,3 +1,4 @@
+import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
@@ -5,10 +6,10 @@ class DecimalInputFormatter extends TextInputFormatter {
   DecimalInputFormatter({
     this.decimalPlaces = 2,
     this.allowNegative = true,
-    this.symbol = 'R\$',
+    this.symbol = Strings.RS,
     this.allowSymbolAtStart = true,
   }) : _numberFormat = NumberFormat.currency(
-         locale: 'pt_BR',
+         locale: Strings.LOCALE_PT_BR,
          symbol: symbol,
          decimalDigits: decimalPlaces,
        );

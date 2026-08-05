@@ -1,0 +1,4 @@
+enum ModoImportacaoBackup {
+  substituirTudo,
+  mesclar,
+}
