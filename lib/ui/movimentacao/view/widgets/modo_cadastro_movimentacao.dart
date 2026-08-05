@@ -1,8 +1,8 @@
 import 'package:budgetopia/common/components/cyber_segmented_button/cyber_segmented_button.dart';
 import 'package:budgetopia/common/components/cyber_segmented_button/cyber_segmented_notifier.dart';
+import 'package:budgetopia/common/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
-import 'package:budgetopia/ui/movimentacao/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 

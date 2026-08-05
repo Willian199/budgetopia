@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
-import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
+import 'package:budgetopia/common/extensions/datetime_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
-import 'package:budgetopia/common/components/generics/custom_snackbar.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/ui/movimentacao/module/movimentacao_module.dart';
 import 'package:budgetopia/ui/movimentacao/view/movimentacao_page.dart';

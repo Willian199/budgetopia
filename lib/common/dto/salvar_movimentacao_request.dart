@@ -1,7 +1,7 @@
 import 'package:budgetopia/common/enum/categoria_enum.dart';
+import 'package:budgetopia/common/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
-import 'package:budgetopia/ui/movimentacao/enum/tipo_cadastro_movimentacao_enum.dart';
 
 final class SalvarMovimentacaoRequest {
   const SalvarMovimentacaoRequest({

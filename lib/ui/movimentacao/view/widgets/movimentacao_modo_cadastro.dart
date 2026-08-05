@@ -1,9 +1,9 @@
 import 'package:budgetopia/common/components/fields/info_fields.dart';
 import 'package:budgetopia/common/components/input_formatters/decimal_input_formatter.dart';
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
 import 'package:budgetopia/ui/movimentacao/controller/movimentacao_controller.dart';
-import 'package:budgetopia/ui/movimentacao/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/data_fim_recorrencia.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/data_movimentacao.dart';
 import 'package:budgetopia/ui/movimentacao/view/widgets/modo_cadastro_movimentacao.dart';

@@ -1,15 +1,15 @@
 import 'package:budgetopia/common/constantes/strings.dart';
+import 'package:budgetopia/common/dto/movimentacao_formulario_dados.dart';
+import 'package:budgetopia/common/dto/movimentacao_formulario_estado.dart';
+import 'package:budgetopia/common/dto/movimentacao_formulario_resultado.dart';
 import 'package:budgetopia/common/enum/categoria_enum.dart';
+import 'package:budgetopia/common/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
 import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/config/banco/entity/recorrencia_movimentacao_entity.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/data/repository/recorrencia/recorrencia_repository.dart';
-import 'package:budgetopia/ui/movimentacao/enum/tipo_cadastro_movimentacao_enum.dart';
-import 'package:budgetopia/common/dto/movimentacao_formulario_dados.dart';
-import 'package:budgetopia/common/dto/movimentacao_formulario_estado.dart';
-import 'package:budgetopia/common/dto/movimentacao_formulario_resultado.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 
 final class MovimentacaoFormularioUseCase {

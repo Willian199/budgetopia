@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:budgetopia/common/components/user_imagem/controller/user_image_controller.dart';
+import 'package:budgetopia/ui/perfil/controller/user_image_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ddi/flutter_ddi.dart';
 

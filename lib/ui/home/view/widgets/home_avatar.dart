@@ -1,5 +1,5 @@
-import 'package:budgetopia/common/components/user_imagem/view/user_image.dart';
 import 'package:budgetopia/ui/home/view/widgets/home_notification_badge.dart';
+import 'package:budgetopia/ui/perfil/view/widget/user_image.dart';
 import 'package:flutter/material.dart';
 
 class HomeAvatar extends StatelessWidget {

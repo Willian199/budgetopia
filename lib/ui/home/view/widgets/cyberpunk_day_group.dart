@@ -1,7 +1,7 @@
-import 'package:budgetopia/common/components/home_transaction/cyber_transaction_card.dart';
 import 'package:budgetopia/common/extensions/context_extension.dart';
 import 'package:budgetopia/common/utils/moeda.dart';
 import 'package:budgetopia/config/model/movimentacao_model.dart';
+import 'package:budgetopia/ui/home/view/widgets/cyber_transaction_card.dart';
 import 'package:flutter/material.dart';
 
 class CyberpunkDayGroup extends StatefulWidget {

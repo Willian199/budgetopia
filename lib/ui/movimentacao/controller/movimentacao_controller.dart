@@ -1,15 +1,15 @@
 import 'dart:async';
 
-import 'package:budgetopia/common/enum/categoria_enum.dart';
-import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
-import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
-import 'package:budgetopia/config/model/movimentacao_model.dart';
-import 'package:budgetopia/ui/movimentacao/enum/tipo_cadastro_movimentacao_enum.dart';
 import 'package:budgetopia/common/dto/movimentacao_formulario_dados.dart';
 import 'package:budgetopia/common/dto/movimentacao_formulario_estado.dart';
 import 'package:budgetopia/common/dto/movimentacao_formulario_resultado.dart';
 import 'package:budgetopia/common/dto/movimentacao_salvar_resultado.dart';
 import 'package:budgetopia/common/dto/salvar_movimentacao_request.dart';
+import 'package:budgetopia/common/enum/categoria_enum.dart';
+import 'package:budgetopia/common/enum/tipo_cadastro_movimentacao_enum.dart';
+import 'package:budgetopia/common/enum/tipo_movimentacao_enum.dart';
+import 'package:budgetopia/common/enum/tipo_recorrencia_enum.dart';
+import 'package:budgetopia/config/model/movimentacao_model.dart';
 import 'package:budgetopia/ui/movimentacao/usecase/movimentacao_formulario_usecase.dart';
 import 'package:budgetopia/ui/movimentacao/usecase/remover_movimentacao_usecase.dart';
 import 'package:budgetopia/ui/movimentacao/usecase/salvar_movimentacao_usecase.dart';
